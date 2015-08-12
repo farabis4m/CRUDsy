@@ -27,6 +27,7 @@
 		F52CDEB21B7B2D5F00416787 /* APIUser.m in Sources */ = {isa = PBXBuildFile; fileRef = F52CDEB11B7B2D5F00416787 /* APIUser.m */; };
 		F52CDEB91B7B2ED900416787 /* APIUsersTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F52CDEB81B7B2ED900416787 /* APIUsersTableViewController.m */; };
 		F52CDEBE1B7B303000416787 /* APIUserTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F52CDEBD1B7B303000416787 /* APIUserTableViewCell.m */; };
+		F52CDEC21B7B50CA00416787 /* users.json in Resources */ = {isa = PBXBuildFile; fileRef = F52CDEC11B7B50CA00416787 /* users.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,6 +75,7 @@
 		F52CDEB81B7B2ED900416787 /* APIUsersTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APIUsersTableViewController.m; sourceTree = "<group>"; };
 		F52CDEBC1B7B303000416787 /* APIUserTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APIUserTableViewCell.h; sourceTree = "<group>"; };
 		F52CDEBD1B7B303000416787 /* APIUserTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APIUserTableViewCell.m; sourceTree = "<group>"; };
+		F52CDEC11B7B50CA00416787 /* users.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = users.json; sourceTree = "<group>"; };
 		F66097F931F5279F374A5DF0 /* Pods-CRUDsy_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CRUDsy_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CRUDsy_Example/Pods-CRUDsy_Example.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -142,6 +144,7 @@
 		6003F593195388D20070C39A /* Example for CRUDsy */ = {
 			isa = PBXGroup;
 			children = (
+				F52CDEBF1B7B50B100416787 /* Resources */,
 				F52CDEB31B7B2EAF00416787 /* ViewControllers */,
 				F52CDEAE1B7B2D4300416787 /* routes.plist */,
 				6003F59C195388D20070C39A /* APIAppDelegate.h */,
@@ -224,6 +227,22 @@
 				F52CDEBD1B7B303000416787 /* APIUserTableViewCell.m */,
 			);
 			path = APIUserTableViewCell;
+			sourceTree = "<group>";
+		};
+		F52CDEBF1B7B50B100416787 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				F52CDEC01B7B50B800416787 /* json */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		F52CDEC01B7B50B800416787 /* json */ = {
+			isa = PBXGroup;
+			children = (
+				F52CDEC11B7B50CA00416787 /* users.json */,
+			);
+			path = json;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -309,6 +328,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F52CDEC21B7B50CA00416787 /* users.json in Resources */,
 				F52CDEAF1B7B2D4300416787 /* routes.plist in Resources */,
 				873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */,
 				6003F5A9195388D20070C39A /* Images.xcassets in Resources */,

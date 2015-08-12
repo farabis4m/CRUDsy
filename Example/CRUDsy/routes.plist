@@ -2,17 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>APIUser</key>
+	<key>user</key>
 	<dict>
 		<key>index</key>
 		<dict>
-			<key>url</key>
-			<string>get/bVoSKNfpbC?indent=2</string>
-		</dict>
-		<key>create</key>
-		<dict>
-			<key>method</key>
-			<string></string>
+			<key>route</key>
+			<string>get/cpEUUvGDQO?indent=2</string>
 		</dict>
 	</dict>
 </dict>

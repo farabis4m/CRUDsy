@@ -24,6 +24,8 @@ static NSMutableDictionary *definedMethods = nil;
 
 @property (nonatomic, strong) NSMutableArray *registeredClasses;
 
+@property (nonatomic, strong) NSDictionary *predefinedRoutes;
+
 @end
 
 @implementation APIRouter
@@ -63,6 +65,12 @@ static NSMutableDictionary *definedMethods = nil;
 
 - (void)setup {
     self.registeredClasses = [NSMutableArray array];
+    
+    NSString *routesFilePath = [[NSBundle mainBundle] pathForResource:@"routes" ofType:@"plist"];
+    BOOL isDirectory = NO;
+    if([[NSFileManager defaultManager] fileExistsAtPath:routesFilePath isDirectory:&isDirectory]) {
+        self.predefinedRoutes = [NSDictionary dictionaryWithContentsOfFile:routesFilePath];
+    }
 }
 
 #pragma mark -
@@ -70,6 +78,7 @@ static NSMutableDictionary *definedMethods = nil;
 - (void)registerClass:(Class)class {
     NSString *classString = NSStringFromClass(class);
     [self.registeredClasses addObject:classString];
+    [self flushRoutesForClass:[class modelString]];
 }
 
 + (void)setURL:(NSString *)url forKey:(NSString *)key model:(NSString *)model {
@@ -120,6 +129,27 @@ static NSMutableDictionary *definedMethods = nil;
 
 - (NSDictionary *)methods {
     return definedMethods;
+}
+
+#pragma mark - Utils
+
+- (void)flushRoutesForClass:(NSString *)classString {
+    NSDictionary *classRoutes = self.predefinedRoutes[classString];
+    for(NSString *APIKey in classRoutes.allKeys) {
+        NSDictionary *define = classRoutes[APIKey];
+        NSString *method = define[@"method"];
+        if(method.length) {
+            [[self class] setMethod:method forKey:APIKey model:classString];
+        }
+        NSString *url = define[@"url"];
+        if(url.length) {
+            [[self class] setURL:url forKey:APIKey model:classString];
+        }
+        NSString *route = define[@"route"];
+        if(route.length) {
+            [[self class] setRoute:route forKey:APIKey model:classString];
+        }
+    }
 }
 
 @end

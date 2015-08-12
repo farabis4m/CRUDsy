@@ -31,7 +31,7 @@ typedef NS_ENUM (NSInteger, FTAPIImportType) {
 #pragma mark - Class lifecycle
 
 + (void)load {
-    [[APIRouter sharedInstance] registerClass:[self class]];
+//    [[APIRouter sharedInstance] registerClass:[self class]];
 }
 
 #pragma mark - API
@@ -84,7 +84,7 @@ typedef NS_ENUM (NSInteger, FTAPIImportType) {
             break;
         }
     }
-    return [classString substringFromIndex:index];
+    return [[classString substringFromIndex:index - 1] lowercaseString];
 }
 
 + (void)callWithURL:(NSString *)URLString Method:(NSString *)method route:(NSString *)route parameters:(id)parameters importType:(FTAPIImportType)importType completionBlock:(FTAPIResponseCompletionBlock)completionBlock {

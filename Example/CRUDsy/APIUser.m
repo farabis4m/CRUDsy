@@ -8,6 +8,8 @@
 
 #import "APIUser.h"
 
+#import "APIRouter.h"
+
 @implementation APIUser
 
 @synthesize id = _id;
@@ -19,6 +21,13 @@
              @"firstname" : @"firstname",
              @"lastname" : @"lastname",
              @"age" : @"age"};
+}
+
+#pragma mark - APIUser lifecycle
+
++ (void)load {
+    [super load];
+    [[APIRouter sharedInstance] registerClass:[self class]];
 }
 
 #pragma mark - Utils
