@@ -36,8 +36,6 @@
 - (instancetype)init {
     self = [super init];
     if(self) {
-        NSURL *baseURL = [NSURL URLWithString:@""];
-        self.operationManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseURL];
         [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
         
 //        NSString *filepath = [[NSBundle mainBundle] pathForResource:FTAPIOperationTypesFileName ofType:@"plist"];
@@ -46,6 +44,13 @@
 //        self.APIAdapter = [[APIAdapter alloc] init];
     }
     return self;
+}
+
+#pragma mark - Modifiers
+
+- (void)setBaseURL:(NSURL *)baseURL {
+    _baseURL = baseURL;
+    self.operationManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseURL];
 }
 
 #pragma mark - Utils

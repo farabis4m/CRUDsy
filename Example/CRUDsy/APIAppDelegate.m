@@ -8,10 +8,13 @@
 
 #import "APIAppDelegate.h"
 
+#import "CRUDEngine.h"
+
 @implementation APIAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [[CRUDEngine sharedInstance] setBaseURL:[NSURL URLWithString:@"http://www.json-generator.com/api/json"]];
     // Override point for customization after application launch.
     return YES;
 }

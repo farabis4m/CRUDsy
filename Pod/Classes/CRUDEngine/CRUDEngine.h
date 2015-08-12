@@ -18,6 +18,8 @@
 @property (nonatomic, strong) APIRouter *APIRouter;
 //@property (nonatomic, strong) APIAdapter *APIAdapter;
 
+@property (nonatomic, strong) NSURL *baseURL;
+
 + (instancetype)sharedInstance;
 
 - (id)HTTPRequestOperationURL:(NSURL *)URL HTTPMethod:(NSString *)method URLString:(NSString *)URLString parameters:(id)parameters completionBlock:(FTAPIResponseCompletionBlock)completionBlock;

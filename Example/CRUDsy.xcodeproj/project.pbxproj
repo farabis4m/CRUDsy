@@ -13,7 +13,6 @@
 		6003F598195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F596195388D20070C39A /* InfoPlist.strings */; };
 		6003F59A195388D20070C39A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F599195388D20070C39A /* main.m */; };
 		6003F59E195388D20070C39A /* APIAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F59D195388D20070C39A /* APIAppDelegate.m */; };
-		6003F5A7195388D20070C39A /* APIViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5A6195388D20070C39A /* APIViewController.m */; };
 		6003F5A9195388D20070C39A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5A8195388D20070C39A /* Images.xcassets */; };
 		6003F5B0195388D20070C39A /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F5AF195388D20070C39A /* XCTest.framework */; };
 		6003F5B1195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
@@ -21,9 +20,13 @@
 		6003F5BA195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5B8195388D20070C39A /* InfoPlist.strings */; };
 		6003F5BC195388D20070C39A /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5BB195388D20070C39A /* Tests.m */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
+		BFC0523ECC7F3A27CBADDAEC /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9702E6F0EC1BCE414924BB04 /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		E13DC460EBDDA69B94C145CB /* Pods_CRUDsy_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AA10356F99176237AC1B37F /* Pods_CRUDsy_Tests.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		E762144D181C6840350233CA /* Pods_CRUDsy_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C126384E6F69BFA8BC3F522 /* Pods_CRUDsy_Example.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		F52CDEAF1B7B2D4300416787 /* routes.plist in Resources */ = {isa = PBXBuildFile; fileRef = F52CDEAE1B7B2D4300416787 /* routes.plist */; };
+		F52CDEB21B7B2D5F00416787 /* APIUser.m in Sources */ = {isa = PBXBuildFile; fileRef = F52CDEB11B7B2D5F00416787 /* APIUser.m */; };
+		F52CDEB91B7B2ED900416787 /* APIUsersTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F52CDEB81B7B2ED900416787 /* APIUsersTableViewController.m */; };
+		F52CDEBE1B7B303000416787 /* APIUserTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F52CDEBD1B7B303000416787 /* APIUserTableViewCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,8 +53,6 @@
 		6003F59B195388D20070C39A /* CRUDsy-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CRUDsy-Prefix.pch"; sourceTree = "<group>"; };
 		6003F59C195388D20070C39A /* APIAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = APIAppDelegate.h; sourceTree = "<group>"; };
 		6003F59D195388D20070C39A /* APIAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = APIAppDelegate.m; sourceTree = "<group>"; };
-		6003F5A5195388D20070C39A /* APIViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = APIViewController.h; sourceTree = "<group>"; };
-		6003F5A6195388D20070C39A /* APIViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = APIViewController.m; sourceTree = "<group>"; };
 		6003F5A8195388D20070C39A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		6003F5AE195388D20070C39A /* CRUDsy_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CRUDsy_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F5AF195388D20070C39A /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -61,11 +62,18 @@
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
 		7AA10356F99176237AC1B37F /* Pods_CRUDsy_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CRUDsy_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		873B8AEA1B1F5CCA007FD442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		9702E6F0EC1BCE414924BB04 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A10520831B11D3D1E64360CC /* Pods-CRUDsy_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CRUDsy_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-CRUDsy_Tests/Pods-CRUDsy_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		A92C07EE777A42225E648991 /* Pods-CRUDsy_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CRUDsy_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-CRUDsy_Example/Pods-CRUDsy_Example.release.xcconfig"; sourceTree = "<group>"; };
 		BD7110A86135A91E3CBCA981 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		D4DD7D6455FA56F060FA7082 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		F52CDEAE1B7B2D4300416787 /* routes.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = routes.plist; sourceTree = "<group>"; };
+		F52CDEB01B7B2D5F00416787 /* APIUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APIUser.h; sourceTree = "<group>"; };
+		F52CDEB11B7B2D5F00416787 /* APIUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APIUser.m; sourceTree = "<group>"; };
+		F52CDEB71B7B2ED900416787 /* APIUsersTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APIUsersTableViewController.h; sourceTree = "<group>"; };
+		F52CDEB81B7B2ED900416787 /* APIUsersTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APIUsersTableViewController.m; sourceTree = "<group>"; };
+		F52CDEBC1B7B303000416787 /* APIUserTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APIUserTableViewCell.h; sourceTree = "<group>"; };
+		F52CDEBD1B7B303000416787 /* APIUserTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APIUserTableViewCell.m; sourceTree = "<group>"; };
 		F66097F931F5279F374A5DF0 /* Pods-CRUDsy_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CRUDsy_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CRUDsy_Example/Pods-CRUDsy_Example.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -78,6 +86,7 @@
 				6003F592195388D20070C39A /* UIKit.framework in Frameworks */,
 				6003F58E195388D20070C39A /* Foundation.framework in Frameworks */,
 				E762144D181C6840350233CA /* Pods_CRUDsy_Example.framework in Frameworks */,
+				BFC0523ECC7F3A27CBADDAEC /* Pods.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -125,6 +134,7 @@
 				6003F5AF195388D20070C39A /* XCTest.framework */,
 				3C126384E6F69BFA8BC3F522 /* Pods_CRUDsy_Example.framework */,
 				7AA10356F99176237AC1B37F /* Pods_CRUDsy_Tests.framework */,
+				9702E6F0EC1BCE414924BB04 /* Pods.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -132,14 +142,15 @@
 		6003F593195388D20070C39A /* Example for CRUDsy */ = {
 			isa = PBXGroup;
 			children = (
+				F52CDEB31B7B2EAF00416787 /* ViewControllers */,
 				F52CDEAE1B7B2D4300416787 /* routes.plist */,
 				6003F59C195388D20070C39A /* APIAppDelegate.h */,
 				6003F59D195388D20070C39A /* APIAppDelegate.m */,
 				873B8AEA1B1F5CCA007FD442 /* Main.storyboard */,
-				6003F5A5195388D20070C39A /* APIViewController.h */,
-				6003F5A6195388D20070C39A /* APIViewController.m */,
 				6003F5A8195388D20070C39A /* Images.xcassets */,
 				6003F594195388D20070C39A /* Supporting Files */,
+				F52CDEB01B7B2D5F00416787 /* APIUser.h */,
+				F52CDEB11B7B2D5F00416787 /* APIUser.m */,
 			);
 			name = "Example for CRUDsy";
 			path = CRUDsy;
@@ -194,6 +205,25 @@
 				A10520831B11D3D1E64360CC /* Pods-CRUDsy_Tests.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		F52CDEB31B7B2EAF00416787 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				F52CDEBB1B7B302400416787 /* APIUserTableViewCell */,
+				F52CDEB71B7B2ED900416787 /* APIUsersTableViewController.h */,
+				F52CDEB81B7B2ED900416787 /* APIUsersTableViewController.m */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		F52CDEBB1B7B302400416787 /* APIUserTableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				F52CDEBC1B7B303000416787 /* APIUserTableViewCell.h */,
+				F52CDEBD1B7B303000416787 /* APIUserTableViewCell.m */,
+			);
+			path = APIUserTableViewCell;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -339,7 +369,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-CRUDsy_Example/Pods-CRUDsy_Example-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		A6AF5792520F4D781492576D /* Copy Pods Resources */ = {
@@ -394,9 +424,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F52CDEBE1B7B303000416787 /* APIUserTableViewCell.m in Sources */,
 				6003F59E195388D20070C39A /* APIAppDelegate.m in Sources */,
-				6003F5A7195388D20070C39A /* APIViewController.m in Sources */,
+				F52CDEB21B7B2D5F00416787 /* APIUser.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
+				F52CDEB91B7B2ED900416787 /* APIUsersTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
