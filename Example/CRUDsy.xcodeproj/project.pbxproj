@@ -23,6 +23,7 @@
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
 		E13DC460EBDDA69B94C145CB /* Pods_CRUDsy_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AA10356F99176237AC1B37F /* Pods_CRUDsy_Tests.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		E762144D181C6840350233CA /* Pods_CRUDsy_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C126384E6F69BFA8BC3F522 /* Pods_CRUDsy_Example.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		F52CDEAF1B7B2D4300416787 /* routes.plist in Resources */ = {isa = PBXBuildFile; fileRef = F52CDEAE1B7B2D4300416787 /* routes.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,6 +65,7 @@
 		A92C07EE777A42225E648991 /* Pods-CRUDsy_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CRUDsy_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-CRUDsy_Example/Pods-CRUDsy_Example.release.xcconfig"; sourceTree = "<group>"; };
 		BD7110A86135A91E3CBCA981 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		D4DD7D6455FA56F060FA7082 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		F52CDEAE1B7B2D4300416787 /* routes.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = routes.plist; sourceTree = "<group>"; };
 		F66097F931F5279F374A5DF0 /* Pods-CRUDsy_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CRUDsy_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CRUDsy_Example/Pods-CRUDsy_Example.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -130,6 +132,7 @@
 		6003F593195388D20070C39A /* Example for CRUDsy */ = {
 			isa = PBXGroup;
 			children = (
+				F52CDEAE1B7B2D4300416787 /* routes.plist */,
 				6003F59C195388D20070C39A /* APIAppDelegate.h */,
 				6003F59D195388D20070C39A /* APIAppDelegate.m */,
 				873B8AEA1B1F5CCA007FD442 /* Main.storyboard */,
@@ -276,6 +279,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F52CDEAF1B7B2D4300416787 /* routes.plist in Resources */,
 				873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */,
 				6003F5A9195388D20070C39A /* Images.xcassets in Resources */,
 				6003F598195388D20070C39A /* InfoPlist.strings in Resources */,
