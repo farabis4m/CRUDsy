@@ -104,7 +104,7 @@
 + (void)callWithURL:(NSString *)URLString Method:(NSString *)method route:(NSString *)route parameters:(id)parameters importType:(APIImportType)importType completionBlock:(APIResponseCompletionBlock)completionBlock {
     CRUDEngine *engine = [CRUDEngine sharedInstance];
     
-    NSURL *URL = URLString ? [NSURL URLWithString:URLString] : [APIRouter sharedInstance].baseURL;
+    NSURL *URL = [NSURL URLWithString:URLString ?: [APIRouter sharedInstance].baseURL];
     [engine HTTPRequestOperationURL:URL HTTPMethod:method URLString:route parameters:parameters completionBlock:^(APIResponse *response) {
         if(!response.error) {
             NSError *parseError = nil;
