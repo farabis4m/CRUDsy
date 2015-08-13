@@ -57,7 +57,7 @@
 
 - (id)HTTPRequestOperationURL:(NSURL *)URL HTTPMethod:(NSString *)method URLString:(NSString *)URLString parameters:(id)parameters completionBlock:(APIResponseCompletionBlock)completionBlock {
     NSError *serializationError = nil;
-    NSURL *fullURL = [NSURL URLWithString:URLString relativeToURL:URL ?: self.operationManager.baseURL];
+    NSURL *fullURL = [URL URLByAppendingPathComponent:URLString];
     NSString *relativeURLString = [fullURL absoluteString];
     NSMutableURLRequest *request = [self.operationManager.requestSerializer requestWithMethod:method URLString:relativeURLString  parameters:parameters error:&serializationError];
     if (serializationError) {
