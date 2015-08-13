@@ -28,15 +28,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-//    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-//    [manager GET:@"http://www.json-generator.com/api/json/get/bVoSKNfpbC?indent=2" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//        
-//        
-//        
-//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//        
-//    }];
 }
 
 - (void)viewDidAppear:(BOOL)animated {

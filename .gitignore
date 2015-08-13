@@ -22,7 +22,7 @@ DerivedData
 # Bundler
 .bundle
 
-KSA/
+KSA
 
 Carthage
 # We recommend against adding the Pods directory to your .gitignore. However

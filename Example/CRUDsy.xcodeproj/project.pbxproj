@@ -24,10 +24,10 @@
 		E13DC460EBDDA69B94C145CB /* Pods_CRUDsy_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AA10356F99176237AC1B37F /* Pods_CRUDsy_Tests.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		E762144D181C6840350233CA /* Pods_CRUDsy_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C126384E6F69BFA8BC3F522 /* Pods_CRUDsy_Example.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		F52CDEAF1B7B2D4300416787 /* routes.plist in Resources */ = {isa = PBXBuildFile; fileRef = F52CDEAE1B7B2D4300416787 /* routes.plist */; };
-		F52CDEB21B7B2D5F00416787 /* APIUser.m in Sources */ = {isa = PBXBuildFile; fileRef = F52CDEB11B7B2D5F00416787 /* APIUser.m */; };
-		F52CDEB91B7B2ED900416787 /* APIUsersTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F52CDEB81B7B2ED900416787 /* APIUsersTableViewController.m */; };
-		F52CDEBE1B7B303000416787 /* APIUserTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F52CDEBD1B7B303000416787 /* APIUserTableViewCell.m */; };
 		F52CDEC21B7B50CA00416787 /* users.json in Resources */ = {isa = PBXBuildFile; fileRef = F52CDEC11B7B50CA00416787 /* users.json */; };
+		F5BD21A61B7C6A3A00EC98F5 /* APIUser.m in Sources */ = {isa = PBXBuildFile; fileRef = F5BD219E1B7C6A3A00EC98F5 /* APIUser.m */; };
+		F5BD21A71B7C6A3A00EC98F5 /* APIUsersTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5BD21A11B7C6A3A00EC98F5 /* APIUsersTableViewController.m */; };
+		F5BD21A81B7C6A3A00EC98F5 /* APIUserTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F5BD21A51B7C6A3A00EC98F5 /* APIUserTableViewCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,13 +69,13 @@
 		BD7110A86135A91E3CBCA981 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		D4DD7D6455FA56F060FA7082 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		F52CDEAE1B7B2D4300416787 /* routes.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = routes.plist; sourceTree = "<group>"; };
-		F52CDEB01B7B2D5F00416787 /* APIUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APIUser.h; sourceTree = "<group>"; };
-		F52CDEB11B7B2D5F00416787 /* APIUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APIUser.m; sourceTree = "<group>"; };
-		F52CDEB71B7B2ED900416787 /* APIUsersTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APIUsersTableViewController.h; sourceTree = "<group>"; };
-		F52CDEB81B7B2ED900416787 /* APIUsersTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APIUsersTableViewController.m; sourceTree = "<group>"; };
-		F52CDEBC1B7B303000416787 /* APIUserTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APIUserTableViewCell.h; sourceTree = "<group>"; };
-		F52CDEBD1B7B303000416787 /* APIUserTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APIUserTableViewCell.m; sourceTree = "<group>"; };
 		F52CDEC11B7B50CA00416787 /* users.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = users.json; sourceTree = "<group>"; };
+		F5BD219D1B7C6A3A00EC98F5 /* APIUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APIUser.h; sourceTree = "<group>"; };
+		F5BD219E1B7C6A3A00EC98F5 /* APIUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APIUser.m; sourceTree = "<group>"; };
+		F5BD21A01B7C6A3A00EC98F5 /* APIUsersTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APIUsersTableViewController.h; sourceTree = "<group>"; };
+		F5BD21A11B7C6A3A00EC98F5 /* APIUsersTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APIUsersTableViewController.m; sourceTree = "<group>"; };
+		F5BD21A41B7C6A3A00EC98F5 /* APIUserTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APIUserTableViewCell.h; sourceTree = "<group>"; };
+		F5BD21A51B7C6A3A00EC98F5 /* APIUserTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APIUserTableViewCell.m; sourceTree = "<group>"; };
 		F66097F931F5279F374A5DF0 /* Pods-CRUDsy_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CRUDsy_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CRUDsy_Example/Pods-CRUDsy_Example.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -144,16 +144,15 @@
 		6003F593195388D20070C39A /* Example for CRUDsy */ = {
 			isa = PBXGroup;
 			children = (
+				F5BD219B1B7C6A3A00EC98F5 /* Models */,
+				F5BD219F1B7C6A3A00EC98F5 /* ViewControllers */,
 				F52CDEBF1B7B50B100416787 /* Resources */,
-				F52CDEB31B7B2EAF00416787 /* ViewControllers */,
 				F52CDEAE1B7B2D4300416787 /* routes.plist */,
 				6003F59C195388D20070C39A /* APIAppDelegate.h */,
 				6003F59D195388D20070C39A /* APIAppDelegate.m */,
 				873B8AEA1B1F5CCA007FD442 /* Main.storyboard */,
 				6003F5A8195388D20070C39A /* Images.xcassets */,
 				6003F594195388D20070C39A /* Supporting Files */,
-				F52CDEB01B7B2D5F00416787 /* APIUser.h */,
-				F52CDEB11B7B2D5F00416787 /* APIUser.m */,
 			);
 			name = "Example for CRUDsy";
 			path = CRUDsy;
@@ -210,25 +209,6 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		F52CDEB31B7B2EAF00416787 /* ViewControllers */ = {
-			isa = PBXGroup;
-			children = (
-				F52CDEBB1B7B302400416787 /* APIUserTableViewCell */,
-				F52CDEB71B7B2ED900416787 /* APIUsersTableViewController.h */,
-				F52CDEB81B7B2ED900416787 /* APIUsersTableViewController.m */,
-			);
-			path = ViewControllers;
-			sourceTree = "<group>";
-		};
-		F52CDEBB1B7B302400416787 /* APIUserTableViewCell */ = {
-			isa = PBXGroup;
-			children = (
-				F52CDEBC1B7B303000416787 /* APIUserTableViewCell.h */,
-				F52CDEBD1B7B303000416787 /* APIUserTableViewCell.m */,
-			);
-			path = APIUserTableViewCell;
-			sourceTree = "<group>";
-		};
 		F52CDEBF1B7B50B100416787 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -243,6 +223,50 @@
 				F52CDEC11B7B50CA00416787 /* users.json */,
 			);
 			path = json;
+			sourceTree = "<group>";
+		};
+		F5BD219B1B7C6A3A00EC98F5 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				F5BD219C1B7C6A3A00EC98F5 /* APIUser */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		F5BD219C1B7C6A3A00EC98F5 /* APIUser */ = {
+			isa = PBXGroup;
+			children = (
+				F5BD219D1B7C6A3A00EC98F5 /* APIUser.h */,
+				F5BD219E1B7C6A3A00EC98F5 /* APIUser.m */,
+			);
+			path = APIUser;
+			sourceTree = "<group>";
+		};
+		F5BD219F1B7C6A3A00EC98F5 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				F5BD21A01B7C6A3A00EC98F5 /* APIUsersTableViewController.h */,
+				F5BD21A11B7C6A3A00EC98F5 /* APIUsersTableViewController.m */,
+				F5BD21A21B7C6A3A00EC98F5 /* APIUserTableViewCel */,
+				F5BD21A31B7C6A3A00EC98F5 /* APIUserTableViewCell */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		F5BD21A21B7C6A3A00EC98F5 /* APIUserTableViewCel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = APIUserTableViewCel;
+			sourceTree = "<group>";
+		};
+		F5BD21A31B7C6A3A00EC98F5 /* APIUserTableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				F5BD21A41B7C6A3A00EC98F5 /* APIUserTableViewCell.h */,
+				F5BD21A51B7C6A3A00EC98F5 /* APIUserTableViewCell.m */,
+			);
+			path = APIUserTableViewCell;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -444,11 +468,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F52CDEBE1B7B303000416787 /* APIUserTableViewCell.m in Sources */,
+				F5BD21A81B7C6A3A00EC98F5 /* APIUserTableViewCell.m in Sources */,
 				6003F59E195388D20070C39A /* APIAppDelegate.m in Sources */,
-				F52CDEB21B7B2D5F00416787 /* APIUser.m in Sources */,
+				F5BD21A61B7C6A3A00EC98F5 /* APIUser.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
-				F52CDEB91B7B2ED900416787 /* APIUsersTableViewController.m in Sources */,
+				F5BD21A71B7C6A3A00EC98F5 /* APIUsersTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
