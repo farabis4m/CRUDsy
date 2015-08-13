@@ -12,7 +12,7 @@
 
 @implementation APIUser
 
-@synthesize id = _id;
+@synthesize identifier = _identifier;
 
 #pragma mark - MTL Serialization
 

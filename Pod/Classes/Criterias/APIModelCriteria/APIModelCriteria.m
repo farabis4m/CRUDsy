@@ -27,12 +27,11 @@
 #pragma mark - JSON
 
 - (NSDictionary *)JSON {
-    if(self.model.id) {
-        NSString *key = [[[self.model class] JSONKeyPathsByPropertyKey] objectForKey:@"id"];
-        return @{key : self.model.id};
+    if(self.model.identifier) {
+        NSString *key = [[[self.model class] JSONKeyPathsByPropertyKey] objectForKey:@"identifier"];
+        return @{key : self.model.identifier};
     }
     return @{};
 }
-
 
 @end

@@ -17,6 +17,6 @@
 /**
  The identifier of some model
  */
-@property (nonatomic, strong) id id;
+@property (nonatomic, strong) id identifier;
 
 @end
