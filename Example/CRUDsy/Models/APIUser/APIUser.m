@@ -17,7 +17,9 @@
 #pragma mark - MTL Serialization
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
-    return @{@"id" : @"id",
+    return @{@"login" : @"login",
+             @"password" : @"passwrod",
+             @"id" : @"id",
              @"firstname" : @"firstname",
              @"lastname" : @"lastname",
              @"age" : @"age"};

@@ -14,6 +14,9 @@
 
 @interface APIUser : MTLModel <MTLJSONSerializing, ModelIDProtocol>
 
+@property (nonatomic, strong) NSString *login;
+@property (nonatomic, strong) NSString *password;
+
 @property (nonatomic, strong) NSString *firstname;
 @property (nonatomic, strong) NSString *lastname;
 @property (nonatomic, assign) NSInteger age;

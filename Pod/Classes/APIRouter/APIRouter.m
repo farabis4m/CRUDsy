@@ -70,6 +70,7 @@ static NSMutableDictionary *definedMethods = nil;
     BOOL isDirectory = NO;
     if([[NSFileManager defaultManager] fileExistsAtPath:routesFilePath isDirectory:&isDirectory]) {
         self.predefinedRoutes = [NSDictionary dictionaryWithContentsOfFile:routesFilePath];
+        self.baseURL = self.predefinedRoutes[@"baseURL"];
     }
 }
 

@@ -21,6 +21,8 @@ extern NSString *const APIDeleteKey;
  */
 @interface APIRouter : NSObject
 
+@property (nonatomic, strong) NSString *baseURL;
+
 @property (nonatomic, strong, readonly) NSDictionary *baseURLs;
 @property (nonatomic, strong, readonly) NSDictionary *routes;
 @property (nonatomic, strong, readonly) NSDictionary *methods;

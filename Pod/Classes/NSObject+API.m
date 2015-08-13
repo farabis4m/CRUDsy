@@ -20,11 +20,21 @@
 
 #import <Mantle/MTLJSONAdapter.h>
 
+#import "APIJSONAdapter.h"
+
+#import "APIModelCriteria.h"
+
+#import "NSString+Pluralize.h"
+
 typedef NS_ENUM (NSInteger, FTAPIImportType) {
-    FTAPIImportTypeArray,
-    FTAPIImportTypeDictionary,
-    FTAPIImportTypeNone
+    APIImportTypeArray,
+    APIImportTypeDictionary,
+    APIImportTypeNone
 };
+
+@interface NSObject () <ModelIDProtocol>
+
+@end
 
 @implementation NSObject (API)
 
@@ -56,10 +66,13 @@ typedef NS_ENUM (NSInteger, FTAPIImportType) {
     for(APICriteria *criteria in criterias) {
         [parametrs addEntriesFromDictionary:[criteria JSON]];
     }
-    [self callWithURL:URLString Method:method route:route parameters:parametrs importType:FTAPIImportTypeArray completionBlock:completionBlock];
+    [self callWithURL:URLString Method:method route:route parameters:parametrs importType:APIImportTypeArray completionBlock:completionBlock];
 }
 
 - (void)showWithCompletionBlock:(FTAPIResponseCompletionBlock)completionBlock {
+    id criteria = [APIModelCriteria criteriaWithModel:self];
+    NSString *route = [[[self class] modelString] pluralize];
+    [[self class] requestWithKey:APIShowKey method:APIMethodGET route:route criterias:@[criteria] importType:APIImportTypeDictionary completionBlock:completionBlock];
 }
 
 - (void)createWithCompletionBlock:(FTAPIResponseCompletionBlock)completionBlock {
@@ -87,6 +100,25 @@ typedef NS_ENUM (NSInteger, FTAPIImportType) {
     return [[classString substringFromIndex:index - 1] lowercaseString];
 }
 
++ (void)requestWithKey:(NSString *)key method:(NSString *)method route:(NSString *)route criterias:(NSArray *)criterias importType:(FTAPIImportType)importType completionBlock:(FTAPIResponseCompletionBlock)completionBlock {
+    NSString *modelString = [self modelString];
+    NSString *URLString = [[APIRouter sharedInstance] baseURLs][modelString][key];
+    NSString *finalRoute = [[APIRouter sharedInstance] routes][modelString][key];
+    if(!finalRoute) {
+        finalRoute = modelString;
+    }
+    finalRoute = [finalRoute lowercaseString];
+    NSString *finalMethod = [[APIRouter sharedInstance] methods][modelString][key];
+    if(!finalMethod) {
+        finalMethod = method;
+    }
+    NSMutableDictionary *parametrs = [NSMutableDictionary dictionary];
+    for(APICriteria *criteria in criterias) {
+        [parametrs addEntriesFromDictionary:[criteria JSON]];
+    }
+    [self callWithURL:URLString Method:finalMethod route:finalRoute parameters:parametrs importType:importType completionBlock:completionBlock];
+}
+
 + (void)callWithURL:(NSString *)URLString Method:(NSString *)method route:(NSString *)route parameters:(id)parameters importType:(FTAPIImportType)importType completionBlock:(FTAPIResponseCompletionBlock)completionBlock {
     CRUDEngine *engine = [CRUDEngine sharedInstance];
     
@@ -104,9 +136,9 @@ typedef NS_ENUM (NSInteger, FTAPIImportType) {
 
 + (id)parseJson:(id)json importType:(FTAPIImportType)importType class:(Class)class error:(NSError **)error {
     switch (importType) {
-        case FTAPIImportTypeArray: return [MTLJSONAdapter modelsOfClass:class fromJSONArray:json error:error];
-        case FTAPIImportTypeDictionary: return [MTLJSONAdapter modelOfClass:class fromJSONDictionary:json error:error];
-        case FTAPIImportTypeNone: return json;
+        case APIImportTypeArray: return [APIJSONAdapter modelsOfClass:class fromJSONArray:json error:error];
+        case APIImportTypeDictionary: return [APIJSONAdapter modelOfClass:class fromJSONDictionary:json error:error];
+        case APIImportTypeNone: return json;
     }
     return nil;
 }
