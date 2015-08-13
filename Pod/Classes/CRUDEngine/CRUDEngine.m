@@ -37,11 +37,7 @@
     self = [super init];
     if(self) {
         [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
-        
-//        NSString *filepath = [[NSBundle mainBundle] pathForResource:FTAPIOperationTypesFileName ofType:@"plist"];
-//        self.operationTypes = [NSDictionary dictionaryWithContentsOfFile:filepath];
-        
-//        self.APIAdapter = [[APIAdapter alloc] init];
+        self.operationManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:@""]];
     }
     return self;
 }
