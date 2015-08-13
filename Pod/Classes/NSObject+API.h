@@ -22,38 +22,38 @@ typedef NS_ENUM (NSInteger, APIImportType) {
  Method to retrieve list of items.
  URL: GET /items
  */
-+ (void)listWithCompletionBlock:(FTAPIResponseCompletionBlock)completionBlock;
++ (void)listWithCompletionBlock:(APIResponseCompletionBlock)completionBlock;
 
 /**
  Method identical to list but with list of specified criterias like offset, length.
  URL: GET /items?p1=val1&p2=val2
  */
-+ (void)listWithCriterias:(NSArray *)criterias completionBlock:(FTAPIResponseCompletionBlock)completionBlock;
++ (void)listWithCriterias:(NSArray *)criterias completionBlock:(APIResponseCompletionBlock)completionBlock;
 
 /**
  Method to get details of object.
  Based on id.
  /items/:id
  */
-- (void)showWithCompletionBlock:(FTAPIResponseCompletionBlock)completionBlock;
+- (void)showWithCompletionBlock:(APIResponseCompletionBlock)completionBlock;
 
 /**
  Method to add new item.
  URL: POST /items
  */
-- (void)createWithCompletionBlock:(FTAPIResponseCompletionBlock)completionBlock;
+- (void)createWithCompletionBlock:(APIResponseCompletionBlock)completionBlock;
 
 /**
  Method to update item.
  URL: PUT /items/:id
  */
-- (void)updateWithCompletionBlock:(FTAPIResponseCompletionBlock)completionBlock;
+- (void)updateWithCompletionBlock:(APIResponseCompletionBlock)completionBlock;
 
 /**
  Method to delete item.
  URL: DELETE /items/:id
  */
-- (void)deleteWithCompletionBlock:(FTAPIResponseCompletionBlock)completionBlock;
+- (void)deleteWithCompletionBlock:(APIResponseCompletionBlock)completionBlock;
 
 + (NSString *)modelString;
 /**
@@ -65,6 +65,6 @@ typedef NS_ENUM (NSInteger, APIImportType) {
  @param importType Import type of expected response.
  @param completionBlock Block that will be called after request finished.
  */
-+ (void)requestWithKey:(NSString *)key method:(NSString *)method route:(NSString *)route criterias:(NSArray *)criterias importType:(APIImportType)importType completionBlock:(FTAPIResponseCompletionBlock)completionBlock;
++ (void)requestWithKey:(NSString *)key method:(NSString *)method route:(NSString *)route criterias:(NSArray *)criterias importType:(APIImportType)importType completionBlock:(APIResponseCompletionBlock)completionBlock;
 
 @end

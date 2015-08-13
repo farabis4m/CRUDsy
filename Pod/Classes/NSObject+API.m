@@ -42,28 +42,28 @@
 
 #pragma mark - API
 
-+ (void)listWithCompletionBlock:(FTAPIResponseCompletionBlock)completionBlock {
++ (void)listWithCompletionBlock:(APIResponseCompletionBlock)completionBlock {
     [self listWithCriterias:nil completionBlock:completionBlock];
 }
 
-+ (void)listWithCriterias:(NSArray *)criterias completionBlock:(FTAPIResponseCompletionBlock)completionBlock {
++ (void)listWithCriterias:(NSArray *)criterias completionBlock:(APIResponseCompletionBlock)completionBlock {
     NSString *route = [[[self class] modelString] pluralize];
     [self requestWithKey:APIIndexKey method:APIMethodGET route:route criterias:criterias importType:APIImportTypeArray completionBlock:completionBlock];
 }
 
-- (void)showWithCompletionBlock:(FTAPIResponseCompletionBlock)completionBlock {
+- (void)showWithCompletionBlock:(APIResponseCompletionBlock)completionBlock {
     id criteria = [APIModelCriteria criteriaWithModel:self];
     NSString *route = [[[self class] modelString] pluralize];
     [[self class] requestWithKey:APIShowKey method:APIMethodGET route:route criterias:@[criteria] importType:APIImportTypeDictionary completionBlock:completionBlock];
 }
 
-- (void)createWithCompletionBlock:(FTAPIResponseCompletionBlock)completionBlock {
+- (void)createWithCompletionBlock:(APIResponseCompletionBlock)completionBlock {
 }
 
-- (void)updateWithCompletionBlock:(FTAPIResponseCompletionBlock)completionBlock {
+- (void)updateWithCompletionBlock:(APIResponseCompletionBlock)completionBlock {
 }
 
-- (void)deleteWithCompletionBlock:(FTAPIResponseCompletionBlock)completionBlock {
+- (void)deleteWithCompletionBlock:(APIResponseCompletionBlock)completionBlock {
 }
 
 #pragma mark - Utils
@@ -82,7 +82,7 @@
     return [[classString substringFromIndex:index - 1] lowercaseString];
 }
 
-+ (void)requestWithKey:(NSString *)key method:(NSString *)method route:(NSString *)route criterias:(NSArray *)criterias importType:(APIImportType)importType completionBlock:(FTAPIResponseCompletionBlock)completionBlock {
++ (void)requestWithKey:(NSString *)key method:(NSString *)method route:(NSString *)route criterias:(NSArray *)criterias importType:(APIImportType)importType completionBlock:(APIResponseCompletionBlock)completionBlock {
     NSString *modelString = [self modelString];
     NSString *URLString = [[APIRouter sharedInstance] baseURLs][modelString][key];
     NSString *finalRoute = [[APIRouter sharedInstance] routes][modelString][key];
@@ -101,10 +101,10 @@
     [self callWithURL:URLString Method:finalMethod route:finalRoute parameters:parametrs importType:importType completionBlock:completionBlock];
 }
 
-+ (void)callWithURL:(NSString *)URLString Method:(NSString *)method route:(NSString *)route parameters:(id)parameters importType:(APIImportType)importType completionBlock:(FTAPIResponseCompletionBlock)completionBlock {
++ (void)callWithURL:(NSString *)URLString Method:(NSString *)method route:(NSString *)route parameters:(id)parameters importType:(APIImportType)importType completionBlock:(APIResponseCompletionBlock)completionBlock {
     CRUDEngine *engine = [CRUDEngine sharedInstance];
     
-    NSURL *URL = URLString ? [NSURL URLWithString:URLString] : nil;
+    NSURL *URL = URLString ? [NSURL URLWithString:URLString] : [APIRouter sharedInstance].baseURL;
     [engine HTTPRequestOperationURL:URL HTTPMethod:method URLString:route parameters:parameters completionBlock:^(APIResponse *response) {
         if(!response.error) {
             NSError *parseError = nil;

@@ -22,6 +22,6 @@
 
 + (instancetype)sharedInstance;
 
-- (id)HTTPRequestOperationURL:(NSURL *)URL HTTPMethod:(NSString *)method URLString:(NSString *)URLString parameters:(id)parameters completionBlock:(FTAPIResponseCompletionBlock)completionBlock;
+- (id)HTTPRequestOperationURL:(NSURL *)URL HTTPMethod:(NSString *)method URLString:(NSString *)URLString parameters:(id)parameters completionBlock:(APIResponseCompletionBlock)completionBlock;
 
 @end

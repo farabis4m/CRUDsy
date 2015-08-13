@@ -11,6 +11,6 @@
 
 #import "APIResponse.h"
 
-typedef void (^FTAPIResponseCompletionBlock)(APIResponse *response);
+typedef void (^APIResponseCompletionBlock)(APIResponse *response);
 
 #endif

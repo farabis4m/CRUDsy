@@ -55,7 +55,7 @@
 
 #pragma mark - Utils
 
-- (id)HTTPRequestOperationURL:(NSURL *)URL HTTPMethod:(NSString *)method URLString:(NSString *)URLString parameters:(id)parameters completionBlock:(FTAPIResponseCompletionBlock)completionBlock {
+- (id)HTTPRequestOperationURL:(NSURL *)URL HTTPMethod:(NSString *)method URLString:(NSString *)URLString parameters:(id)parameters completionBlock:(APIResponseCompletionBlock)completionBlock {
     NSError *serializationError = nil;
     NSURL *fullURL = [NSURL URLWithString:URLString relativeToURL:URL ?: self.operationManager.baseURL];
     NSString *relativeURLString = [fullURL absoluteString];
