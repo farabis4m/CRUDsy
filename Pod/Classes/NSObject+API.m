@@ -26,12 +26,6 @@
 
 #import "NSString+Pluralize.h"
 
-typedef NS_ENUM (NSInteger, FTAPIImportType) {
-    APIImportTypeArray,
-    APIImportTypeDictionary,
-    APIImportTypeNone
-};
-
 @interface NSObject () <ModelIDProtocol>
 
 @end
@@ -100,7 +94,7 @@ typedef NS_ENUM (NSInteger, FTAPIImportType) {
     return [[classString substringFromIndex:index - 1] lowercaseString];
 }
 
-+ (void)requestWithKey:(NSString *)key method:(NSString *)method route:(NSString *)route criterias:(NSArray *)criterias importType:(FTAPIImportType)importType completionBlock:(FTAPIResponseCompletionBlock)completionBlock {
++ (void)requestWithKey:(NSString *)key method:(NSString *)method route:(NSString *)route criterias:(NSArray *)criterias importType:(APIImportType)importType completionBlock:(FTAPIResponseCompletionBlock)completionBlock {
     NSString *modelString = [self modelString];
     NSString *URLString = [[APIRouter sharedInstance] baseURLs][modelString][key];
     NSString *finalRoute = [[APIRouter sharedInstance] routes][modelString][key];
@@ -119,7 +113,7 @@ typedef NS_ENUM (NSInteger, FTAPIImportType) {
     [self callWithURL:URLString Method:finalMethod route:finalRoute parameters:parametrs importType:importType completionBlock:completionBlock];
 }
 
-+ (void)callWithURL:(NSString *)URLString Method:(NSString *)method route:(NSString *)route parameters:(id)parameters importType:(FTAPIImportType)importType completionBlock:(FTAPIResponseCompletionBlock)completionBlock {
++ (void)callWithURL:(NSString *)URLString Method:(NSString *)method route:(NSString *)route parameters:(id)parameters importType:(APIImportType)importType completionBlock:(FTAPIResponseCompletionBlock)completionBlock {
     CRUDEngine *engine = [CRUDEngine sharedInstance];
     
     NSURL *URL = URLString ? [NSURL URLWithString:URLString] : nil;
@@ -134,7 +128,7 @@ typedef NS_ENUM (NSInteger, FTAPIImportType) {
     }];
 }
 
-+ (id)parseJson:(id)json importType:(FTAPIImportType)importType class:(Class)class error:(NSError **)error {
++ (id)parseJson:(id)json importType:(APIImportType)importType class:(Class)class error:(NSError **)error {
     switch (importType) {
         case APIImportTypeArray: return [APIJSONAdapter modelsOfClass:class fromJSONArray:json error:error];
         case APIImportTypeDictionary: return [APIJSONAdapter modelOfClass:class fromJSONDictionary:json error:error];

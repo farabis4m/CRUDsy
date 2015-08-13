@@ -10,6 +10,12 @@
 
 #import "APICompletionBlock.h"
 
+typedef NS_ENUM (NSInteger, APIImportType) {
+    APIImportTypeArray,
+    APIImportTypeDictionary,
+    APIImportTypeNone
+};
+
 @interface NSObject (API)
 
 /**
@@ -50,5 +56,15 @@
 - (void)deleteWithCompletionBlock:(FTAPIResponseCompletionBlock)completionBlock;
 
 + (NSString *)modelString;
+/**
+ Method to launch request.
+ @param key `NSString` object that represents key action from defined list. Also this value checked in routes.plist file.
+ @param method Method of request. Must be value of predefined `NSString` object.
+ @param route Relative URL string of request.
+ @param criterias Array of criterias.
+ @param importType Import type of expected response.
+ @param completionBlock Block that will be called after request finished.
+ */
++ (void)requestWithKey:(NSString *)key method:(NSString *)method route:(NSString *)route criterias:(NSArray *)criterias importType:(APIImportType)importType completionBlock:(FTAPIResponseCompletionBlock)completionBlock;
 
 @end
