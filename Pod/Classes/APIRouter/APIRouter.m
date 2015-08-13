@@ -129,6 +129,10 @@ static NSMutableDictionary *definedMethods = nil;
     return self.predefinedRoutes[[class modelString]][@"parameters"];
 }
 
+- (NSDictionary *)JSONKeyPathsByPropertyKey:(Class)class {
+    return self.predefinedRoutes[[class modelString]];
+}
+
 #pragma mark - Utils
 
 - (void)flushRoutesForClass:(NSString *)classString {

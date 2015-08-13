@@ -26,16 +26,18 @@
 
 #import "NSString+Pluralize.h"
 
-@interface NSObject () <ModelIDProtocol>
+#import <Mantle/MTLModel.h>
+
+@interface NSObject () <ModelIDProtocol, MTLJSONSerializing>
 
 @end
 
 @implementation NSObject (API)
 
-#pragma mark - Class lifecycle
+#pragma mark - MTL Serialization
 
-+ (void)load {
-//    [[APIRouter sharedInstance] registerClass:[self class]];
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+    return [[APIRouter sharedInstance] JSONKeyPathsByPropertyKey:[self class]];
 }
 
 #pragma mark - API
@@ -45,22 +47,8 @@
 }
 
 + (void)listWithCriterias:(NSArray *)criterias completionBlock:(FTAPIResponseCompletionBlock)completionBlock {
-    NSString *modelString = [self modelString];
-    NSString *URLString = [[APIRouter sharedInstance] baseURLs][modelString][APIIndexKey];
-    NSString *route = [[APIRouter sharedInstance] routes][modelString][APIIndexKey];
-    if(!route) {
-        route = modelString;
-    }
-    route = [route lowercaseString];
-    NSString *method = [[APIRouter sharedInstance] methods][modelString][APIIndexKey];
-    if(!method) {
-        method = APIMethodGET;
-    }
-    NSMutableDictionary *parametrs = [NSMutableDictionary dictionary];
-    for(APICriteria *criteria in criterias) {
-        [parametrs addEntriesFromDictionary:[criteria JSON]];
-    }
-    [self callWithURL:URLString Method:method route:route parameters:parametrs importType:APIImportTypeArray completionBlock:completionBlock];
+    NSString *route = [[[self class] modelString] pluralize];
+    [self requestWithKey:APIIndexKey method:APIMethodGET route:route criterias:criterias importType:APIImportTypeArray completionBlock:completionBlock];
 }
 
 - (void)showWithCompletionBlock:(FTAPIResponseCompletionBlock)completionBlock {
