@@ -30,6 +30,7 @@ extern NSString *const APIDeleteKey;
 + (instancetype)sharedInstance;
 
 - (void)registerClass:(Class)class;
+- (NSDictionary *)parametersWithClass:(Class)class;
 
 + (void)setURL:(NSString *)url forKey:(NSString *)key model:(NSString *)model;
 + (void)setRoute:(NSString *)route forKey:(NSString *)key model:(NSString *)model;

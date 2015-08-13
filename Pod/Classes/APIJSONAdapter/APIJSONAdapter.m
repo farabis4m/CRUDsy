@@ -15,8 +15,7 @@
 @implementation APIJSONAdapter
 
 - (NSSet *)serializablePropertyKeys:(NSSet *)propertyKeys forModel:(id<MTLJSONSerializing>)model {
-    NSString *modelString = [[model class] modelString];
-    NSDictionary *parameters = [APIRouter sharedInstance].routes[modelString][@"parameters"];
+    NSDictionary *parameters = [[APIRouter sharedInstance] parametersWithClass:[model class]];
     if(parameters.count) {
         NSSet *set = [NSSet setWithArray:parameters.allKeys];
         return set;

@@ -52,13 +52,6 @@ static NSMutableDictionary *definedMethods = nil;
 }
 
 + (void)load {
-//    [self setURL:@"http://www.online.paymaxuae.com/PortalServices/api/" forKey:APIIndexKey model:[FTNew modelString]];
-//    [self setRoute:@"Announcements/list" forKey:APIIndexKey model:[FTNew modelString]];
-//    [self setMethod:APIMethodPOST forKey:APIIndexKey model:[FTNew modelString]];
-//    
-//    [self setURL:@"http://www.online.paymaxuae.com/PortalServices/api/" forKey:APIIndexKey model:[FTPromotion modelString]];
-//    [self setRoute:@"Announcements/list" forKey:APIIndexKey model:[FTPromotion modelString]];
-//    [self setMethod:APIMethodPOST forKey:APIIndexKey model:[FTPromotion modelString]];
 }
 
 #pragma mark - Setup
@@ -130,6 +123,10 @@ static NSMutableDictionary *definedMethods = nil;
 
 - (NSDictionary *)methods {
     return definedMethods;
+}
+
+- (NSDictionary *)parametersWithClass:(Class)class {
+    return self.predefinedRoutes[[class modelString]][@"parameters"];
 }
 
 #pragma mark - Utils
