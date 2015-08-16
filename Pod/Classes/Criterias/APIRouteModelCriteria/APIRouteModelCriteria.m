@@ -17,11 +17,11 @@
 #pragma mark - JSON
 
 - (NSDictionary *)JSON {
-    if([self.model isKindOfClass:[MTLModel class]]) {
+    if([self.model conformsToProtocol:@protocol(MTLJSONSerializing)]) {
         MTLModel *model = (MTLModel *)self.model;
         return [model JSON];
     }
-    NSLog(@"MODEL: %@ is not kind of class MTLModel", self.model);
+    NSLog(@"MODEL: %@ does not support MTL Serialization", self.model);
     return @{};
 }
 
