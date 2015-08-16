@@ -1,14 +1,16 @@
 //
-//  MTLModel+JSON.m
+//  NSObject+JSON.m
 //  Pods
 //
-//  Created by vlad gorbenko on 8/12/15.
+//  Created by vlad gorbenko on 8/16/15.
 //
 //
 
-#import "MTLModel+JSON.h"
+#import "NSObject+JSON.h"
 
-@implementation MTLModel (JSON)
+#import <Mantle/MTLJSONAdapter.h>
+
+@implementation NSObject (JSON)
 
 #pragma mark - Instance
 

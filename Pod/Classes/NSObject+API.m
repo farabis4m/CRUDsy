@@ -16,7 +16,7 @@
 
 #import "APICriteria.h"
 
-#import "MTLModel+JSON.h"
+#import "NSObject+JSON.h"
 
 #import <Mantle/MTLJSONAdapter.h>
 

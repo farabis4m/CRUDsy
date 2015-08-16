@@ -1,14 +1,14 @@
 //
-//  MTLModel+JSON.h
+//  NSObject+JSON.h
 //  Pods
 //
-//  Created by vlad gorbenko on 8/12/15.
+//  Created by vlad gorbenko on 8/16/15.
 //
 //
 
-#import <Mantle/Mantle.h>
+#import <Foundation/Foundation.h>
 
-@interface MTLModel (JSON)
+@interface NSObject (JSON)
 
 + (instancetype)modelFromJSON:(NSDictionary *)JSON error:(NSError **)error;
 + (instancetype)modelFromJSON:(NSDictionary *)JSON;
