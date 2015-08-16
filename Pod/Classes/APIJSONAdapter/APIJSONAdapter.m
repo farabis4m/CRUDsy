@@ -12,15 +12,39 @@
 
 #import "NSObject+API.h"
 
+#import <CoreData/CoreData.h>
+
+#import "MTLRouteAPIAdapter.h"
+#import "MTLRouteCoreDataAPIAdapter.h"
+
 @implementation APIJSONAdapter
 
-- (NSSet *)serializablePropertyKeys:(NSSet *)propertyKeys forModel:(id<MTLJSONSerializing>)model {
-    NSDictionary *parameters = [[APIRouter sharedInstance] parametersWithClass:[model class]];
-    if(parameters.count) {
-        NSSet *set = [NSSet setWithArray:parameters.allKeys];
-        return set;
+#pragma mark -
+
++ (id)modelOfClass:(Class)modelClass fromJSONDictionary:(NSDictionary *)JSONDictionary error:(NSError **)error {
+    if([modelClass isSubclassOfClass:[NSManagedObject class]]) {
+//        return [MTLRouteCoreDataAPIAdapter model]
+        return nil;
+    } else {
+        return [MTLRouteAPIAdapter modelOfClass:modelClass fromJSONDictionary:JSONDictionary error:error];
     }
-    return [super serializablePropertyKeys:propertyKeys forModel:model];
+}
+
++ (NSArray *)modelsOfClass:(Class)modelClass fromJSONArray:(NSArray *)JSONArray error:(NSError **)error {
+    if([modelClass isSubclassOfClass:[NSManagedObject class]]) {
+        return nil;
+    } else {
+        return [MTLRouteAPIAdapter modelsOfClass:modelClass fromJSONArray:JSONArray error:error];
+    }
+}
+
++ (NSDictionary *)JSONDictionaryFromModel:(id<MTLJSONSerializing>)model error:(NSError **)error {
+    if([model isKindOfClass:[NSManagedObject class]]) {
+//        return [MTLRouteCoreDataAPIAdapter]
+        return nil;
+    } else {
+        return [MTLRouteAPIAdapter JSONDictionaryFromModel:model action:@"" error:error];
+    }
 }
 
 @end

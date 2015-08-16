@@ -37,7 +37,8 @@ Pod::Spec.new do |s|
   # s.dependency 'AFNetworking', '~> 2.3'
     s.dependency 'Mantle', '2.0.2'
     s.dependency 'AFNetworking', '~> 2.5.4'
-#pod 'Mantle', '2.0.2'
-#pod 'AFNetworking', '~> 2.5.4'
+    s.subspec 'CoreData' do |ss|
+        ss.dependency 'MTLManagedObjectAdapter'
+    end
 
 end

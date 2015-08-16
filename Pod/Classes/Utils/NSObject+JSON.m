@@ -23,6 +23,15 @@
     return [self modelFromJSON:JSON error:&error];
 }
 
++ (instancetype)modelsFromJSON:(NSArray *)JSON error:(NSError **)error {
+    return [MTLJSONAdapter modelsOfClass:[self class] fromJSONArray:JSON error:error];
+}
+
++ (instancetype)modelsFromJSON:(NSArray *)JSON {
+    NSError *error = nil;
+    return [self modelsFromJSON:JSON error:&error];
+}
+
 #pragma mark - JSON
 
 - (NSDictionary *)JSONWithError:(NSError **)error {

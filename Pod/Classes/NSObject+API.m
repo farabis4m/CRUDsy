@@ -36,8 +36,8 @@
 
 #pragma mark - MTL Serialization
 
-+ (NSDictionary *)JSONKeyPathsByPropertyKey {
-    return [[APIRouter sharedInstance] JSONKeyPathsByPropertyKey:[self class]];
++ (NSDictionary *)JSONKeyPathsByPropertyKeyWithAction:(NSString *)action {
+    return [[APIRouter sharedInstance] JSONKeyPathsByPropertyKey:[self class]][action];
 }
 
 #pragma mark - API
@@ -118,8 +118,8 @@
 
 + (id)parseJson:(id)json importType:(APIImportType)importType class:(Class)class error:(NSError **)error {
     switch (importType) {
-        case APIImportTypeArray: return [APIJSONAdapter modelsOfClass:class fromJSONArray:json error:error];
-        case APIImportTypeDictionary: return [APIJSONAdapter modelOfClass:class fromJSONDictionary:json error:error];
+        case APIImportTypeArray: return [class modelsFromJSON:json error:error];
+        case APIImportTypeDictionary: return [class modelFromJSON:json error:error];
         case APIImportTypeNone: return json;
     }
     return nil;
