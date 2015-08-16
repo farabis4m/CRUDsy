@@ -49,6 +49,16 @@
     self.operationManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseURL];
 }
 
+- (void)setRequestSerializer:(AFHTTPRequestSerializer *)requestSerializer {
+    _requestSerializer = requestSerializer;
+    self.operationManager.requestSerializer = requestSerializer;
+}
+
+- (void)setResponseSerializer:(AFHTTPResponseSerializer *)responseSerializer {
+    _responseSerializer = responseSerializer;
+    self.operationManager.responseSerializer = responseSerializer;
+}
+
 #pragma mark - Utils
 
 - (id)HTTPRequestOperationURL:(NSURL *)URL HTTPMethod:(NSString *)method URLString:(NSString *)URLString parameters:(id)parameters completionBlock:(APIResponseCompletionBlock)completionBlock {

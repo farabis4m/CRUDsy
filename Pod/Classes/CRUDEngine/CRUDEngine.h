@@ -13,10 +13,15 @@
 
 #import "APIRouter.h"
 
+@class AFHTTPRequestSerializer;
+@class AFHTTPResponseSerializer;
+
 @interface CRUDEngine : NSObject
 
 @property (nonatomic, strong) APIRouter *APIRouter;
-//@property (nonatomic, strong) APIAdapter *APIAdapter;
+
+@property (nonatomic, strong) AFHTTPRequestSerializer *requestSerializer;
+@property (nonatomic, strong) AFHTTPResponseSerializer *responseSerializer;
 
 @property (nonatomic, strong) NSURL *baseURL;
 
