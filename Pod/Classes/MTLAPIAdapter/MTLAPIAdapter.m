@@ -93,6 +93,7 @@
     
     self = [super init];
     if(self) {
+        _action = action;
         _modelClass = modelClass;
         _JSONKeyPathsByPropertyKey = [modelClass JSONKeyPathsByPropertyKeyWithAction:action];
         [self validateProptyKeys];

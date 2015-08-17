@@ -10,6 +10,8 @@
 
 #import <Mantle/MTLModel.h>
 
-@interface MTLManagedModel : NSManagedObject <MTLModel>
+#import "MTLRouteJSONSerializing.h"
+
+@interface MTLManagedModel : NSManagedObject <MTLModel, MTLRouteJSONSerializing>
 
 @end

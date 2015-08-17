@@ -18,6 +18,8 @@
 
 @property (nonatomic, strong, readonly) Class modelClass;
 
+@property (nonatomic, strong) NSString *action;
+
 // A cached copy of the return value of +JSONKeyPathsByPropertyKey.
 @property (nonatomic, copy, readonly) NSDictionary *JSONKeyPathsByPropertyKey;
 

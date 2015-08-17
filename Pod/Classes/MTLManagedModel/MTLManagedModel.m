@@ -94,6 +94,42 @@ static BOOL MTLValidateAndSetValue(id obj, NSString *key, id value, BOOL forceUp
 
 @implementation MTLManagedModel
 
+#pragma mark - Magical Record ovveride
+
+- (NSString *) MR_lookupKeyForAttribute:(NSAttributeDescription *)attributeInfo action:(NSString *)action {
+    NSString *attributeName = [attributeInfo name];
+    
+    NSString *lookupKey = [[self class] JSONKeyPathsByPropertyKeyWithAction:action][attributeName] ?: attributeName;
+    
+//    NSString *lookupKey = [[attributeInfo userInfo] valueForKey:kMagicalRecordImportAttributeKeyMapKey] ?: attributeName;
+    
+    id value = [self valueForKeyPath:lookupKey];
+    
+//    for (NSUInteger i = 1; i < kMagicalRecordImportMaximumAttributeFailoverDepth && value == nil; i++)
+//    {
+//        attributeName = [NSString stringWithFormat:@"%@.%lu", kMagicalRecordImportAttributeKeyMapKey, (unsigned long)i];
+//        lookupKey = [[attributeInfo userInfo] valueForKey:attributeName];
+//        if (lookupKey == nil)
+//        {
+//            return nil;
+//        }
+//        value = [self valueForKeyPath:lookupKey];
+//    }
+    
+    return value != nil ? lookupKey : nil;
+}
+
+- (NSString *) MR_lookupKeyForAttribute:(NSAttributeDescription *)attributeInfo {
+    NSLog(@"I am here");
+    return nil;
+}
+
+#pragma mark -
+
++ (NSDictionary *)JSONKeyPathsByPropertyKeyWithAction:(NSString *)action {
+    return @{};
+}
+
 #pragma mark Lifecycle
 
 + (void)generateAndCacheStorageBehaviors {

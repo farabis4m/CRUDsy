@@ -114,22 +114,16 @@
         Class class = [self.modelClass classForParsingJSONDictionary:JSONDictionary];
         if (class == nil) {
             if (error != NULL) {
-                NSDictionary *userInfo = @{
-                                           NSLocalizedDescriptionKey: NSLocalizedString(@"Could not parse JSON", @""),
-                                           NSLocalizedFailureReasonErrorKey: NSLocalizedString(@"No model class could be found to parse the JSON dictionary.", @"")
-                                           };
-                
+                NSDictionary *userInfo = @{ NSLocalizedDescriptionKey: NSLocalizedString(@"Could not parse JSON", @""),
+                                            NSLocalizedFailureReasonErrorKey: NSLocalizedString(@"No model class could be found to parse the JSON dictionary.", @"")};
                 *error = [NSError errorWithDomain:MTLJSONAdapterErrorDomain code:MTLJSONAdapterErrorNoClassFound userInfo:userInfo];
             }
-            
             return nil;
         }
         
         if (class != self.modelClass) {
             NSAssert([class conformsToProtocol:@protocol(MTLJSONSerializing)], @"Class %@ returned from +classForParsingJSONDictionary: does not conform to <MTLJSONSerializing>", class);
-            
-            MTLRouteAPIAdapter *otherAdapter = [self JSONAdapterForModelClass:class action:(NSString *)action error:error];
-            
+            MTLAPIAdapter *otherAdapter = [self JSONAdapterForModelClass:class action:(NSString *)action error:error];
             return [otherAdapter modelFromJSONDictionary:JSONDictionary action:action error:error];
         }
     }
@@ -138,11 +132,8 @@
     
     for (NSString *propertyKey in [self.modelClass propertyKeys]) {
         id JSONKeyPaths = self.JSONKeyPathsByPropertyKey[propertyKey];
-        
         if (JSONKeyPaths == nil) continue;
-        
         id value;
-        
         if ([JSONKeyPaths isKindOfClass:NSArray.class]) {
             NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
             

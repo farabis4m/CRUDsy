@@ -39,6 +39,7 @@ Pod::Spec.new do |s|
     s.dependency 'AFNetworking', '~> 2.5.4'
     s.subspec 'CoreData' do |ss|
         ss.dependency 'MTLManagedObjectAdapter'
+        ss.dependency 'MagicalRecord', '~> 2.3'
     end
 
 end

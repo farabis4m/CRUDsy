@@ -6,8 +6,8 @@
 //
 //
 
-#import <Foundation/Foundation.h>
+#import "MTLAPIAdapter.h"
 
-@interface MTLRouteCoreDataAPIAdapter : NSObject
+@interface MTLRouteCoreDataAPIAdapter : MTLAPIAdapter
 
 @end
