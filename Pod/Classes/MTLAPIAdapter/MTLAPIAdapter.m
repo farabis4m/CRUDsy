@@ -64,7 +64,14 @@
 }
 
 + (NSDictionary *)JSONDictionaryFromModel:(id<MTLRouteJSONSerializing>)model action:(NSString *)action error:(NSError **)error {
-    MTLAPIAdapter *adapter = [[self alloc] initWithModelClass:model.class];
+    MTLAPIAdapter *adapter = [[self alloc] initWithModelClass:model.class action:action];
+    return [adapter JSONDictionaryFromModel:model action:action error:error];
+}
+
++ (NSDictionary *)JSONDictionaryFromModel:(id<MTLRouteJSONSerializing>)model routeClass:(Class)routeClass action:(NSString *)action depath:(NSString *)depath error:(NSError **)error {
+    MTLAPIAdapter *adapter = [[self alloc] initWithModelClass:model.class action:action];
+    adapter.depth = depath;
+    adapter.routeClass = routeClass;
     return [adapter JSONDictionaryFromModel:model action:action error:error];
 }
 

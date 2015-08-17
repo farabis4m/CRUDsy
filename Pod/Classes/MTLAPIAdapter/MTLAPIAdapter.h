@@ -64,6 +64,7 @@
 + (NSArray *)modelsOfClass:(Class)modelClass fromJSONArray:(NSArray *)JSONArray error:(NSError **)error;
 
 + (NSDictionary *)JSONDictionaryFromModel:(id<MTLRouteJSONSerializing>)model action:(NSString *)action error:(NSError **)error;
++ (NSDictionary *)JSONDictionaryFromModel:(id<MTLRouteJSONSerializing>)model routeClass:(Class)routeClass action:(NSString *)action depath:(NSString *)depath error:(NSError **)error;
 + (NSDictionary *)JSONDictionaryFromModel:(id<MTLRouteJSONSerializing>)model error:(NSError **)error;
 + (NSArray *)JSONArrayFromModels:(NSArray *)models action:(NSString *)action error:(NSError **)error;
 + (NSArray *)JSONArrayFromModels:(NSArray *)models error:(NSError **)error;

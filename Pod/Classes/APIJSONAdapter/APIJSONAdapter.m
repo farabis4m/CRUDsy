@@ -37,12 +37,11 @@
     }
 }
 
-+ (NSDictionary *)JSONDictionaryFromModel:(id<MTLJSONSerializing>)model error:(NSError **)error {
++ (NSDictionary *)JSONDictionaryFromModel:(id<MTLRouteJSONSerializing>)model action:(NSString *)action error:(NSError **)error {
     if([model isKindOfClass:[NSManagedObject class]]) {
-//        return [MTLRouteCoreDataAPIAdapter]
-        return nil;
+        return [MTLRouteCoreDataAPIAdapter JSONDictionaryFromModel:model action:action error:error];
     } else {
-        return [MTLRouteAPIAdapter JSONDictionaryFromModel:model action:@"" error:error];
+        return [MTLRouteAPIAdapter JSONDictionaryFromModel:model action:action error:error];
     }
 }
 

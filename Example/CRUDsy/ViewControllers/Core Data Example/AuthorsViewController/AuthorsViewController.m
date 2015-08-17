@@ -17,6 +17,8 @@
 
 #import <MagicalRecord/NSManagedObject+MagicalRecord.h>
 
+#import "NSObject+API.h"
+
 @interface AuthorsViewController ()
 
 @property (nonatomic, strong) NSArray *authors;
@@ -42,6 +44,11 @@
     self.authors = authros;
     
     self.clearsSelectionOnViewWillAppear = YES;
+
+    [[self.authors firstObject] showWithCompletionBlock:^(APIResponse *response) {
+        
+    }];
+    
 }
 
 - (void)didReceiveMemoryWarning {

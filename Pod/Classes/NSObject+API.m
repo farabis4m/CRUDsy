@@ -22,7 +22,7 @@
 
 #import "APIJSONAdapter.h"
 
-#import "APIModelCriteria.h"
+#import "APIRouteModelCriteria.h"
 
 #import "NSString+Pluralize.h"
 
@@ -52,7 +52,7 @@
 }
 
 - (void)showWithCompletionBlock:(APIResponseCompletionBlock)completionBlock {
-    id criteria = [APIModelCriteria criteriaWithModel:self];
+    id criteria = [APIRouteModelCriteria criteriaWithModel:self action:APIShowKey];
     NSString *route = [[[self class] modelString] pluralize];
     [[self class] requestWithKey:APIShowKey method:APIMethodGET route:route criterias:@[criteria] importType:APIImportTypeDictionary completionBlock:completionBlock];
 }

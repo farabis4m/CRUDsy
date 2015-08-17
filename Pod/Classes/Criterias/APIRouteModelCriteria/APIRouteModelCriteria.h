@@ -10,4 +10,8 @@
 
 @interface APIRouteModelCriteria : APIModelCriteria
 
+@property (nonatomic, strong) NSString *action;
+
++ (instancetype)criteriaWithModel:(id<ModelIDProtocol>)model action:(NSString *)action;
+
 @end

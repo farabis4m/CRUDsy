@@ -14,9 +14,9 @@
 
 #import "MTLTransformerErrorHandling.h"
 
+#import "APIRouter.h"
+
 @interface MTLRouteCoreDataAPIAdapter ()
-
-
 
 @end
 
@@ -24,9 +24,91 @@
 
 #pragma mark - Serialization
 
-- (NSDictionary *)JSONDictionaryFromModel:(id<MTLRouteJSONSerializing>)model action:(NSString *)action error:(NSError **)error {
+- (NSDictionary *)JSONDictionaryFromModel:(NSManagedObject<MTLRouteJSONSerializing> *)model action:(NSString *)action error:(NSError **)error {
+    NSDictionary *parameters = [[APIRouter sharedInstance] requestJSONKeyPathsByPropertyKey:self.routeClass ?: self.modelClass action:action][@"parameters"];
+    if(self.depth.length) {
+        parameters = [parameters valueForKeyPath:self.depth];
+    }
+    NSEntityDescription *entitiy = [model entity];
+    NSDictionary *properties = [entitiy propertiesByName];
     
+    NSMutableDictionary *json = [[NSMutableDictionary alloc] init];
+    
+    BOOL (^deserializeAttribute)(NSString *, NSAttributeDescription *) = ^(NSString * key, NSAttributeDescription *attributeDescription) {
+        id value = [model valueForKey:key];//performInContext(context, ^{
+        //            return [model valueForKey:managedObjectKey];
+        //        });
+        
+        NSValueTransformer *transformer = self.valueTransformersByPropertyKey[parameters[key]];
+        if ([transformer respondsToSelector:@selector(transformedValue:success:error:)]) {
+            id<MTLTransformerErrorHandling> errorHandlingTransformer = (id)transformer;
+            
+            BOOL success = YES;
+            value = [errorHandlingTransformer transformedValue:value success:&success error:error];
+            
+            if (!success) return NO;
+        } else if (transformer != nil) {
+            value = [transformer transformedValue:value];
+        }
+        
+        json[parameters[key]] = value;
+        return YES;
+    };
+    
+    BOOL (^deserializeRelationship)(NSString *key, NSRelationshipDescription *) = ^(NSString *key, NSRelationshipDescription *relationshipDescription) {
+        NSArray *paths = [self.depth componentsSeparatedByString:@"."];
+        if(!paths) {
+            paths = @[];
+        }
+        paths = [paths arrayByAddingObject:relationshipDescription.name];
+        self.depth = [paths componentsJoinedByString:@"."];
+
+        if ([relationshipDescription isToMany]) {
+            id<NSFastEnumeration> values = [model valueForKey:key];
+            NSMutableArray *jsonItems = [NSMutableArray array];
+            for(id value in values) {
+                id jsonModel = [MTLRouteCoreDataAPIAdapter JSONDictionaryFromModel:value routeClass:self.routeClass ?: self.modelClass action:action depath:self.depth error:error];
+                [jsonItems addObject:jsonModel];
+            }
+            if([parameters[key][@"flat"] boolValue]) {
+                NSMutableDictionary *dictionary = [NSMutableDictionary dictionaryWithDictionary:parameters[key]];
+                [dictionary removeObjectForKey:@"key"];
+                [dictionary removeObjectForKey:@"flat"];
+                jsonItems = [jsonItems valueForKeyPath:dictionary[dictionary.allKeys.firstObject]];
+            }
+            json[parameters[key][@"key"]] = jsonItems;
+        } else {
+            id value = [model valueForKey:key];
+            id jsonModel = [MTLRouteCoreDataAPIAdapter JSONDictionaryFromModel:value routeClass:self.routeClass action:action depath:self.depth error:error];
+            json[parameters[key]] = jsonModel;
+        }
+        
+        paths = [self.depth componentsSeparatedByString:@"."];
+        if(paths.count > 1) {
+            paths = [paths subarrayWithRange:NSMakeRange(0, paths.count - 1)];
+        } else {
+            paths = nil;
+        }
+        self.depth = paths.count ? [paths componentsJoinedByString:@"."] : nil;
+        
+        return YES;
+    };
+    
+    for(NSString *key in parameters.allKeys) {
+        if(properties[key]) {
+            NSPropertyDescription *propertyDescription = properties[key];
+            NSString *propertyClassName = NSStringFromClass(propertyDescription.class);
+            if ([propertyClassName isEqual:@"NSAttributeDescription"]) {
+                deserializeAttribute(key, (id)propertyDescription);
+            } else if([propertyClassName isEqual:@"NSRelationshipDescription"]){
+                deserializeRelationship(key, (id)propertyDescription);
+            }
+        }
+    }
+    
+    return json;
 }
+
 
 #pragma mark - Deserialization
 
