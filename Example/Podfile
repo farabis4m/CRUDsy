@@ -3,6 +3,7 @@ use_frameworks!
 
 pod 'SVProgressHUD', '~> 1.1'
 pod 'UIImageView-Letters', '~> 1.1'
+pod 'BKRecursiveDescription', '~> 0.0.1'
 
 target 'CRUDsy_Example', :exclusive => true do
   pod "CRUDsy", :path => "../"

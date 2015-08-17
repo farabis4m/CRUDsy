@@ -14,6 +14,12 @@
 
 #import "MTLTransformerErrorHandling.h"
 
+@interface MTLRouteCoreDataAPIAdapter ()
+
+
+
+@end
+
 @implementation MTLRouteCoreDataAPIAdapter
 
 #pragma mark - Serialization
@@ -25,8 +31,7 @@
 #pragma mark - Deserialization
 
 - (id)modelFromJSONDictionary:(NSDictionary *)JSONDictionary action:(NSString *)action error:(NSError *__autoreleasing *)error {
-    
-    NSManagedObjectContext *context = nil;//managedObject.managedObjectContext;
+    NSManagedObjectContext *context = [NSManagedObjectContext MR_defaultContext];
     NSEntityDescription *entity = [self.modelClass MR_entityDescriptionInContext:context];
     NSAssert(entity != nil, @"%@ returned a nil +entity", self.modelClass);
 
@@ -40,131 +45,7 @@
     if (managedObject == nil) {
         managedObject = [self.modelClass MR_createEntityInContext:context];
     }
-    
-    BOOL (^setValueForKey)(NSString *, id) = ^(NSString *key, id value) {
-        __autoreleasing id replaceableValue = value;
-        if ([managedObject validateValue:&replaceableValue forKey:key error:error]) {
-            [managedObject setValue:replaceableValue forKey:key];
-            return YES;
-        }
-        return NO;
-    };
-    
     [self importData:JSONDictionary toObject:managedObject];
-    
-//    NSDictionary *managedObjectProperties = entity.propertiesByName;
-//    
-//    
-//    NSObject<MTLModel> *model = [[self.modelClass alloc] init];
-//    
-//    // Pre-emptively consider this object processed, so that we don't get into
-//    // any cycles when processing its relationships.
-//    CFDictionaryAddValue(processedObjects, (__bridge void *)managedObject, (__bridge void *)model);
-//    
-//    for (NSString *propertyKey in [self.modelClass propertyKeys]) {
-//        NSString *managedObjectKey = self.managedObjectKeysByPropertyKey[propertyKey];
-//        if (managedObjectKey == nil) continue;
-//        
-//        BOOL (^deserializeAttribute)(NSAttributeDescription *) = ^(NSAttributeDescription *attributeDescription) {
-//            id value = performInContext(context, ^{
-//                return [managedObject valueForKey:managedObjectKey];
-//            });
-//            
-//            NSValueTransformer *transformer = self.valueTransformersByPropertyKey[propertyKey];
-//            if ([transformer respondsToSelector:@selector(transformedValue:success:error:)]) {
-//                id<MTLTransformerErrorHandling> errorHandlingTransformer = (id)transformer;
-//                
-//                BOOL success = YES;
-//                value = [errorHandlingTransformer transformedValue:value success:&success error:error];
-//                
-//                if (!success) return NO;
-//            } else if (transformer != nil) {
-//                value = [transformer transformedValue:value];
-//            }
-//            
-//            return setValueForKey(propertyKey, value);
-//        };
-//        
-//        BOOL (^deserializeRelationship)(NSRelationshipDescription *) = ^(NSRelationshipDescription *relationshipDescription) {
-//            Class nestedClass = self.relationshipModelClassesByPropertyKey[propertyKey];
-//            if (nestedClass == nil) {
-//                [NSException raise:NSInvalidArgumentException format:@"No class specified for decoding relationship at key \"%@\" in managed object %@", managedObjectKey, managedObject];
-//            }
-//            
-//            if ([relationshipDescription isToMany]) {
-//                id models = performInContext(context, ^ id {
-//                    id relationshipCollection = [managedObject valueForKey:managedObjectKey];
-//                    NSMutableArray *models = [NSMutableArray arrayWithCapacity:[relationshipCollection count]];
-//                    
-//                    for (NSManagedObject *nestedObject in relationshipCollection) {
-//                        id<MTLManagedObjectSerializing> model = [self.class modelOfClass:nestedClass fromManagedObject:nestedObject processedObjects:processedObjects error:error];
-//                        if (model == nil) return nil;
-//                        
-//                        [models addObject:model];
-//                    }
-//                    
-//                    return models;
-//                });
-//                
-//                if (models == nil) return NO;
-//                if (![relationshipDescription isOrdered]) models = [NSSet setWithArray:models];
-//                
-//                return setValueForKey(propertyKey, models);
-//            } else {
-//                NSManagedObject *nestedObject = performInContext(context, ^{
-//                    return [managedObject valueForKey:managedObjectKey];
-//                });
-//                
-//                if (nestedObject == nil) return YES;
-//                
-//                id<MTLManagedObjectSerializing> model = [self.class modelOfClass:nestedClass fromManagedObject:nestedObject processedObjects:processedObjects error:error];
-//                if (model == nil) return NO;
-//                
-//                return setValueForKey(propertyKey, model);
-//            }
-//        };
-//        
-//        BOOL (^deserializeProperty)(NSPropertyDescription *) = ^(NSPropertyDescription *propertyDescription) {
-//            if (propertyDescription == nil) {
-//                if (error != NULL) {
-//                    NSString *failureReason = [NSString stringWithFormat:NSLocalizedString(@"No property by name \"%@\" exists on the entity.", @""), managedObjectKey];
-//                    
-//                    NSDictionary *userInfo = @{
-//                                               NSLocalizedDescriptionKey: NSLocalizedString(@"Could not deserialize managed object", @""),
-//                                               NSLocalizedFailureReasonErrorKey: failureReason,
-//                                               };
-//                    
-//                    *error = [NSError errorWithDomain:MTLManagedObjectAdapterErrorDomain code:MTLManagedObjectAdapterErrorInvalidManagedObjectKey userInfo:userInfo];
-//                }
-//                
-//                return NO;
-//            }
-//            
-//            // Jump through some hoops to avoid referencing classes directly.
-//            NSString *propertyClassName = NSStringFromClass(propertyDescription.class);
-//            if ([propertyClassName isEqual:@"NSAttributeDescription"]) {
-//                return deserializeAttribute((id)propertyDescription);
-//            } else if ([propertyClassName isEqual:@"NSRelationshipDescription"]) {
-//                return deserializeRelationship((id)propertyDescription);
-//            } else {
-//                if (error != NULL) {
-//                    NSString *failureReason = [NSString stringWithFormat:NSLocalizedString(@"Property descriptions of class %@ are unsupported.", @""), propertyClassName];
-//                    
-//                    NSDictionary *userInfo = @{
-//                                               NSLocalizedDescriptionKey: NSLocalizedString(@"Could not deserialize managed object", @""),
-//                                               NSLocalizedFailureReasonErrorKey: failureReason,
-//                                               };
-//                    
-//                    *error = [NSError errorWithDomain:MTLManagedObjectAdapterErrorDomain code:MTLManagedObjectAdapterErrorUnsupportedManagedObjectPropertyType userInfo:userInfo];
-//                }
-//                
-//                return NO;
-//            }
-//        };
-//        
-//        if (!deserializeProperty(managedObjectProperties[managedObjectKey])) return nil;
-//    }
-    
     return managedObject;
 }
 
@@ -172,18 +53,30 @@
 
 - (void)importData:(id)objectData toObject:(NSManagedObject *)object {
     NSDictionary *attributes = [[object entity] attributesByName];
-    [self setAttributes:attributes objectData:objectData];
+    [self setAttributes:attributes objectData:objectData object:object];
     
     __weak NSManagedObject *welfManagedObject = object;
     __weak typeof(self) welf = self;
     NSDictionary *relationships = [[object entity] relationshipsByName];
     [self setRelationships:relationships forKeysWithObject:objectData withBlock:^(NSRelationshipDescription *relationshipInfo, id localObjectData) {
-        NSManagedObject *relatedObject = [welf MR_findObjectForRelationship:relationshipInfo withData:localObjectData forObject:welfManagedObject];
-        if (relatedObject == nil) {
-            NSEntityDescription *entityDescription = [relationshipInfo destinationEntity];
-            relatedObject = [entityDescription MR_createInstanceInContext:[welfManagedObject managedObjectContext]];
+        NSArray *paths = [welf.depth componentsSeparatedByString:@"."];
+        if(!paths) {
+            paths = @[];
         }
-        [relatedObject MR_importValuesForKeysWithObject:localObjectData];
+        paths = [paths arrayByAddingObject:relationshipInfo.name];
+        welf.depth = [paths componentsJoinedByString:@"."];
+        
+        NSEntityDescription *entityDescription = [relationshipInfo destinationEntity];
+        Class class = NSClassFromString([entityDescription managedObjectClassName]);
+        NSManagedObject *relatedObject = [MTLRouteCoreDataAPIAdapter modelOfClass:class routeClass:self.routeClass ?: self.modelClass fromJSONDictionary:localObjectData action:welf.action depath:welf.depth error:nil];
+        
+        paths = [self.depth componentsSeparatedByString:@"."];
+        if(paths.count > 1) {
+            paths = [paths subarrayWithRange:NSMakeRange(0, paths.count - 1)];
+        } else {
+            paths = nil;
+        }
+        self.depth = paths.count ? [paths componentsJoinedByString:@"."] : nil;
         
         if ((localObjectData) && (![localObjectData isKindOfClass:[NSDictionary class]])) {
             NSString * relatedByAttribute = [[relationshipInfo userInfo] objectForKey:kMagicalRecordImportRelationshipLinkedByKey] ?: MR_primaryKeyNameFromString([[relationshipInfo destinationEntity] name]);
@@ -195,28 +88,26 @@
     }];
 }
 
-- (void)setAttributes:(NSDictionary *)attributes objectData:(id)objectData {
+- (void)setAttributes:(NSDictionary *)attributes objectData:(id)objectData object:(NSManagedObject *)object {
     
     BOOL (^setValueForKey)(NSString *, id) = ^(NSString *key, id value) {
         __autoreleasing id replaceableValue = value;
         NSError *error = nil;
-        if ([objectData validateValue:&replaceableValue forKey:key error:&error]) {
-            [objectData setValue:replaceableValue forKey:key];
+        if ([object validateValue:&replaceableValue forKey:key error:&error]) {
+            [object setValue:replaceableValue forKey:key];
             return YES;
         }
         return NO;
     };
     
-    NSSet *allAttributes = [NSSet setWithArray:attributes.allKeys];
-    NSSet *serializableProperties = [self serializablePropertyKeys:allAttributes forModel:objectData];
-    
-    
+    NSDictionary *serializableProperties = [self serializablePropertyKeysForClass:self.routeClass];
+    NSSet *serializable = [NSSet setWithArray:serializableProperties.allKeys];
     
     for (NSString *attributeName in attributes) {
-        if([serializableProperties containsObject:attributeName]) {
+        if([serializable containsObject:attributeName]) {
             NSError *error = nil;
-            NSAttributeDescription *attributeInfo = [attributes valueForKey:attributeName];
-            NSString *lookupKey = [[self class] JSONKeyPathsByPropertyKeyWithAction:self.action][attributeName] ?: attributeName;
+//            NSAttributeDescription *attributeInfo = [attributes valueForKey:attributeName];
+            NSString *lookupKey = serializableProperties[attributeName];
 //            id value = [self valueForKeyPath:lookupKey];
             id value = [objectData valueForKeyPath:lookupKey];
             @try {
@@ -244,37 +135,7 @@
 
             } @catch (NSException *ex) {
                 NSLog(@"%@", ex);
-//                NSLog(@"*** Caught exception %@ parsing JSON key path \"%@\" from: %@", ex, JSONKeyPaths, JSONDictionary);
-                
-//                // Fail fast in Debug builds.
-//#if DEBUG
-//                @throw ex;
-//#else
-//                if (error != NULL) {
-//                    NSDictionary *userInfo = @{
-//                                               NSLocalizedDescriptionKey: ex.description,
-//                                               NSLocalizedFailureReasonErrorKey: ex.reason,
-//                                               MTLJSONAdapterThrownExceptionErrorKey: ex
-//                                               };
-//                    
-//                    *error = [NSError errorWithDomain:MTLJSONAdapterErrorDomain code:MTLJSONAdapterErrorExceptionThrown userInfo:userInfo];
-//                }
-//                
-//                return nil;
-//#endif
             }
-            
-//            NSString *lookupKeyPath = lookupKey;//[objectData MR_lookupKeyForAttribute:attributeInfo];
-//            if (lookupKeyPath) {
-//                id value = [attributeInfo MR_valueForKeyPath:lookupKeyPath fromObjectData:objectData];
-//                
-//            }
-//            else {
-//                if ([[[attributeInfo userInfo] objectForKey:@"useDefaultValueWhenNotPresent"] boolValue]) {
-//                    id value = [attributeInfo defaultValue];
-//                    setValueForKey(attributeName, value);
-//                }
-//            }
         }
     }
 }
@@ -374,7 +235,7 @@
     
     //add related object to set
     NSString *addRelationMessageFormat = @"set%@:";
-    id relationshipSource = self;
+    id relationshipSource = object;
     if ([relationshipInfo isToMany])
     {
         addRelationMessageFormat = @"add%@Object:";

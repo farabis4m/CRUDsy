@@ -1,0 +1,156 @@
+ [
+  {
+  "id": 1545,
+  "firstname": "Patel",
+  "lastname": "Dalton",
+  "books": [
+            {
+            "id": 1234,
+            "book_title": "Ruby on Rails 3 Tutorial",
+            "price": 12.75
+            },
+            {
+            "id": 15667,
+            "book_title": "Rails Best Practices",
+            "price": 14.75
+            },
+            {
+            "id": 21,
+            "book_title": "Agile Web Development with Rails (4th Edition)",
+            "price": 14.75
+            }
+            ]
+  },
+  {
+  "id": 71,
+  "firstname": "Elena",
+  "lastname": "Harrell",
+  "books": [
+            {
+            "id": 257,
+            "book_title": "Ruby on Rails 3 Tutorial",
+            "price": 12.75
+            },
+            {
+            "id": 34645,
+            "book_title": "Rails Best Practices",
+            "price": 14.75
+            },
+            {
+            "id": 243365,
+            "book_title": "Agile Web Development with Rails (4th Edition)",
+            "price": 14.75
+            }
+            ]
+  },
+  {
+  "id": 123444,
+  "firstname": "Marquita",
+  "lastname": "Baldwin",
+  "books": [
+            {
+            "id": 1299,
+            "book_title": "Ruby on Rails 3 Tutorial",
+            "price": 12.75
+            },
+            {
+            "id": 9875,
+            "book_title": "Rails Best Practices",
+            "price": 14.75
+            },
+            {
+            "id": 4367,
+            "book_title": "Agile Web Development with Rails (4th Edition)",
+            "price": 14.75
+            }
+            ]
+  },
+  {
+  "id": 12385,
+  "firstname": "Alejandra",
+  "lastname": "Robertson",
+  "books": [
+            {
+            "id": 8452,
+            "book_title": "Ruby on Rails 3 Tutorial",
+            "price": 12.75
+            },
+            {
+            "id": 97521,
+            "book_title": "Rails Best Practices",
+            "price": 14.75
+            },
+            {
+            "id": 236451,
+            "book_title": "Agile Web Development with Rails (4th Edition)",
+            "price": 14.75
+            }
+            ]
+  },
+  {
+  "id": 84630,
+  "firstname": "Denise",
+  "lastname": "Mcclure",
+  "books": [
+            {
+            "id": 9048,
+            "book_title": "Ruby on Rails 3 Tutorial",
+            "price": 12.75
+            },
+            {
+            "id": 20484,
+            "book_title": "Rails Best Practices",
+            "price": 14.75
+            },
+            {
+            "id": 23984675,
+            "book_title": "Agile Web Development with Rails (4th Edition)",
+            "price": 14.75
+            }
+            ]
+  },
+  {
+  "id": 90887,
+  "firstname": "Kayla",
+  "lastname": "Stephenson",
+  "books": [
+            {
+            "id": 123990,
+            "book_title": "Ruby on Rails 3 Tutorial",
+            "price": 12.75
+            },
+            {
+            "id": 4750,
+            "book_title": "Rails Best Practices",
+            "price": 14.75
+            },
+            {
+            "id": 120384,
+            "book_title": "Agile Web Development with Rails (4th Edition)",
+            "price": 14.75
+            }
+            ]
+  },
+  {
+  "id": 62345,
+  "firstname": "Gail",
+  "lastname": "Goodman",
+  "books": [
+            {
+            "id": 1023423,
+            "book_title": "Ruby on Rails 3 Tutorial",
+            "price": 12.75
+            },
+            {
+            "id": 10099,
+            "book_title": "Rails Best Practices",
+            "price": 14.75
+            },
+            {
+            "id": 298554,
+            "book_title": "Agile Web Development with Rails (4th Edition)",
+            "price": 14.75
+            }
+            ]
+  }
+  ]

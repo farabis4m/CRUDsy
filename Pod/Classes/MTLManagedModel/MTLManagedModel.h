@@ -11,7 +11,10 @@
 #import <Mantle/MTLModel.h>
 
 #import "MTLRouteJSONSerializing.h"
+#import "ModelIDProtocol.h"
 
-@interface MTLManagedModel : NSManagedObject <MTLModel, MTLRouteJSONSerializing>
+@interface MTLManagedModel : NSManagedObject <MTLModel, MTLRouteJSONSerializing, ModelIDProtocol>
+
+@property (nonatomic, retain) id identifier;
 
 @end

@@ -22,7 +22,16 @@
 #pragma mark Convenience methods
 
 + (id)modelOfClass:(Class)modelClass fromJSONDictionary:(NSDictionary *)JSONDictionary action:(NSString *)action error:(NSError **)error {
-    MTLAPIAdapter *adapter = [[self alloc] initWithModelClass:modelClass];
+    MTLAPIAdapter *adapter = [[self alloc] initWithModelClass:modelClass action:action];
+    adapter.routeClass = modelClass;
+    return [adapter modelFromJSONDictionary:JSONDictionary action:action error:error];
+}
+
++ (id)modelOfClass:(Class)modelClass routeClass:(Class)routeClass fromJSONDictionary:(NSDictionary *)JSONDictionary action:(NSString *)action depath:(NSString *)depth error:(NSError **)error {
+    MTLAPIAdapter *adapter = [[self alloc] initWithModelClass:modelClass action:action];
+    
+    adapter.depth = depth;
+    adapter.routeClass = routeClass;
     return [adapter modelFromJSONDictionary:JSONDictionary action:action error:error];
 }
 
@@ -95,7 +104,7 @@
     if(self) {
         _action = action;
         _modelClass = modelClass;
-        _JSONKeyPathsByPropertyKey = [modelClass JSONKeyPathsByPropertyKeyWithAction:action];
+        _JSONKeyPathsByPropertyKey = [[APIRouter sharedInstance] JSONKeyPathsByPropertyKey:[self class]][action][@"parameters"];
         [self validateProptyKeys];
         _valueTransformersByPropertyKey = [self.class valueTransformersForModelClass:modelClass];
         _JSONAdaptersByModelClass = [NSMapTable strongToStrongObjectsMapTable];
@@ -103,10 +112,28 @@
     return self;
 }
 
+#pragma mark - Accessors
+
+- (void)setDepth:(NSString *)depth {
+    if(_depth.length < depth.length) {
+        _JSONKeyPathsByPropertyKey = _JSONKeyPathsByPropertyKey[depth];
+    }
+    _depth = depth;
+}
+
+- (void)setRouteClass:(Class)routeClass {
+    _routeClass = routeClass;
+    _JSONKeyPathsByPropertyKey = [[APIRouter sharedInstance] JSONKeyPathsByPropertyKey:[self routeClass]][self.action][@"parameters"];
+    if(_depth) {
+        _JSONKeyPathsByPropertyKey = _JSONKeyPathsByPropertyKey[_depth];
+    }
+    _valueTransformersByPropertyKey = [self.class valueTransformersForModelClass:self.modelClass];
+}
+
 #pragma marm - Serialization
 
 - (NSSet *)serializablePropertyKeys:(NSSet *)propertyKeys forModel:(id<MTLJSONSerializing>)model {
-    NSDictionary *parameters = [[APIRouter sharedInstance] parametersWithClass:[model class]];
+    NSDictionary *parameters = [[APIRouter sharedInstance] JSONKeyPathsByPropertyKey:[model class]][self.action][@"parameters"];
     if(parameters.count) {
         NSSet *set = [NSSet setWithArray:parameters.allKeys];
         return set;
@@ -114,9 +141,17 @@
     return propertyKeys;
 }
 
+- (NSDictionary *)serializablePropertyKeysForClass:(Class)class {
+    NSDictionary *parameters = [[APIRouter sharedInstance] JSONKeyPathsByPropertyKey:class][self.action][@"parameters"];
+    if(self.depth.length) {
+        parameters = parameters[self.depth];
+    }
+    return parameters;
+}
+
 + (NSDictionary *)valueTransformersForModelClass:(Class)modelClass {
     NSParameterAssert(modelClass != nil);
-    NSParameterAssert([modelClass conformsToProtocol:@protocol(MTLJSONSerializing)]);
+    NSParameterAssert([modelClass conformsToProtocol:@protocol(MTLRouteJSONSerializing)]);
     
     NSMutableDictionary *result = [NSMutableDictionary dictionary];
     
@@ -216,7 +251,7 @@
             NSAssert(NO, @"%@ is not a property of %@.", mappedPropertyKey, self.modelClass);
         }
         id value = _JSONKeyPathsByPropertyKey[mappedPropertyKey];
-        if ([value isKindOfClass:NSArray.class]) {
+        if ([value isKindOfClass:NSDictionary.class]) {
             for (NSString *keyPath in value) {
                 if ([keyPath isKindOfClass:NSString.class]) continue;
                 NSAssert(NO, @"%@ must either map to a JSON key path or a JSON array of key paths, got: %@.", mappedPropertyKey, value);

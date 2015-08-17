@@ -21,12 +21,11 @@
 
 #pragma mark -
 
-+ (id)modelOfClass:(Class)modelClass fromJSONDictionary:(NSDictionary *)JSONDictionary error:(NSError **)error {
++ (id)modelOfClass:(Class)modelClass fromJSONDictionary:(NSDictionary *)JSONDictionary action:(NSString *)action error:(NSError *__autoreleasing *)error {
     if([modelClass isSubclassOfClass:[NSManagedObject class]]) {
-//        return [MTLRouteCoreDataAPIAdapter model]
-        return nil;
+        return [MTLRouteCoreDataAPIAdapter modelOfClass:modelClass fromJSONDictionary:JSONDictionary action:action error:error];
     } else {
-        return [MTLRouteAPIAdapter modelOfClass:modelClass fromJSONDictionary:JSONDictionary error:error];
+        return [MTLRouteAPIAdapter modelOfClass:modelClass fromJSONDictionary:JSONDictionary action:action error:error];
     }
 }
 

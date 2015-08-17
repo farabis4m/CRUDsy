@@ -37,7 +37,7 @@
 #pragma mark - MTL Serialization
 
 + (NSDictionary *)JSONKeyPathsByPropertyKeyWithAction:(NSString *)action {
-    return [[APIRouter sharedInstance] JSONKeyPathsByPropertyKey:[self class]][action];
+    return [[APIRouter sharedInstance] JSONKeyPathsByPropertyKey:[self class]][action][@"parameters"];
 }
 
 #pragma mark - API

@@ -12,13 +12,24 @@
 
 #import "APIRouter.h"
 
+#import <MagicalRecord/MagicalRecord.h>
+#import <MagicalRecord/MagicalRecord+ShorthandMethods.h>
+#import <MagicalRecord/MagicalRecordShorthandMethodAliases.h>
+
+#import "Author.h"
+
 @implementation APIAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [MagicalRecord setupCoreDataStackWithStoreNamed:@"CRUD"];
     [[CRUDEngine sharedInstance] setBaseURL:[NSURL URLWithString:[APIRouter sharedInstance].baseURL]];
 //    [[CRUDEngine sharedInstance] setBaseURL:[NSURL URLWithString:@"http://www.json-generator.com/api/json"]];
     // Override point for customization after application launch.
+    
+    NSInteger authorsCount = [Author MR_countOfEntities];
+    NSLog(@"Authors: %ld", authorsCount);
+    
     return YES;
 }
 
@@ -46,6 +57,7 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
+    [MagicalRecord cleanUp];
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 

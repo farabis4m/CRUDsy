@@ -130,6 +130,16 @@ static NSMutableDictionary *definedMethods = nil;
 }
 
 - (NSDictionary *)JSONKeyPathsByPropertyKey:(Class)class {
+//    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+//    NSDictionary *paramters = self.predefinedRoutes[[class modelString]];
+//    for(id key in paramters.allKeys) {
+//        id value = [paramters valueForKey:key];
+//        if([value isKindOfClass:[NSString class]]) {
+//            [paramters setValue:value forKey:key];
+//        } else if([value isKindOfClass:[NSDictionary class]]) {
+//            
+//        }
+//    }
     return self.predefinedRoutes[[class modelString]];
 }
 

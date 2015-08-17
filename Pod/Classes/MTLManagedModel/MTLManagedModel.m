@@ -94,6 +94,8 @@ static BOOL MTLValidateAndSetValue(id obj, NSString *key, id value, BOOL forceUp
 
 @implementation MTLManagedModel
 
+@dynamic identifier;
+
 #pragma mark - Magical Record ovveride
 
 - (NSString *) MR_lookupKeyForAttribute:(NSAttributeDescription *)attributeInfo action:(NSString *)action {
@@ -126,9 +128,9 @@ static BOOL MTLValidateAndSetValue(id obj, NSString *key, id value, BOOL forceUp
 
 #pragma mark -
 
-+ (NSDictionary *)JSONKeyPathsByPropertyKeyWithAction:(NSString *)action {
-    return @{};
-}
+//+ (NSDictionary *)JSONKeyPathsByPropertyKeyWithAction:(NSString *)action {
+//    return @{};
+//}
 
 #pragma mark Lifecycle
 
@@ -191,7 +193,7 @@ static BOOL MTLValidateAndSetValue(id obj, NSString *key, id value, BOOL forceUp
     Class cls = self;
     BOOL stop = NO;
     
-    while (!stop && ![cls isEqual:MTLModel.class]) {
+    while (!stop && ![cls isEqual:NSManagedObject.class]) {
         unsigned count = 0;
         objc_property_t *properties = class_copyPropertyList(cls, &count);
         
@@ -327,35 +329,35 @@ static BOOL MTLValidateAndSetValue(id obj, NSString *key, id value, BOOL forceUp
 
 #pragma mark NSObject
 
-- (NSString *)description {
-    NSDictionary *permanentProperties = [self dictionaryWithValuesForKeys:self.class.permanentPropertyKeys.allObjects];
-    
-    return [NSString stringWithFormat:@"<%@: %p> %@", self.class, self, permanentProperties];
-}
+//- (NSString *)description {
+//    NSDictionary *permanentProperties = [self dictionaryWithValuesForKeys:self.class.permanentPropertyKeys.allObjects];
+//    
+//    return [NSString stringWithFormat:@"<%@: %p> %@", self.class, self, permanentProperties];
+//}
 
-- (NSUInteger)hash {
-    NSUInteger value = 0;
-    
-    for (NSString *key in self.class.permanentPropertyKeys) {
-        value ^= [[self valueForKey:key] hash];
-    }
-    
-    return value;
-}
+//- (NSUInteger)hash {
+//    NSUInteger value = 0;
+//    
+//    for (NSString *key in self.class.permanentPropertyKeys) {
+//        value ^= [[self valueForKey:key] hash];
+//    }
+//    
+//    return value;
+//}
 
-- (BOOL)isEqual:(MTLManagedModel *)model {
-    if (self == model) return YES;
-    if (![model isMemberOfClass:self.class]) return NO;
-    
-    for (NSString *key in self.class.permanentPropertyKeys) {
-        id selfValue = [self valueForKey:key];
-        id modelValue = [model valueForKey:key];
-        
-        BOOL valuesEqual = ((selfValue == nil && modelValue == nil) || [selfValue isEqual:modelValue]);
-        if (!valuesEqual) return NO;
-    }
-    
-    return YES;
-}
+//- (BOOL)isEqual:(MTLManagedModel *)model {
+//    if (self == model) return YES;
+//    if (![model isMemberOfClass:self.class]) return NO;
+//    
+//    for (NSString *key in self.class.permanentPropertyKeys) {
+//        id selfValue = [self valueForKey:key];
+//        id modelValue = [model valueForKey:key];
+//        
+//        BOOL valuesEqual = ((selfValue == nil && modelValue == nil) || [selfValue isEqual:modelValue]);
+//        if (!valuesEqual) return NO;
+//    }
+//    
+//    return YES;
+//}
 
 @end

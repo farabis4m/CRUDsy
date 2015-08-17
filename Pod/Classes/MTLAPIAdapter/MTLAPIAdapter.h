@@ -19,6 +19,8 @@
 @property (nonatomic, strong, readonly) Class modelClass;
 
 @property (nonatomic, strong) NSString *action;
+@property (nonatomic, strong) NSString *depth;
+@property (nonatomic, assign) Class routeClass;
 
 // A cached copy of the return value of +JSONKeyPathsByPropertyKey.
 @property (nonatomic, copy, readonly) NSDictionary *JSONKeyPathsByPropertyKey;
@@ -56,6 +58,7 @@
 
 #pragma mark - Transformation template methods
 + (id)modelOfClass:(Class)modelClass fromJSONDictionary:(NSDictionary *)JSONDictionary action:(NSString *)action error:(NSError **)error;
++ (id)modelOfClass:(Class)modelClass routeClass:(Class)routeClass fromJSONDictionary:(NSDictionary *)JSONDictionary action:(NSString *)action depath:(NSString *)depth error:(NSError **)error;
 + (id)modelOfClass:(Class)modelClass fromJSONDictionary:(NSDictionary *)JSONDictionary error:(NSError **)error;
 + (NSArray *)modelsOfClass:(Class)modelClass fromJSONArray:(NSArray *)JSONArray action:(NSString *)action error:(NSError **)error;
 + (NSArray *)modelsOfClass:(Class)modelClass fromJSONArray:(NSArray *)JSONArray error:(NSError **)error;
@@ -72,6 +75,7 @@
 - (NSDictionary *)JSONDictionaryFromModel:(id<MTLRouteJSONSerializing>)model error:(NSError **)error;
 
 - (NSSet *)serializablePropertyKeys:(NSSet *)propertyKeys forModel:(id<MTLRouteJSONSerializing>)model;
+- (NSDictionary *)serializablePropertyKeysForClass:(Class)class;
 
 + (NSValueTransformer *)transformerForModelPropertiesOfClass:(Class)modelClass;
 + (NSValueTransformer *)transformerForModelPropertiesOfObjCType:(const char *)objCType;

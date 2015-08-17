@@ -10,12 +10,15 @@
 
 #import <Mantle/MTLJSONAdapter.h>
 
+#import "APIJSONAdapter.h"
+
 @implementation NSObject (JSON)
 
 #pragma mark - Instance
 
 + (instancetype)modelFromJSON:(NSDictionary *)JSON error:(NSError **)error {
-    return [MTLJSONAdapter modelOfClass:[self class] fromJSONDictionary:JSON error:error];
+//    return [APIJSONAdapter modelOfClass:[self class] fromJSONDictionary:JSON error:error];
+    return nil;
 }
 
 + (instancetype)modelFromJSON:(NSDictionary *)JSON {

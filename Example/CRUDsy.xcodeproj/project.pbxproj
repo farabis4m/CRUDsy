@@ -28,6 +28,12 @@
 		F5BD21A61B7C6A3A00EC98F5 /* APIUser.m in Sources */ = {isa = PBXBuildFile; fileRef = F5BD219E1B7C6A3A00EC98F5 /* APIUser.m */; };
 		F5BD21A71B7C6A3A00EC98F5 /* APIUsersTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5BD21A11B7C6A3A00EC98F5 /* APIUsersTableViewController.m */; };
 		F5BD21A81B7C6A3A00EC98F5 /* APIUserTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F5BD21A51B7C6A3A00EC98F5 /* APIUserTableViewCell.m */; };
+		F5D7D7001B81BBBA0016A7F6 /* CRUD.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F5D7D6FE1B81BBBA0016A7F6 /* CRUD.xcdatamodeld */; };
+		F5D7D7021B81BD4B0016A7F6 /* authors.json in Resources */ = {isa = PBXBuildFile; fileRef = F5D7D7011B81BD4B0016A7F6 /* authors.json */; };
+		F5D7D7051B81BE790016A7F6 /* Author.m in Sources */ = {isa = PBXBuildFile; fileRef = F5D7D7041B81BE790016A7F6 /* Author.m */; };
+		F5D7D70A1B81BFAF0016A7F6 /* AuthorsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5D7D7091B81BFAF0016A7F6 /* AuthorsViewController.m */; };
+		F5D7D7101B81C14A0016A7F6 /* Book.m in Sources */ = {isa = PBXBuildFile; fileRef = F5D7D70F1B81C14A0016A7F6 /* Book.m */; };
+		F5D7D7141B81F5DA0016A7F6 /* BooksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5D7D7131B81F5DA0016A7F6 /* BooksViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,6 +82,16 @@
 		F5BD21A11B7C6A3A00EC98F5 /* APIUsersTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APIUsersTableViewController.m; sourceTree = "<group>"; };
 		F5BD21A41B7C6A3A00EC98F5 /* APIUserTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APIUserTableViewCell.h; sourceTree = "<group>"; };
 		F5BD21A51B7C6A3A00EC98F5 /* APIUserTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APIUserTableViewCell.m; sourceTree = "<group>"; };
+		F5D7D6FF1B81BBBA0016A7F6 /* CRUD.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CRUD.xcdatamodel; sourceTree = "<group>"; };
+		F5D7D7011B81BD4B0016A7F6 /* authors.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = authors.json; sourceTree = "<group>"; };
+		F5D7D7031B81BE790016A7F6 /* Author.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Author.h; sourceTree = "<group>"; };
+		F5D7D7041B81BE790016A7F6 /* Author.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Author.m; sourceTree = "<group>"; };
+		F5D7D7081B81BFAF0016A7F6 /* AuthorsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthorsViewController.h; sourceTree = "<group>"; };
+		F5D7D7091B81BFAF0016A7F6 /* AuthorsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthorsViewController.m; sourceTree = "<group>"; };
+		F5D7D70E1B81C14A0016A7F6 /* Book.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Book.h; sourceTree = "<group>"; };
+		F5D7D70F1B81C14A0016A7F6 /* Book.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Book.m; sourceTree = "<group>"; };
+		F5D7D7121B81F5DA0016A7F6 /* BooksViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BooksViewController.h; sourceTree = "<group>"; };
+		F5D7D7131B81F5DA0016A7F6 /* BooksViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BooksViewController.m; sourceTree = "<group>"; };
 		F66097F931F5279F374A5DF0 /* Pods-CRUDsy_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CRUDsy_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CRUDsy_Example/Pods-CRUDsy_Example.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -221,6 +237,7 @@
 			isa = PBXGroup;
 			children = (
 				F52CDEC11B7B50CA00416787 /* users.json */,
+				F5D7D7011B81BD4B0016A7F6 /* authors.json */,
 			);
 			path = json;
 			sourceTree = "<group>";
@@ -228,6 +245,7 @@
 		F5BD219B1B7C6A3A00EC98F5 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				F5D7D6F51B81BB730016A7F6 /* Core Data */,
 				F5BD219C1B7C6A3A00EC98F5 /* APIUser */,
 			);
 			path = Models;
@@ -245,6 +263,7 @@
 		F5BD219F1B7C6A3A00EC98F5 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				F5D7D7061B81BF900016A7F6 /* Core Data Example */,
 				F5BD21A01B7C6A3A00EC98F5 /* APIUsersTableViewController.h */,
 				F5BD21A11B7C6A3A00EC98F5 /* APIUsersTableViewController.m */,
 				F5BD21A21B7C6A3A00EC98F5 /* APIUserTableViewCel */,
@@ -267,6 +286,61 @@
 				F5BD21A51B7C6A3A00EC98F5 /* APIUserTableViewCell.m */,
 			);
 			path = APIUserTableViewCell;
+			sourceTree = "<group>";
+		};
+		F5D7D6F51B81BB730016A7F6 /* Core Data */ = {
+			isa = PBXGroup;
+			children = (
+				F5D7D6FA1B81BB9B0016A7F6 /* Author */,
+				F5D7D6F61B81BB870016A7F6 /* Book */,
+				F5D7D6FE1B81BBBA0016A7F6 /* CRUD.xcdatamodeld */,
+			);
+			path = "Core Data";
+			sourceTree = "<group>";
+		};
+		F5D7D6F61B81BB870016A7F6 /* Book */ = {
+			isa = PBXGroup;
+			children = (
+				F5D7D70E1B81C14A0016A7F6 /* Book.h */,
+				F5D7D70F1B81C14A0016A7F6 /* Book.m */,
+			);
+			path = Book;
+			sourceTree = "<group>";
+		};
+		F5D7D6FA1B81BB9B0016A7F6 /* Author */ = {
+			isa = PBXGroup;
+			children = (
+				F5D7D7031B81BE790016A7F6 /* Author.h */,
+				F5D7D7041B81BE790016A7F6 /* Author.m */,
+			);
+			path = Author;
+			sourceTree = "<group>";
+		};
+		F5D7D7061B81BF900016A7F6 /* Core Data Example */ = {
+			isa = PBXGroup;
+			children = (
+				F5D7D7111B81F5CE0016A7F6 /* BooksViewController */,
+				F5D7D7071B81BF9F0016A7F6 /* AuthorsViewController */,
+			);
+			path = "Core Data Example";
+			sourceTree = "<group>";
+		};
+		F5D7D7071B81BF9F0016A7F6 /* AuthorsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				F5D7D7081B81BFAF0016A7F6 /* AuthorsViewController.h */,
+				F5D7D7091B81BFAF0016A7F6 /* AuthorsViewController.m */,
+			);
+			path = AuthorsViewController;
+			sourceTree = "<group>";
+		};
+		F5D7D7111B81F5CE0016A7F6 /* BooksViewController */ = {
+			isa = PBXGroup;
+			children = (
+				F5D7D7121B81F5DA0016A7F6 /* BooksViewController.h */,
+				F5D7D7131B81F5DA0016A7F6 /* BooksViewController.m */,
+			);
+			path = BooksViewController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -352,6 +426,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F5D7D7021B81BD4B0016A7F6 /* authors.json in Resources */,
 				F52CDEC21B7B50CA00416787 /* users.json in Resources */,
 				F52CDEAF1B7B2D4300416787 /* routes.plist in Resources */,
 				873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */,
@@ -468,11 +543,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F5D7D70A1B81BFAF0016A7F6 /* AuthorsViewController.m in Sources */,
+				F5D7D7141B81F5DA0016A7F6 /* BooksViewController.m in Sources */,
+				F5D7D7101B81C14A0016A7F6 /* Book.m in Sources */,
 				F5BD21A81B7C6A3A00EC98F5 /* APIUserTableViewCell.m in Sources */,
 				6003F59E195388D20070C39A /* APIAppDelegate.m in Sources */,
 				F5BD21A61B7C6A3A00EC98F5 /* APIUser.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
 				F5BD21A71B7C6A3A00EC98F5 /* APIUsersTableViewController.m in Sources */,
+				F5D7D7051B81BE790016A7F6 /* Author.m in Sources */,
+				F5D7D7001B81BBBA0016A7F6 /* CRUD.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -691,6 +771,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		F5D7D6FE1B81BBBA0016A7F6 /* CRUD.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				F5D7D6FF1B81BBBA0016A7F6 /* CRUD.xcdatamodel */,
+			);
+			currentVersion = F5D7D6FF1B81BBBA0016A7F6 /* CRUD.xcdatamodel */;
+			path = CRUD.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 6003F582195388D10070C39A /* Project object */;
 }
