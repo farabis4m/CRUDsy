@@ -31,7 +31,8 @@ extern NSString *const APIDeleteKey;
 
 - (void)registerClass:(Class)class;
 - (NSDictionary *)parametersWithClass:(Class)class;
-- (NSDictionary *)JSONKeyPathsByPropertyKey:(Class)class;
+- (NSDictionary *)requestJSONKeyPathsByPropertyKey:(Class)class action:(NSString *)action;
+- (NSDictionary *)responseJSONKeyPathsByPropertyKey:(Class)class action:(NSString *)action;;
 
 + (void)setURL:(NSString *)url forKey:(NSString *)key model:(NSString *)model;
 + (void)setRoute:(NSString *)route forKey:(NSString *)key model:(NSString *)model;

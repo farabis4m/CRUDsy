@@ -129,18 +129,12 @@ static NSMutableDictionary *definedMethods = nil;
     return self.predefinedRoutes[[class modelString]][@"parameters"];
 }
 
-- (NSDictionary *)JSONKeyPathsByPropertyKey:(Class)class {
-//    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-//    NSDictionary *paramters = self.predefinedRoutes[[class modelString]];
-//    for(id key in paramters.allKeys) {
-//        id value = [paramters valueForKey:key];
-//        if([value isKindOfClass:[NSString class]]) {
-//            [paramters setValue:value forKey:key];
-//        } else if([value isKindOfClass:[NSDictionary class]]) {
-//            
-//        }
-//    }
-    return self.predefinedRoutes[[class modelString]];
+- (NSDictionary *)requestJSONKeyPathsByPropertyKey:(Class)class action:(NSString *)action {
+    return self.predefinedRoutes[[class modelString]][action][@"request"];
+}
+
+- (NSDictionary *)responseJSONKeyPathsByPropertyKey:(Class)class action:(NSString *)action {
+    return self.predefinedRoutes[[class modelString]][action][@"response"];
 }
 
 #pragma mark - Utils

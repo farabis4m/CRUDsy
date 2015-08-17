@@ -6,24 +6,29 @@
 	<dict>
 		<key>index</key>
 		<dict>
-			<key>parameters</key>
+			<key>response</key>
 			<dict>
-				<key>identifier</key>
-				<string>id</string>
-				<key>firstname</key>
-				<string>firstname</string>
-				<key>lastname</key>
-				<string>lastname</string>
-				<key>books</key>
-				<dict>
-					<key>identifier</key>
-					<string>id</string>
-					<key>title</key>
-					<string>book_title</string>
-					<key>price</key>
-					<string>price</string>
-				</dict>
+                <key>parameters</key>
+                <dict>
+                    <key>identifier</key>
+                    <string>id</string>
+                    <key>firstname</key>
+                    <string>firstname</string>
+                    <key>lastname</key>
+                    <string>lastname</string>
+                    <key>books</key>
+                    <dict>
+                        <key>identifier</key>
+                        <string>id</string>
+                        <key>title</key>
+                        <string>book_title</string>
+                        <key>price</key>
+                        <string>price</string>
+                    </dict>
+                </dict>
 			</dict>
+			<key>request</key>
+			<dict/>
 		</dict>
 	</dict>
 	<key>user</key>

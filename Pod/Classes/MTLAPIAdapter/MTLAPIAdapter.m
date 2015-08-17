@@ -104,7 +104,7 @@
     if(self) {
         _action = action;
         _modelClass = modelClass;
-        _JSONKeyPathsByPropertyKey = [[APIRouter sharedInstance] JSONKeyPathsByPropertyKey:[self class]][action][@"parameters"];
+        _JSONKeyPathsByPropertyKey = [[APIRouter sharedInstance] responseJSONKeyPathsByPropertyKey:[self class] action:action][@"parameters"];
         [self validateProptyKeys];
         _valueTransformersByPropertyKey = [self.class valueTransformersForModelClass:modelClass];
         _JSONAdaptersByModelClass = [NSMapTable strongToStrongObjectsMapTable];
@@ -123,7 +123,7 @@
 
 - (void)setRouteClass:(Class)routeClass {
     _routeClass = routeClass;
-    _JSONKeyPathsByPropertyKey = [[APIRouter sharedInstance] JSONKeyPathsByPropertyKey:[self routeClass]][self.action][@"parameters"];
+    _JSONKeyPathsByPropertyKey = [[APIRouter sharedInstance] responseJSONKeyPathsByPropertyKey:[self routeClass] action:self.action][@"parameters"];
     if(_depth) {
         _JSONKeyPathsByPropertyKey = _JSONKeyPathsByPropertyKey[_depth];
     }
@@ -133,7 +133,7 @@
 #pragma marm - Serialization
 
 - (NSSet *)serializablePropertyKeys:(NSSet *)propertyKeys forModel:(id<MTLJSONSerializing>)model {
-    NSDictionary *parameters = [[APIRouter sharedInstance] JSONKeyPathsByPropertyKey:[model class]][self.action][@"parameters"];
+    NSDictionary *parameters = [[APIRouter sharedInstance] responseJSONKeyPathsByPropertyKey:[model class] action:self.action][@"parameters"];
     if(parameters.count) {
         NSSet *set = [NSSet setWithArray:parameters.allKeys];
         return set;
@@ -142,7 +142,7 @@
 }
 
 - (NSDictionary *)serializablePropertyKeysForClass:(Class)class {
-    NSDictionary *parameters = [[APIRouter sharedInstance] JSONKeyPathsByPropertyKey:class][self.action][@"parameters"];
+    NSDictionary *parameters = [[APIRouter sharedInstance] responseJSONKeyPathsByPropertyKey:class action:self.action][@"parameters"];
     if(self.depth.length) {
         parameters = parameters[self.depth];
     }
