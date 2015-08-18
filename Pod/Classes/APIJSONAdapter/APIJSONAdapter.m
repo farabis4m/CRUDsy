@@ -31,7 +31,7 @@
 
 + (NSArray *)modelsOfClass:(Class)modelClass fromJSONArray:(NSArray *)JSONArray action:(NSString *)action error:(NSError **)error {
     if([modelClass isSubclassOfClass:[NSManagedObject class]]) {
-        return nil;
+        return [MTLRouteCoreDataAPIAdapter modelsOfClass:modelClass fromJSONArray:JSONArray error:error];
     } else {
         return [MTLRouteAPIAdapter modelsOfClass:modelClass fromJSONArray:JSONArray error:error];
     }

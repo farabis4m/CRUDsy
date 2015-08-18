@@ -40,6 +40,17 @@
 }
 
 + (NSArray *)modelsOfClass:(Class)modelClass fromJSONArray:(NSArray *)JSONArray action:(NSString *)action error:(NSError **)error {
+    
+    if([JSONArray isKindOfClass:[NSDictionary class]]) {
+        for(id key in JSONArray) {
+            id value = [JSONArray valueForKeyPath:key];
+            if([value isKindOfClass:[NSArray class]]) {
+                JSONArray = value;
+                break;
+            }
+        }
+    }
+    
     if (JSONArray == nil || ![JSONArray isKindOfClass:NSArray.class]) {
         if (error != NULL) {
             NSString *reasonErrorKey = [NSString stringWithFormat:NSLocalizedString(@"%@ could not be created because an invalid JSON array was provided: %@", @""), NSStringFromClass(modelClass), JSONArray.class];
