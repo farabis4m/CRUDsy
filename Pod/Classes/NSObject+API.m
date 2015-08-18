@@ -92,7 +92,6 @@
     if(!finalRoute) {
         finalRoute = modelString;
     }
-    finalRoute = [finalRoute lowercaseString];
     NSString *finalMethod = [[APIRouter sharedInstance] methods][modelString][key];
     if(!finalMethod) {
         finalMethod = method;
