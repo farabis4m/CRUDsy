@@ -151,7 +151,7 @@
 - (NSDictionary *)serializablePropertyKeysForClass:(Class)class {
     NSDictionary *parameters = [[APIRouter sharedInstance] responseJSONKeyPathsByPropertyKey:class action:self.action][@"parameters"];
     if(self.depth.length) {
-        parameters = parameters[self.depth];
+        parameters = [parameters valueForKeyPath:self.depth];
     }
     return parameters;
 }
