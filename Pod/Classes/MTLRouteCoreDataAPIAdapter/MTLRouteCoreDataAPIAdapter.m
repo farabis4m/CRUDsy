@@ -16,6 +16,8 @@
 
 #import "APIRouter.h"
 
+#import "CRUDEngine.h"
+
 @interface MTLRouteCoreDataAPIAdapter ()
 
 @end
@@ -113,7 +115,7 @@
 #pragma mark - Deserialization
 
 - (id)modelFromJSONDictionary:(NSDictionary *)JSONDictionary action:(NSString *)action error:(NSError *__autoreleasing *)error {
-    NSManagedObjectContext *context = [NSManagedObjectContext MR_defaultContext];//[NSManagedObjectContext MR_contextWithParent:[NSManagedObjectContext MR_defaultContext]];
+    NSManagedObjectContext *context = [[[CRUDEngine sharedInstance] contextManager] contextForModelClass:self.modelClass action:self.action];
     NSEntityDescription *entity = [self.modelClass MR_entityDescriptionInContext:context];
     NSAssert(entity != nil, @"%@ returned a nil +entity", self.modelClass);
     
@@ -164,7 +166,7 @@
         paths = [paths arrayByAddingObject:relationshipInfo.name];
         welf.depth = [paths componentsJoinedByString:@"."];
         
-        id serializableProperties = [self serializablePropertyKeysForClass:self.routeClass];
+        id serializableProperties = [welf serializablePropertyKeysForClass:self.routeClass];
         
         if(serializableProperties) {
             NSManagedObject *relatedObject = nil;
