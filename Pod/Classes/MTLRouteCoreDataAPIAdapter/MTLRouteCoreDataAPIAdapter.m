@@ -62,7 +62,7 @@
         }
         paths = [paths arrayByAddingObject:relationshipDescription.name];
         self.depth = [paths componentsJoinedByString:@"."];
-
+        
         if ([relationshipDescription isToMany]) {
             id<NSFastEnumeration> values = [model valueForKey:key];
             NSMutableArray *jsonItems = [NSMutableArray array];
@@ -113,13 +113,13 @@
 #pragma mark - Deserialization
 
 - (id)modelFromJSONDictionary:(NSDictionary *)JSONDictionary action:(NSString *)action error:(NSError *__autoreleasing *)error {
-    NSManagedObjectContext *context = [NSManagedObjectContext MR_defaultContext];
+    NSManagedObjectContext *context = [NSManagedObjectContext MR_defaultContext];//[NSManagedObjectContext MR_contextWithParent:[NSManagedObjectContext MR_defaultContext]];
     NSEntityDescription *entity = [self.modelClass MR_entityDescriptionInContext:context];
     NSAssert(entity != nil, @"%@ returned a nil +entity", self.modelClass);
-
+    
     NSAttributeDescription *primaryAttribute = [entity MR_primaryAttributeToRelateBy];
     id value = [JSONDictionary MR_valueForAttribute:primaryAttribute];
-
+    
     NSManagedObject *managedObject = nil;
     if (primaryAttribute != nil) {
         managedObject = [self.modelClass MR_findFirstByAttribute:[primaryAttribute name] withValue:value inContext:context];
@@ -137,6 +137,22 @@
     NSDictionary *attributes = [[object entity] attributesByName];
     [self setAttributes:attributes objectData:objectData object:object];
     
+    BOOL (^setValueForKey)(NSString *, id, BOOL) = ^(NSString *key, id value, BOOL validate) {
+        __autoreleasing id replaceableValue = value;
+        NSError *error = nil;
+        if(validate) {
+            if ([object validateValue:&replaceableValue forKey:key error:&error]) {
+                [object setValue:replaceableValue forKey:key];
+                return YES;
+            }
+        } else {
+            [object setValue:replaceableValue forKey:key];
+            return YES;
+        }
+        
+        return NO;
+    };
+    
     __weak NSManagedObject *welfManagedObject = object;
     __weak typeof(self) welf = self;
     NSDictionary *relationships = [[object entity] relationshipsByName];
@@ -148,9 +164,47 @@
         paths = [paths arrayByAddingObject:relationshipInfo.name];
         welf.depth = [paths componentsJoinedByString:@"."];
         
-        NSEntityDescription *entityDescription = [relationshipInfo destinationEntity];
-        Class class = NSClassFromString([entityDescription managedObjectClassName]);
-        NSManagedObject *relatedObject = [MTLRouteCoreDataAPIAdapter modelOfClass:class routeClass:self.routeClass ?: self.modelClass fromJSONDictionary:localObjectData action:welf.action depath:welf.depth error:nil];
+        id serializableProperties = [self serializablePropertyKeysForClass:self.routeClass];
+        
+        if(serializableProperties) {
+            NSManagedObject *relatedObject = nil;
+            
+            if ([localObjectData isKindOfClass:[NSDictionary class]]) {
+                NSEntityDescription *entityDescription = [relationshipInfo destinationEntity];
+                Class class = NSClassFromString([entityDescription managedObjectClassName]);
+                relatedObject = [MTLRouteCoreDataAPIAdapter modelOfClass:class routeClass:self.routeClass ?: self.modelClass fromJSONDictionary:localObjectData action:welf.action depath:welf.depth error:nil];
+                [welf MR_addObject:relatedObject forRelationship:relationshipInfo toObject:welfManagedObject];
+            } else {
+                NSError *error = nil;
+                id value = localObjectData;
+                @try {
+                    NSValueTransformer *transformer = self.valueTransformersByPropertyKey[relationshipInfo.name];
+                    if (transformer != nil) {
+                        // Map NSNull -> nil for the transformer, and then back for the
+                        // dictionary we're going to insert into.
+                        if ([value isEqual:NSNull.null]) value = nil;
+                        
+                        if ([transformer respondsToSelector:@selector(transformedValue:success:error:)]) {
+                            id<MTLTransformerErrorHandling> errorHandlingTransformer = (id)transformer;
+                            
+                            BOOL success = YES;
+                            value = [errorHandlingTransformer transformedValue:value success:&success error:&error];
+                            
+                        } else {
+                            value = [transformer transformedValue:value];
+                        }
+                        
+                        if (value == nil) value = NSNull.null;
+                        else {
+                            setValueForKey(relationshipInfo.name, value, NO);
+                        }
+                    }
+                    
+                } @catch (NSException *ex) {
+                    NSLog(@"%@", ex);
+                }
+            }
+        }
         
         paths = [self.depth componentsSeparatedByString:@"."];
         if(paths.count > 1) {
@@ -160,13 +214,6 @@
         }
         self.depth = paths.count ? [paths componentsJoinedByString:@"."] : nil;
         
-        if ((localObjectData) && (![localObjectData isKindOfClass:[NSDictionary class]])) {
-            NSString * relatedByAttribute = [[relationshipInfo userInfo] objectForKey:kMagicalRecordImportRelationshipLinkedByKey] ?: MR_primaryKeyNameFromString([[relationshipInfo destinationEntity] name]);
-            if (relatedByAttribute) {
-                [relatedObject setValue:localObjectData forKey:relatedByAttribute];
-            }
-        }
-        [welf MR_addObject:relatedObject forRelationship:relationshipInfo toObject:welfManagedObject];
     }];
 }
 
@@ -188,9 +235,9 @@
     for (NSString *attributeName in attributes) {
         if([serializable containsObject:attributeName]) {
             NSError *error = nil;
-//            NSAttributeDescription *attributeInfo = [attributes valueForKey:attributeName];
+            //            NSAttributeDescription *attributeInfo = [attributes valueForKey:attributeName];
             NSString *lookupKey = serializableProperties[attributeName];
-//            id value = [self valueForKeyPath:lookupKey];
+            //            id value = [self valueForKeyPath:lookupKey];
             id value = [objectData valueForKeyPath:lookupKey];
             @try {
                 NSValueTransformer *transformer = self.valueTransformersByPropertyKey[attributeName];
@@ -214,7 +261,7 @@
                         setValueForKey(attributeName, value);
                     }
                 }
-
+                
             } @catch (NSException *ex) {
                 NSLog(@"%@", ex);
             }
@@ -224,9 +271,9 @@
 
 - (void)setRelationships:(NSDictionary *)relationships forKeysWithObject:(id)relationshipData withBlock:(void(^)(NSRelationshipDescription *,id))setRelationshipBlock {
     for (NSString *relationshipName in relationships) {
-//        if ([self MR_importValue:relationshipData forKey:relationshipName]) {
-//            continue;
-//        }
+        //        if ([self MR_importValue:relationshipData forKey:relationshipName]) {
+        //            continue;
+        //        }
         
         NSRelationshipDescription *relationshipInfo = [relationships valueForKey:relationshipName];
         NSString *lookupKey = [[relationshipInfo userInfo] valueForKey:kMagicalRecordImportRelationshipMapKey] ?: relationshipName;
