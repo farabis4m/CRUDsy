@@ -38,4 +38,9 @@
  */
 @property (nonatomic, assign) BOOL hasNext;
 
+/**
+ User info dictionary to store additional parameters.
+ */
+@property (nonatomic, strong) NSDictionary *userInfo;
+
 @end

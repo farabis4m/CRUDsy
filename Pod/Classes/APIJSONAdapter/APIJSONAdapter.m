@@ -29,7 +29,7 @@
     }
 }
 
-+ (NSArray *)modelsOfClass:(Class)modelClass fromJSONArray:(NSArray *)JSONArray error:(NSError **)error {
++ (NSArray *)modelsOfClass:(Class)modelClass fromJSONArray:(NSArray *)JSONArray action:(NSString *)action error:(NSError **)error {
     if([modelClass isSubclassOfClass:[NSManagedObject class]]) {
         return nil;
     } else {

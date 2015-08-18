@@ -90,7 +90,7 @@
         NSLog(@"ERROR DESCR: %@", [NSHTTPURLResponse localizedStringForStatusCode:operation.response.statusCode]);
         APIResponse *response = [[APIResponse alloc] init];
         response.error = error;
-        if(operation.response.statusCode == 404) {
+        if(operation.response.statusCode == 401) {
             NSError *error = [NSError errorWithDomain:@"com.API" code:0 userInfo:@{NSLocalizedDescriptionKey : operation.responseObject[@"ErrorMessage"]}];
             response.error = error;
             completionBlock(response);

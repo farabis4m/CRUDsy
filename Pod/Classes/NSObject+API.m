@@ -85,6 +85,9 @@
 + (void)requestWithKey:(NSString *)key method:(NSString *)method route:(NSString *)route criterias:(NSArray *)criterias importType:(APIImportType)importType completionBlock:(APIResponseCompletionBlock)completionBlock {
     NSString *modelString = [self modelString];
     NSString *URLString = [[APIRouter sharedInstance] baseURLs][modelString][key];
+    if(!URLString) {
+        URLString = [[APIRouter sharedInstance] baseURL];
+    }
     NSString *finalRoute = [[APIRouter sharedInstance] routes][modelString][key];
     if(!finalRoute) {
         finalRoute = modelString;
@@ -98,17 +101,17 @@
     for(APICriteria *criteria in criterias) {
         [parametrs addEntriesFromDictionary:[criteria JSON]];
     }
-    [self callWithURL:URLString Method:finalMethod route:finalRoute parameters:parametrs importType:importType completionBlock:completionBlock];
+    [self callWithURL:URLString Method:finalMethod route:finalRoute action:key parameters:parametrs importType:importType completionBlock:completionBlock];
 }
 
-+ (void)callWithURL:(NSString *)URLString Method:(NSString *)method route:(NSString *)route parameters:(id)parameters importType:(APIImportType)importType completionBlock:(APIResponseCompletionBlock)completionBlock {
++ (void)callWithURL:(NSString *)URLString Method:(NSString *)method route:(NSString *)route action:(NSString *)action parameters:(id)parameters importType:(APIImportType)importType completionBlock:(APIResponseCompletionBlock)completionBlock {
     CRUDEngine *engine = [CRUDEngine sharedInstance];
     
     NSURL *URL = [NSURL URLWithString:URLString ?: [APIRouter sharedInstance].baseURL];
     [engine HTTPRequestOperationURL:URL HTTPMethod:method URLString:route parameters:parameters completionBlock:^(APIResponse *response) {
         if(!response.error) {
             NSError *parseError = nil;
-            id result = [self parseJson:response.data importType:importType class:[self class] error:&parseError];
+            id result = [self parseJson:response.data importType:importType class:[self class] action:action error:&parseError];
             response.data = result;
             response.error = parseError;
         }
@@ -116,10 +119,10 @@
     }];
 }
 
-+ (id)parseJson:(id)json importType:(APIImportType)importType class:(Class)class error:(NSError **)error {
++ (id)parseJson:(id)json importType:(APIImportType)importType class:(Class)class action:(NSString *)action error:(NSError **)error {
     switch (importType) {
-        case APIImportTypeArray: return [class modelsFromJSON:json error:error];
-        case APIImportTypeDictionary: return [class modelFromJSON:json error:error];
+        case APIImportTypeArray: return [APIJSONAdapter modelsOfClass:class fromJSONArray:json action:action error:error];
+        case APIImportTypeDictionary: return [APIJSONAdapter modelOfClass:class fromJSONDictionary:json action:action error:error];
         case APIImportTypeNone: return json;
     }
     return nil;

@@ -111,7 +111,7 @@
     if(self) {
         _action = action;
         _modelClass = modelClass;
-        _JSONKeyPathsByPropertyKey = [[APIRouter sharedInstance] responseJSONKeyPathsByPropertyKey:[self class] action:action][@"parameters"];
+        _JSONKeyPathsByPropertyKey = [[APIRouter sharedInstance] responseJSONKeyPathsByPropertyKey:modelClass action:action][@"parameters"];
         [self validateProptyKeys];
         _valueTransformersByPropertyKey = [self.class valueTransformersForModelClass:modelClass];
         _JSONAdaptersByModelClass = [NSMapTable strongToStrongObjectsMapTable];
