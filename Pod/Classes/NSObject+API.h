@@ -11,9 +11,9 @@
 #import "APICompletionBlock.h"
 
 typedef NS_ENUM (NSInteger, APIImportType) {
-    APIImportTypeArray,
-    APIImportTypeDictionary,
-    APIImportTypeNone
+    APIImportTypeArray = 0,
+    APIImportTypeDictionary = 1,
+    APIImportTypeNone = 2
 };
 
 @interface NSObject (API)

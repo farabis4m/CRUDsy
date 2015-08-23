@@ -58,12 +58,18 @@
 }
 
 - (void)createWithCompletionBlock:(APIResponseCompletionBlock)completionBlock {
+    NSString *route = [[self class] modelString];
+    [[self class] requestWithKey:APICreateKey method:APIMethodPOST route:route criterias:nil importType:APIImportTypeDictionary completionBlock:completionBlock];
 }
 
 - (void)updateWithCompletionBlock:(APIResponseCompletionBlock)completionBlock {
+    NSString *route = [[self class] modelString];
+    [[self class] requestWithKey:APIUpdateKey method:APIMethodPOST route:route criterias:nil importType:APIImportTypeDictionary completionBlock:completionBlock];
 }
 
 - (void)deleteWithCompletionBlock:(APIResponseCompletionBlock)completionBlock {
+    NSString *route = [[self class] modelString];
+    [[self class] requestWithKey:APIDeleteKey method:APIMethodDELETE route:route criterias:nil importType:APIImportTypeDictionary completionBlock:completionBlock];
 }
 
 #pragma mark - Utils
