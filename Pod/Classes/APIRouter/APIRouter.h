@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import "APIImportType.h"
+
 extern NSString *const APIIndexKey;
 extern NSString *const APICreateKey;
 extern NSString *const APIShowKey;
@@ -33,6 +35,8 @@ extern NSString *const APIDeleteKey;
 - (NSDictionary *)parametersWithClass:(Class)class;
 - (NSDictionary *)requestJSONKeyPathsByPropertyKey:(Class)class action:(NSString *)action;
 - (NSDictionary *)responseJSONKeyPathsByPropertyKey:(Class)class action:(NSString *)action;;
+
+- (APIImportType)importTypeWithClass:(Class)class action:(NSString *)action;
 
 + (void)setURL:(NSString *)url forKey:(NSString *)key model:(NSString *)model;
 + (void)setRoute:(NSString *)route forKey:(NSString *)key model:(NSString *)model;

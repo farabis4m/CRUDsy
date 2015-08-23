@@ -125,10 +125,16 @@
 }
 
 + (id)parseJson:(id)json importType:(APIImportType)importType class:(Class)class action:(NSString *)action error:(NSError **)error {
+    APIImportType definedImportType = [[APIRouter sharedInstance] importTypeWithClass:class action:action];
+    if(definedImportType != APIImportTypeUndefined) {
+        importType = definedImportType;
+    }
     switch (importType) {
         case APIImportTypeArray: return [APIJSONAdapter modelsOfClass:class fromJSONArray:json action:action error:error];
         case APIImportTypeDictionary: return [APIJSONAdapter modelOfClass:class fromJSONDictionary:json action:action error:error];
         case APIImportTypeNone: return json;
+        case APIImportTypeUndefined:
+        case default: return nil;
     }
     return nil;
 }

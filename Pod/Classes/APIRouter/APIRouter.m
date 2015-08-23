@@ -137,6 +137,10 @@ static NSMutableDictionary *definedMethods = nil;
     return self.predefinedRoutes[[class modelString]][action][@"response"];
 }
 
+- (APIImportType)importTypeWithClass:(Class)class action:(NSString *)action {
+    return [self.predefinedRoutes[[class modelString]][action][@"format"] integerValue];
+}
+
 #pragma mark - Utils
 
 - (void)flushRoutesForClass:(NSString *)classString {
