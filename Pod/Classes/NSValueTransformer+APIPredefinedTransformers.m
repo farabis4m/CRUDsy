@@ -41,6 +41,8 @@ NSString *const MTLNumberValueTransformer = @"MTLNumberValueTransformer";
             f.numberStyle = NSNumberFormatterDecimalStyle;
             NSNumber *number = [f numberFromString:value];
             return number;
+        } else if([value isKindOfClass:NSNumber.class]) {
+            return value;
         }
         return nil;
     }];
