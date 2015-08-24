@@ -17,6 +17,8 @@
 #import <Mantle/EXTScope.h>
 #import <Mantle/MTLReflection.h>
 
+#import "NSValueTransformer+APIPredefinedTransformers.h"
+
 @implementation MTLAPIAdapter
 
 #pragma mark Convenience methods
@@ -211,6 +213,10 @@
                 transformer = [self transformerForModelPropertiesOfClass:propertyClass];
             }
             
+            if(!transformer) {
+                transformer = [self transformerForPropertyClass:propertyClass];
+            }
+            
             if (transformer == nil) transformer = [NSValueTransformer mtl_validatingTransformerForClass:NSObject.class];
         } else {
             transformer = [self transformerForModelPropertiesOfObjCType:attributes->type] ?: [NSValueTransformer mtl_validatingTransformerForClass:NSValue.class];
@@ -250,10 +256,17 @@
     return result;
 }
 
++ (NSValueTransformer *)transformerForPropertyClass:(Class)propertyClass {
+    if(propertyClass == [NSNumber class]) {
+        return [NSValueTransformer mtl_numberValueTransformer];
+    }
+    return nil;
+}
+
 + (NSValueTransformer *)transformerForModelPropertiesOfObjCType:(const char *)objCType {
     NSParameterAssert(objCType != NULL);
     if (strcmp(objCType, @encode(BOOL)) == 0) {
-        return [NSValueTransformer valueTransformerForName:MTLBooleanValueTransformerName];
+        return [NSValueTransformer mtl_boolValueTransformer];
     }
     return nil;
 }

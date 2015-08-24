@@ -258,7 +258,9 @@
                         value = [transformer transformedValue:value];
                     }
                     
-                    if (value == nil) value = NSNull.null;
+                    if (value == nil) {
+                        value = NSNull.null;
+                    }
                     else {
                         setValueForKey(attributeName, value);
                     }
