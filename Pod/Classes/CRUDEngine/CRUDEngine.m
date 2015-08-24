@@ -86,7 +86,7 @@
         completionBlock(response);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSString *responseString = nil;
-        if(operation.responseData != nil) {
+        if(operation.responseData.bytes > 0) {
             responseString = [NSString stringWithUTF8String:[operation.responseData bytes]];
         }
         NSLog(@"ERROR :%@ %@", [error localizedDescription], responseString);
