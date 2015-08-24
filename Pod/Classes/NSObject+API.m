@@ -58,18 +58,21 @@
 }
 
 - (void)createWithCompletionBlock:(APIResponseCompletionBlock)completionBlock {
+    id criteria = [APIRouteModelCriteria criteriaWithModel:self action:APICreateKey];
     NSString *route = [[self class] modelString];
-    [[self class] requestWithKey:APICreateKey method:APIMethodPOST route:route criterias:nil importType:APIImportTypeDictionary completionBlock:completionBlock];
+    [[self class] requestWithKey:APICreateKey method:APIMethodPOST route:route criterias:@[criteria] importType:APIImportTypeDictionary completionBlock:completionBlock];
 }
 
 - (void)updateWithCompletionBlock:(APIResponseCompletionBlock)completionBlock {
+    id criteria = [APIRouteModelCriteria criteriaWithModel:self action:APIUpdateKey];
     NSString *route = [[self class] modelString];
-    [[self class] requestWithKey:APIUpdateKey method:APIMethodPOST route:route criterias:nil importType:APIImportTypeDictionary completionBlock:completionBlock];
+    [[self class] requestWithKey:APIUpdateKey method:APIMethodPUT route:route criterias:@[criteria] importType:APIImportTypeDictionary completionBlock:completionBlock];
 }
 
 - (void)deleteWithCompletionBlock:(APIResponseCompletionBlock)completionBlock {
+    id criteria = [APIRouteModelCriteria criteriaWithModel:self action:APIDeleteKey];
     NSString *route = [[self class] modelString];
-    [[self class] requestWithKey:APIDeleteKey method:APIMethodDELETE route:route criterias:nil importType:APIImportTypeDictionary completionBlock:completionBlock];
+    [[self class] requestWithKey:APIDeleteKey method:APIMethodDELETE route:route criterias:@[criteria] importType:APIImportTypeDictionary completionBlock:completionBlock];
 }
 
 #pragma mark - Utils
