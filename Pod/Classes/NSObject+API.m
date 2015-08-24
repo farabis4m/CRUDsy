@@ -85,7 +85,7 @@
             break;
         }
     }
-    return [[classString substringFromIndex:index - 1] lowercaseString];
+    return [classString substringFromIndex:index - 1];
 }
 
 + (void)requestWithKey:(NSString *)key method:(NSString *)method route:(NSString *)route criterias:(NSArray *)criterias importType:(APIImportType)importType completionBlock:(APIResponseCompletionBlock)completionBlock {
