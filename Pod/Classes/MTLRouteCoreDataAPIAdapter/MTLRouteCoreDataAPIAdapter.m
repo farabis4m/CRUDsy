@@ -37,23 +37,25 @@
     NSMutableDictionary *json = [[NSMutableDictionary alloc] init];
     
     BOOL (^deserializeAttribute)(NSString *, NSAttributeDescription *) = ^(NSString * key, NSAttributeDescription *attributeDescription) {
-        id value = [model valueForKey:key];//performInContext(context, ^{
-        //            return [model valueForKey:managedObjectKey];
-        //        });
+        id value = [model valueForKey:key];
         
         NSValueTransformer *transformer = self.valueTransformersByPropertyKey[parameters[key]];
-        if ([transformer respondsToSelector:@selector(transformedValue:success:error:)]) {
-            id<MTLTransformerErrorHandling> errorHandlingTransformer = (id)transformer;
-            
-            BOOL success = YES;
-            value = [errorHandlingTransformer transformedValue:value success:&success error:error];
-            
-            if (!success) return NO;
-        } else if (transformer != nil) {
-            value = [transformer transformedValue:value];
+        if ([transformer.class allowsReverseTransformation])
+        {
+            if ([transformer respondsToSelector:@selector(transformedValue:success:error:)]) {
+                id<MTLTransformerErrorHandling> errorHandlingTransformer = (id)transformer;
+                
+                BOOL success = YES;
+                value = [errorHandlingTransformer reverseTransformedValue:value success:&success error:error];
+                
+                if (!success) return NO;
+            } else if (transformer != nil) {
+                value = [transformer reverseTransformedValue:value];
+            }
         }
         
         json[parameters[key]] = value;
+        
         return YES;
     };
     
