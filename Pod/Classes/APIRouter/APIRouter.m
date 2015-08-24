@@ -14,6 +14,10 @@ NSString *const APIShowKey = @"show";
 NSString *const APIUpdateKey = @"update";
 NSString *const APIDeleteKey = @"delete";
 
+NSString *const APIFormatArray = @"array";
+NSString *const APIFormatDictionary = @"dictionary";
+NSString *const APIFormatNone = @"none";
+
 static NSMutableDictionary *definedRoutes = nil;
 static NSMutableDictionary *definedURLs = nil;
 static NSMutableDictionary *definedMethods = nil;
@@ -138,7 +142,18 @@ static NSMutableDictionary *definedMethods = nil;
 }
 
 - (APIImportType)importTypeWithClass:(Class)class action:(NSString *)action {
-    return [self.predefinedRoutes[[class modelString]][action][@"format"] integerValue];
+    static NSDictionary *bindings = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        bindings = @{APIFormatArray : @(APIImportTypeArray),
+                     APIFormatDictionary : @(APIImportTypeDictionary),
+                     APIFormatNone : @(APIImportTypeNone)};
+    });
+    id format = self.predefinedRoutes[[class modelString]][action][@"format"];
+    if([format isKindOfClass:[NSString class]]) {
+        return [bindings[format] integerValue];
+    }
+    return [format integerValue];
 }
 
 #pragma mark - Utils

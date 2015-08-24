@@ -133,8 +133,7 @@
         case APIImportTypeArray: return [APIJSONAdapter modelsOfClass:class fromJSONArray:json action:action error:error];
         case APIImportTypeDictionary: return [APIJSONAdapter modelOfClass:class fromJSONDictionary:json action:action error:error];
         case APIImportTypeNone: return json;
-        case APIImportTypeUndefined:
-        case default: return nil;
+        case APIImportTypeUndefined: return nil;
     }
     return nil;
 }
