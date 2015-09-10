@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>baseURL</key>
-	<string>google.com</string>
 	<key>author</key>
 	<dict>
 		<key>show</key>
@@ -60,26 +58,6 @@
 					</dict>
 				</dict>
 			</dict>
-		</dict>
-	</dict>
-	<key>user</key>
-	<dict>
-		<key>show</key>
-		<dict>
-			<key>route</key>
-			<string>profile/login</string>
-			<key>parameters</key>
-			<dict>
-				<key>login</key>
-				<string>login</string>
-				<key>password</key>
-				<string>password</string>
-			</dict>
-		</dict>
-		<key>index</key>
-		<dict>
-			<key>route</key>
-			<string>get/cpEUUvGDQO?indent=2</string>
 		</dict>
 	</dict>
 </dict>

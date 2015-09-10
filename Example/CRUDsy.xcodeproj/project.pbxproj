@@ -23,8 +23,10 @@
 		BFC0523ECC7F3A27CBADDAEC /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9702E6F0EC1BCE414924BB04 /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		E13DC460EBDDA69B94C145CB /* Pods_CRUDsy_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AA10356F99176237AC1B37F /* Pods_CRUDsy_Tests.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		E762144D181C6840350233CA /* Pods_CRUDsy_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C126384E6F69BFA8BC3F522 /* Pods_CRUDsy_Example.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		F52CDEAF1B7B2D4300416787 /* routes.plist in Resources */ = {isa = PBXBuildFile; fileRef = F52CDEAE1B7B2D4300416787 /* routes.plist */; };
 		F52CDEC21B7B50CA00416787 /* users.json in Resources */ = {isa = PBXBuildFile; fileRef = F52CDEC11B7B50CA00416787 /* users.json */; };
+		F5895F281BA1BF0800DE8FA9 /* APIUser.plist in Resources */ = {isa = PBXBuildFile; fileRef = F5895F271BA1BF0800DE8FA9 /* APIUser.plist */; };
+		F5895F2A1BA1BF1500DE8FA9 /* Book.plist in Resources */ = {isa = PBXBuildFile; fileRef = F5895F291BA1BF1500DE8FA9 /* Book.plist */; };
+		F5895F2C1BA1BF1D00DE8FA9 /* Author.plist in Resources */ = {isa = PBXBuildFile; fileRef = F5895F2B1BA1BF1D00DE8FA9 /* Author.plist */; };
 		F5BD21A61B7C6A3A00EC98F5 /* APIUser.m in Sources */ = {isa = PBXBuildFile; fileRef = F5BD219E1B7C6A3A00EC98F5 /* APIUser.m */; };
 		F5BD21A71B7C6A3A00EC98F5 /* APIUsersTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5BD21A11B7C6A3A00EC98F5 /* APIUsersTableViewController.m */; };
 		F5BD21A81B7C6A3A00EC98F5 /* APIUserTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F5BD21A51B7C6A3A00EC98F5 /* APIUserTableViewCell.m */; };
@@ -74,8 +76,10 @@
 		A92C07EE777A42225E648991 /* Pods-CRUDsy_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CRUDsy_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-CRUDsy_Example/Pods-CRUDsy_Example.release.xcconfig"; sourceTree = "<group>"; };
 		BD7110A86135A91E3CBCA981 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		D4DD7D6455FA56F060FA7082 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
-		F52CDEAE1B7B2D4300416787 /* routes.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = routes.plist; sourceTree = "<group>"; };
 		F52CDEC11B7B50CA00416787 /* users.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = users.json; sourceTree = "<group>"; };
+		F5895F271BA1BF0800DE8FA9 /* APIUser.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = APIUser.plist; sourceTree = "<group>"; };
+		F5895F291BA1BF1500DE8FA9 /* Book.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Book.plist; sourceTree = "<group>"; };
+		F5895F2B1BA1BF1D00DE8FA9 /* Author.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Author.plist; sourceTree = "<group>"; };
 		F5BD219D1B7C6A3A00EC98F5 /* APIUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APIUser.h; sourceTree = "<group>"; };
 		F5BD219E1B7C6A3A00EC98F5 /* APIUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APIUser.m; sourceTree = "<group>"; };
 		F5BD21A01B7C6A3A00EC98F5 /* APIUsersTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APIUsersTableViewController.h; sourceTree = "<group>"; };
@@ -163,7 +167,6 @@
 				F5BD219B1B7C6A3A00EC98F5 /* Models */,
 				F5BD219F1B7C6A3A00EC98F5 /* ViewControllers */,
 				F52CDEBF1B7B50B100416787 /* Resources */,
-				F52CDEAE1B7B2D4300416787 /* routes.plist */,
 				6003F59C195388D20070C39A /* APIAppDelegate.h */,
 				6003F59D195388D20070C39A /* APIAppDelegate.m */,
 				873B8AEA1B1F5CCA007FD442 /* Main.storyboard */,
@@ -256,6 +259,7 @@
 			children = (
 				F5BD219D1B7C6A3A00EC98F5 /* APIUser.h */,
 				F5BD219E1B7C6A3A00EC98F5 /* APIUser.m */,
+				F5895F271BA1BF0800DE8FA9 /* APIUser.plist */,
 			);
 			path = APIUser;
 			sourceTree = "<group>";
@@ -295,6 +299,7 @@
 			children = (
 				F5D7D70E1B81C14A0016A7F6 /* Book.h */,
 				F5D7D70F1B81C14A0016A7F6 /* Book.m */,
+				F5895F291BA1BF1500DE8FA9 /* Book.plist */,
 			);
 			path = Book;
 			sourceTree = "<group>";
@@ -304,6 +309,7 @@
 			children = (
 				F5D7D7031B81BE790016A7F6 /* Author.h */,
 				F5D7D7041B81BE790016A7F6 /* Author.m */,
+				F5895F2B1BA1BF1D00DE8FA9 /* Author.plist */,
 			);
 			path = Author;
 			sourceTree = "<group>";
@@ -418,12 +424,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F5895F281BA1BF0800DE8FA9 /* APIUser.plist in Resources */,
 				F5D7D7021B81BD4B0016A7F6 /* authors.json in Resources */,
+				F5895F2C1BA1BF1D00DE8FA9 /* Author.plist in Resources */,
 				F52CDEC21B7B50CA00416787 /* users.json in Resources */,
-				F52CDEAF1B7B2D4300416787 /* routes.plist in Resources */,
 				873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */,
 				6003F5A9195388D20070C39A /* Images.xcassets in Resources */,
 				6003F598195388D20070C39A /* InfoPlist.strings in Resources */,
+				F5895F2A1BA1BF1500DE8FA9 /* Book.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

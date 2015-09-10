@@ -61,20 +61,11 @@ static NSMutableDictionary *definedMethods = nil;
     return self;
 }
 
-+ (void)load {
-}
-
 #pragma mark - Setup
 
 - (void)setup {
     self.registeredClasses = [NSMutableArray array];
-    
-    NSString *routesFilePath = [[NSBundle mainBundle] pathForResource:@"routes" ofType:@"plist"];
-    BOOL isDirectory = NO;
-    if([[NSFileManager defaultManager] fileExistsAtPath:routesFilePath isDirectory:&isDirectory]) {
-        self.predefinedRoutes = [NSDictionary dictionaryWithContentsOfFile:routesFilePath];
-        self.baseURL = self.predefinedRoutes[@"baseURL"];
-    }
+    self.predefinedRoutes = [NSMutableDictionary dictionary];
 }
 
 #pragma mark -
@@ -122,18 +113,6 @@ static NSMutableDictionary *definedMethods = nil;
 }
 
 #pragma mark - Accessors
-
-- (NSDictionary *)routes {
-    return definedRoutes;
-}
-
-- (NSDictionary *)baseURLs {
-    return definedURLs;
-}
-
-- (NSDictionary *)methods {
-    return definedMethods;
-}
 
 - (APIImportType)importTypeWithClass:(Class)class action:(NSString *)action {
     static NSDictionary *bindings = nil;
