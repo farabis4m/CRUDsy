@@ -26,9 +26,12 @@
 
 - (void)setupWithUser:(APIUser *)user {
     self.fullnameLabel.text = [user fullname];
-    self.ageLabel.text = [NSString stringWithFormat:@"%ld years old", user.age];
+    self.ageLabel.text = [NSString stringWithFormat:@"%ld years old", (long)user.age];
     SEL selector = NSSelectorFromString(@"setImageWithString:");
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
     [self.imageView performSelector:selector withObject:@"AA"];
+#pragma clang diagnostic pop
 }
 
 @end

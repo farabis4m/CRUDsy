@@ -11,13 +11,11 @@
 
 #import "Author.h"
 
-#import "NSObject+JSON.h"
-
-#import "APIJSONAdapter.h"
-
 #import <MagicalRecord/NSManagedObject+MagicalRecord.h>
 
 #import "NSObject+API.h"
+
+#import <FluentJ/FluentJ.h>
 
 @interface AuthorsViewController ()
 
@@ -37,7 +35,7 @@
     NSError *error = nil;
     NSMutableArray *authros = [[NSMutableArray alloc] initWithCapacity:authorsJSON.count];
     for(NSDictionary *authorJSON in authorsJSON) {
-        Author *author = [APIJSONAdapter modelOfClass:[Author class] fromJSONDictionary:authorJSON action:@"index" error:&error];
+        Author *author = [Author importValue:authorJSON userInfo:@{@"action" : @"index"} error:&error];
         [authros addObject:author];
     }
 
@@ -66,7 +64,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"AuthorTableViewCell" forIndexPath:indexPath];
     Author *author = self.authors[indexPath.row];
     cell.textLabel.text = [author fullname];
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"%ld", author.books.count];
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%ld", (unsigned long)author.books.count];
     return cell;
 }
 

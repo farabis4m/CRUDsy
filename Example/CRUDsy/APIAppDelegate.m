@@ -17,16 +17,20 @@
 #import <MagicalRecord/MagicalRecordShorthandMethodAliases.h>
 
 #import "Author.h"
+#import "Book.h"
+#import "APIUser.h"
 
 @implementation APIAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [[APIRouter sharedInstance] registerClass:[APIUser class]];
+    
     [MagicalRecord setupCoreDataStackWithStoreNamed:@"CRUD"];
     [[CRUDEngine sharedInstance] setBaseURL:[NSURL URLWithString:[APIRouter sharedInstance].baseURL]];
     
     NSInteger authorsCount = [Author MR_countOfEntities];
-    NSLog(@"Authors: %ld", authorsCount);
+    NSLog(@"Authors: %ld", (long)authorsCount);
     
     return YES;
 }
