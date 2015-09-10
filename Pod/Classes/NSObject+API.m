@@ -125,9 +125,10 @@
     if(definedImportType != APIImportTypeUndefined) {
         importType = definedImportType;
     }
+    id context = [[[CRUDEngine sharedInstance] contextManager] contextForModelClass:self action:action];
     switch (importType) {
-        case APIImportTypeArray: return [class importValues:json userInfo:@{@"action" : action} error:error];
-        case APIImportTypeDictionary: return [class importValue:json userInfo:@{@"action" : action} error:error];
+        case APIImportTypeArray: return [class importValues:json context:context userInfo:@{@"action" : action} error:error];
+        case APIImportTypeDictionary: return [class importValue:json context:context userInfo:@{@"action" : action} error:error];
         case APIImportTypeNone: return json;
         case APIImportTypeUndefined: return nil;
     }
