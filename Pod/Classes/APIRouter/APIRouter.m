@@ -8,6 +8,8 @@
 
 #import "APIRouter.h"
 
+#import "APIMethods.h"
+
 NSString *const APIIndexKey = @"index";
 NSString *const APICreateKey = @"create";
 NSString *const APIShowKey = @"show";
@@ -23,6 +25,10 @@ static NSMutableDictionary *definedURLs = nil;
 static NSMutableDictionary *definedMethods = nil;
 
 #import "NSObject+API.h"
+
+#import "NSString+Pluralize.h"
+
+#import <FluentJ/FluentJ.h>
 
 @interface APIRouter ()
 
@@ -129,18 +135,6 @@ static NSMutableDictionary *definedMethods = nil;
     return definedMethods;
 }
 
-- (NSDictionary *)parametersWithClass:(Class)class {
-    return self.predefinedRoutes[[class modelString]][@"parameters"];
-}
-
-- (NSDictionary *)requestJSONKeyPathsByPropertyKey:(Class)class action:(NSString *)action {
-    return self.predefinedRoutes[[class modelString]][action][@"request"];
-}
-
-- (NSDictionary *)responseJSONKeyPathsByPropertyKey:(Class)class action:(NSString *)action {
-    return self.predefinedRoutes[[class modelString]][action][@"response"];
-}
-
 - (APIImportType)importTypeWithClass:(Class)class action:(NSString *)action {
     static NSDictionary *bindings = nil;
     static dispatch_once_t onceToken;
@@ -156,10 +150,40 @@ static NSMutableDictionary *definedMethods = nil;
     return [format integerValue];
 }
 
+- (NSString *)urlForClassString:(NSString *)classString action:(NSString *)action {
+    return self.predefinedRoutes[classString][action][@"url"] ?: self.baseURL;
+}
+
+- (NSString *)routeForClassString:(NSString *)classString action:(NSString *)action {
+    return self.predefinedRoutes[classString][action][@"route"] ?: [classString pluralize];
+}
+
+- (NSString *)methodForClassString:(NSString *)classString action:(NSString *)action {
+    NSString *method = self.predefinedRoutes[classString][action][@"method"];
+    if(!method) {
+        NSDictionary *actionsTable = @{APIIndexKey : APIMethodGET,
+                                       APIShowKey : APIMethodGET,
+                                       APIDeleteKey : APIMethodDELETE,
+                                       APICreateKey : APIMethodPOST,
+                                       APIUpdateKey : APIMethodPUT};
+        method = actionsTable[action];
+    }
+    return method;
+}
+
+- (NSDictionary *)requestParametersJSONKeyPathsByPropertyKey:(Class)class action:(NSString *)action {
+    return self.predefinedRoutes[[class modelString]][action][@"request"][@"parameters"] ?: [class keysForKeyPaths:@{@"action" : action}];
+}
+
+- (NSDictionary *)responseParametersJSONKeyPathsByPropertyKey:(Class)class action:(NSString *)action; {
+    return self.predefinedRoutes[[class modelString]][action][@"response"][@"parameters"] ?: [class keysForKeyPaths:@{@"action" : action}];
+}
+
 #pragma mark - Utils
 
 - (void)flushRoutesForClass:(NSString *)classString {
-    NSDictionary *classRoutes = self.predefinedRoutes[classString];
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:classString ofType:@"plist"];
+    NSDictionary *classRoutes = [NSDictionary dictionaryWithContentsOfFile:filePath];
     for(NSString *APIKey in classRoutes.allKeys) {
         NSDictionary *define = classRoutes[APIKey];
         NSString *method = define[@"method"];

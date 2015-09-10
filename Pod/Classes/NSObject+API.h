@@ -52,6 +52,7 @@
 - (void)deleteWithCompletionBlock:(APIResponseCompletionBlock)completionBlock;
 
 + (NSString *)modelString;
+
 /**
  Method to launch request.
  @param key `NSString` object that represents key action from defined list. Also this value checked in routes.plist file.
@@ -62,5 +63,14 @@
  @param completionBlock Block that will be called after request finished.
  */
 + (void)requestWithKey:(NSString *)key method:(NSString *)method route:(NSString *)route criterias:(NSArray *)criterias importType:(APIImportType)importType completionBlock:(APIResponseCompletionBlock)completionBlock;
+
+/**
+ Method to launch request.
+ @param key `NSString` object that represents key action from defined list. Also this value checked in routes.plist file.
+ @param criterias Array of criterias.
+ @param importType Import type of expected response.
+ @param completionBlock Block that will be called after request finished.
+ */
++ (void)requestWithKey:(NSString *)key criterias:(NSArray *)criterias importType:(APIImportType)importType completionBlock:(APIResponseCompletionBlock)completionBlock;
 
 @end

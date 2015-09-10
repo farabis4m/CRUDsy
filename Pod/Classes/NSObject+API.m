@@ -30,7 +30,8 @@
 #pragma mark - MTL Serialization
 
 + (NSDictionary *)keysForKeyPaths:(NSDictionary *)userInfo {
-    return [[APIRouter sharedInstance] responseJSONKeyPathsByPropertyKey:[self class] action:userInfo[@"action"]][@"parameters"];
+    // TODO: use method parameters as userInfo dictionary.
+    return [[APIRouter sharedInstance] responseParametersJSONKeyPathsByPropertyKey:[self class] action:userInfo[@"action"]];
 }
 
 #pragma mark - API
@@ -40,32 +41,27 @@
 }
 
 + (void)listWithCriterias:(NSArray *)criterias completionBlock:(APIResponseCompletionBlock)completionBlock {
-    NSString *route = [[[self class] modelString] pluralize];
-    [self requestWithKey:APIIndexKey method:APIMethodGET route:route criterias:criterias importType:APIImportTypeArray completionBlock:completionBlock];
+    [self requestWithKey:APIIndexKey criterias:criterias importType:APIImportTypeArray completionBlock:completionBlock];
 }
 
 - (void)showWithCompletionBlock:(APIResponseCompletionBlock)completionBlock {
     id criteria = [APIRouteModelCriteria criteriaWithModel:self action:APIShowKey];
-    NSString *route = [[[self class] modelString] pluralize];
-    [[self class] requestWithKey:APIShowKey method:APIMethodGET route:route criterias:@[criteria] importType:APIImportTypeDictionary completionBlock:completionBlock];
+    [[self class] requestWithKey:APIShowKey criterias:@[criteria] importType:APIImportTypeDictionary completionBlock:completionBlock];
 }
 
 - (void)createWithCompletionBlock:(APIResponseCompletionBlock)completionBlock {
     id criteria = [APIRouteModelCriteria criteriaWithModel:self action:APICreateKey];
-    NSString *route = [[self class] modelString];
-    [[self class] requestWithKey:APICreateKey method:APIMethodPOST route:route criterias:@[criteria] importType:APIImportTypeDictionary completionBlock:completionBlock];
+    [[self class] requestWithKey:APICreateKey criterias:@[criteria] importType:APIImportTypeDictionary completionBlock:completionBlock];
 }
 
 - (void)updateWithCompletionBlock:(APIResponseCompletionBlock)completionBlock {
     id criteria = [APIRouteModelCriteria criteriaWithModel:self action:APIUpdateKey];
-    NSString *route = [[self class] modelString];
-    [[self class] requestWithKey:APIUpdateKey method:APIMethodPUT route:route criterias:@[criteria] importType:APIImportTypeDictionary completionBlock:completionBlock];
+    [[self class] requestWithKey:APIUpdateKey criterias:@[criteria] importType:APIImportTypeDictionary completionBlock:completionBlock];
 }
 
 - (void)deleteWithCompletionBlock:(APIResponseCompletionBlock)completionBlock {
     id criteria = [APIRouteModelCriteria criteriaWithModel:self action:APIDeleteKey];
-    NSString *route = [[self class] modelString];
-    [[self class] requestWithKey:APIDeleteKey method:APIMethodDELETE route:route criterias:@[criteria] importType:APIImportTypeDictionary completionBlock:completionBlock];
+    [[self class] requestWithKey:APIDeleteKey criterias:@[criteria] importType:APIImportTypeDictionary completionBlock:completionBlock];
 }
 
 #pragma mark - Utils
@@ -74,25 +70,25 @@
     return NSStringFromClass([self class]);
 }
 
-+ (void)requestWithKey:(NSString *)key method:(NSString *)method route:(NSString *)route criterias:(NSArray *)criterias importType:(APIImportType)importType completionBlock:(APIResponseCompletionBlock)completionBlock {
++ (void)requestWithKey:(NSString *)key criterias:(NSArray *)criterias importType:(APIImportType)importType completionBlock:(APIResponseCompletionBlock)completionBlock {
     NSString *modelString = [self modelString];
-    NSString *URLString = [[APIRouter sharedInstance] baseURLs][modelString][key];
-    if(!URLString) {
-        URLString = [[APIRouter sharedInstance] baseURL];
-    }
-    NSString *finalRoute = [[APIRouter sharedInstance] routes][modelString][key];
-    if(!finalRoute) {
-        finalRoute = modelString;
-    }
-    NSString *finalMethod = [[APIRouter sharedInstance] methods][modelString][key];
-    if(!finalMethod) {
-        finalMethod = method;
-    }
+    NSString *URLString = [[APIRouter sharedInstance] urlForClassString:modelString action:key];
+    NSString *route = [[APIRouter sharedInstance] routeForClassString:modelString action:key];
+    NSString *method = [[APIRouter sharedInstance] methodForClassString:modelString action:key];
     NSMutableDictionary *parametrs = [NSMutableDictionary dictionary];
     for(APICriteria *criteria in criterias) {
         [parametrs addEntriesFromDictionary:[criteria exportValuesWithKeys:nil]];
     }
-    [self callWithURL:URLString Method:finalMethod route:finalRoute action:key parameters:parametrs importType:importType completionBlock:completionBlock];
+    [self callWithURL:URLString Method:method route:route action:key parameters:parametrs importType:importType completionBlock:completionBlock];
+}
+
++ (void)requestWithKey:(NSString *)key method:(NSString *)method route:(NSString *)route criterias:(NSArray *)criterias importType:(APIImportType)importType completionBlock:(APIResponseCompletionBlock)completionBlock {
+    NSString *URLString = [[APIRouter sharedInstance] urlForClassString:[self modelString] action:key];
+    NSMutableDictionary *parametrs = [NSMutableDictionary dictionary];
+    for(APICriteria *criteria in criterias) {
+        [parametrs addEntriesFromDictionary:[criteria exportValuesWithKeys:nil]];
+    }
+    [self callWithURL:URLString Method:method route:route action:key parameters:parametrs importType:importType completionBlock:completionBlock];
 }
 
 + (void)callWithURL:(NSString *)URLString Method:(NSString *)method route:(NSString *)route action:(NSString *)action parameters:(id)parameters importType:(APIImportType)importType completionBlock:(APIResponseCompletionBlock)completionBlock {

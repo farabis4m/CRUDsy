@@ -32,9 +32,12 @@ extern NSString *const APIDeleteKey;
 + (instancetype)sharedInstance;
 
 - (void)registerClass:(Class)class;
-- (NSDictionary *)parametersWithClass:(Class)class;
-- (NSDictionary *)requestJSONKeyPathsByPropertyKey:(Class)class action:(NSString *)action;
-- (NSDictionary *)responseJSONKeyPathsByPropertyKey:(Class)class action:(NSString *)action;;
+
+- (NSString *)urlForClassString:(NSString *)classString action:(NSString *)action;
+- (NSString *)routeForClassString:(NSString *)classString action:(NSString *)action;
+- (NSString *)methodForClassString:(NSString *)classString action:(NSString *)action;
+- (NSDictionary *)requestParametersJSONKeyPathsByPropertyKey:(Class)class action:(NSString *)action;
+- (NSDictionary *)responseParametersJSONKeyPathsByPropertyKey:(Class)class action:(NSString *)action;;
 
 - (APIImportType)importTypeWithClass:(Class)class action:(NSString *)action;
 
