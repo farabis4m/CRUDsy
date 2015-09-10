@@ -41,5 +41,6 @@ Pod::Spec.new do |s|
         ss.dependency 'MTLManagedObjectAdapter'
         ss.dependency 'MagicalRecord', '~> 2.3'
     end
+    s.dependency 'FluentJ'
 
 end
