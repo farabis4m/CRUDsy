@@ -266,17 +266,9 @@
 				F5D7D7061B81BF900016A7F6 /* Core Data Example */,
 				F5BD21A01B7C6A3A00EC98F5 /* APIUsersTableViewController.h */,
 				F5BD21A11B7C6A3A00EC98F5 /* APIUsersTableViewController.m */,
-				F5BD21A21B7C6A3A00EC98F5 /* APIUserTableViewCel */,
 				F5BD21A31B7C6A3A00EC98F5 /* APIUserTableViewCell */,
 			);
 			path = ViewControllers;
-			sourceTree = "<group>";
-		};
-		F5BD21A21B7C6A3A00EC98F5 /* APIUserTableViewCel */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = APIUserTableViewCel;
 			sourceTree = "<group>";
 		};
 		F5BD21A31B7C6A3A00EC98F5 /* APIUserTableViewCell */ = {

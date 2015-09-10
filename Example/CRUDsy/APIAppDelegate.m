@@ -24,8 +24,6 @@
 {
     [MagicalRecord setupCoreDataStackWithStoreNamed:@"CRUD"];
     [[CRUDEngine sharedInstance] setBaseURL:[NSURL URLWithString:[APIRouter sharedInstance].baseURL]];
-//    [[CRUDEngine sharedInstance] setBaseURL:[NSURL URLWithString:@"http://www.json-generator.com/api/json"]];
-    // Override point for customization after application launch.
     
     NSInteger authorsCount = [Author MR_countOfEntities];
     NSLog(@"Authors: %ld", authorsCount);
