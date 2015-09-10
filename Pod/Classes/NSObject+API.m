@@ -15,20 +15,13 @@
 #import "APIMethods.h"
 
 #import "APICriteria.h"
-
-#import "NSObject+JSON.h"
-
-#import <Mantle/MTLJSONAdapter.h>
-
-#import "APIJSONAdapter.h"
-
 #import "APIRouteModelCriteria.h"
 
 #import "NSString+Pluralize.h"
 
-#import <Mantle/MTLModel.h>
+#import <FluentJ/FluentJ.h>
 
-@interface NSObject () <ModelIDProtocol, MTLJSONSerializing>
+@interface NSObject () <ModelIDProtocol>
 
 @end
 
@@ -107,7 +100,7 @@
     }
     NSMutableDictionary *parametrs = [NSMutableDictionary dictionary];
     for(APICriteria *criteria in criterias) {
-        [parametrs addEntriesFromDictionary:[criteria JSON]];
+        [parametrs addEntriesFromDictionary:[criteria exportValuesWithKeys:nil]];
     }
     [self callWithURL:URLString Method:finalMethod route:finalRoute action:key parameters:parametrs importType:importType completionBlock:completionBlock];
 }
@@ -133,8 +126,8 @@
         importType = definedImportType;
     }
     switch (importType) {
-        case APIImportTypeArray: return [APIJSONAdapter modelsOfClass:class fromJSONArray:json action:action error:error];
-        case APIImportTypeDictionary: return [APIJSONAdapter modelOfClass:class fromJSONDictionary:json action:action error:error];
+        case APIImportTypeArray: return [class importValues:json userInfo:@{@"action" : action} error:error];
+        case APIImportTypeDictionary: return [class importValue:json userInfo:@{@"action" : action} error:error];
         case APIImportTypeNone: return json;
         case APIImportTypeUndefined: return nil;
     }

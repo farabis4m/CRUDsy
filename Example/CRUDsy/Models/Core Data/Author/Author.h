@@ -6,13 +6,11 @@
 //  Copyright (c) 2015 vlad gorbenko. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
-#import "MTLManagedModel.h"
+#import <CoreData/CoreData.h>
 
 @class Book;
 
-@interface Author : MTLManagedModel
+@interface Author : NSManagedObject
 
 @property (nonatomic, retain) NSString * firstname;
 @property (nonatomic, retain) NSString * lastname;

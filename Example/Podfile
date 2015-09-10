@@ -1,6 +1,7 @@
 source 'https://github.com/CocoaPods/Specs.git'
 use_frameworks!
 
+pod 'MagicalRecord'
 pod 'SVProgressHUD', '~> 1.1'
 pod 'UIImageView-Letters', '~> 1.1'
 pod 'BKRecursiveDescription', '~> 0.0.1'

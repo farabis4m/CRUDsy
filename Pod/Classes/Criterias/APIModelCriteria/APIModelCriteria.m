@@ -8,6 +8,8 @@
 
 #import "APIModelCriteria.h"
 
+#import <FluentJ/FluentJ.h>
+
 @implementation APIModelCriteria
 
 #pragma mark - FTAPIModelCriteria lifecycle
@@ -28,8 +30,10 @@
 
 - (NSDictionary *)JSON {
     if(self.model.identifier) {
-        NSString *key = [[[self.model class] JSONKeyPathsByPropertyKey] objectForKey:@"identifier"];
-        return @{key : self.model.identifier};
+        NSString *key = [[self.model class] keysForKeyPaths:self.userInfo][@"identifier"];
+        if(key.length) {
+            return @{key : self.model.identifier};
+        }
     }
     return @{};
 }

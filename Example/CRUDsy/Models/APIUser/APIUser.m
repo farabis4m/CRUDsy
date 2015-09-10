@@ -14,9 +14,9 @@
 
 @synthesize identifier = _identifier;
 
-#pragma mark - MTL Serialization
+#pragma mark - JSON Serialization
 
-+ (NSDictionary *)JSONKeyPathsByPropertyKey {
++ (NSDictionary *)keysForKeyPaths:(NSDictionary *)userInfo {
     return @{@"login" : @"login",
              @"password" : @"passwrod",
              @"id" : @"id",

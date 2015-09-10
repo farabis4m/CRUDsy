@@ -34,13 +34,7 @@ Pod::Spec.new do |s|
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
-    s.dependency 'Mantle', '2.0.2'
     s.dependency 'AFNetworking', '~> 2.5.4'
-    s.subspec 'CoreData' do |ss|
-        ss.dependency 'MTLManagedObjectAdapter'
-        ss.dependency 'MagicalRecord', '~> 2.3'
-    end
     s.dependency 'FluentJ'
 
 end

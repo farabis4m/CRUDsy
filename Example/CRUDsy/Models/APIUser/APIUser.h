@@ -10,9 +10,9 @@
 
 #import "ModelIDProtocol.h"
 
-#import <Mantle/Mantle.h>
+#import <FluentJ/FluentJ.h>
 
-@interface APIUser : MTLModel <MTLJSONSerializing, ModelIDProtocol>
+@interface APIUser : NSObject <ModelIDProtocol>
 
 @property (nonatomic, strong) NSString *login;
 @property (nonatomic, strong) NSString *password;

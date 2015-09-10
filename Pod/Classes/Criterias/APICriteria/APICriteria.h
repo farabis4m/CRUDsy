@@ -6,10 +6,9 @@
 //
 //
 
-#import <Mantle/MTLModel.h>
-#import <Mantle/MTLJSONAdapter.h>
+#import <Foundation/Foundation.h>
 
-@interface APICriteria : MTLModel <MTLJSONSerializing>
+@interface APICriteria : NSObject
 
 @property (nonatomic, strong) NSDictionary *userInfo;
 

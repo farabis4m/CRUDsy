@@ -12,8 +12,6 @@
 
 #import <AFNetworking/AFNetworkActivityIndicatorManager.h>
 
-#import "APIContextManager.h"
-
 @interface CRUDEngine ()
 
 @property (nonatomic, strong) AFHTTPRequestOperationManager *operationManager;
@@ -40,7 +38,6 @@
     if(self) {
         [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
         self.operationManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:@""]];
-        self.contextManager = [[APIContextManager alloc] init];
     }
     return self;
 }

@@ -10,9 +10,7 @@
 
 #import "APIRouter.h"
 
-#import "NSObject+JSON.h"
-
-#import "APIJSONAdapter.h"
+#import <FluentJ/FluentJ.h>
 
 @implementation APIRouteModelCriteria
 
@@ -27,12 +25,8 @@
 #pragma mark - JSON
 
 - (NSDictionary *)JSONWithError:(NSError *__autoreleasing *)error {
-    if([self.model conformsToProtocol:@protocol(MTLRouteJSONSerializing)]) {
-        NSObject<MTLRouteJSONSerializing> *model = self.model;
-        return [APIJSONAdapter JSONDictionaryFromModel:model action:self.action error:error];
-    }
-    NSLog(@"MODEL: %@ does not support MTL Serialization", self.model);
-    return @{};
+    NSObject *model = (NSObject *)self.model;
+    return [model exportValuesWithKeys:nil];
 }
 
 - (NSDictionary *)JSON {
