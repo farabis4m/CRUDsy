@@ -29,8 +29,8 @@
 
 #pragma mark - MTL Serialization
 
-+ (NSDictionary *)JSONKeyPathsByPropertyKeyWithAction:(NSString *)action {
-    return [[APIRouter sharedInstance] responseJSONKeyPathsByPropertyKey:[self class] action:action][@"parameters"];
++ (NSDictionary *)keysForKeyPaths:(NSDictionary *)userInfo {
+    return [[APIRouter sharedInstance] responseJSONKeyPathsByPropertyKey:[self class] action:userInfo[@"action"]][@"parameters"];
 }
 
 #pragma mark - API
@@ -71,17 +71,7 @@
 #pragma mark - Utils
 
 + (NSString *)modelString {
-    NSString *classString = NSStringFromClass([self class]);
-    NSInteger index = 0;
-    for(NSInteger i = 0; i < [classString length]; i++) {
-        unichar letter = [classString characterAtIndex:i];
-        if([[NSCharacterSet uppercaseLetterCharacterSet] characterIsMember:letter]) {
-            index++;
-        } else {
-            break;
-        }
-    }
-    return [classString substringFromIndex:index - 1];
+    return NSStringFromClass([self class]);
 }
 
 + (void)requestWithKey:(NSString *)key method:(NSString *)method route:(NSString *)route criterias:(NSArray *)criterias importType:(APIImportType)importType completionBlock:(APIResponseCompletionBlock)completionBlock {
