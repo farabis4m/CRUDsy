@@ -165,6 +165,9 @@ static NSMutableDictionary *definedMethods = nil;
 
 - (void)flushRoutesForClass:(NSString *)classString {
     NSString *filePath = [[NSBundle mainBundle] pathForResource:classString ofType:@"plist"];
+    if(!filePath) {
+        return;
+    }
     NSDictionary *classRoutes = [NSDictionary dictionaryWithContentsOfFile:filePath];
     for(NSString *APIKey in classRoutes.allKeys) {
         NSDictionary *define = classRoutes[APIKey];
