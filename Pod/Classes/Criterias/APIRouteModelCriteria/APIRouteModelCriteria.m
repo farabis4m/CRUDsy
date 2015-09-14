@@ -30,6 +30,9 @@
     [mutableUserInfo addEntriesFromDictionary:userInfo];
     [mutableUserInfo addEntriesFromDictionary:self.userInfo];
     [mutableUserInfo addEntriesFromDictionary:@{@"type" : @"request"}];
+    if(self.action) {
+        [mutableUserInfo addEntriesFromDictionary:@{@"action" : self.action}];
+    }
     return [model exportWithUserInfo:mutableUserInfo error:error];
 }
 
