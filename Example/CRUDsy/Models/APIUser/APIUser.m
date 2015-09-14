@@ -12,23 +12,10 @@
 
 @synthesize identifier = _identifier;
 
-#pragma mark - JSON Serialization
-
-+ (NSDictionary *)keysForKeyPaths:(NSDictionary *)userInfo {
-    return @{@"login" : @"login",
-             @"password" : @"passwrod",
-             @"id" : @"id",
-             @"firstname" : @"firstname",
-             @"lastname" : @"lastname",
-             @"age" : @"age"};
-}
-
-#pragma mark - APIUser lifecycle
-
 #pragma mark - Utils
 
 - (NSString *)fullname {
-    return [NSString stringWithFormat:@"%@ %@", self.firstname, self.lastname];
+    return [NSString stringWithFormat:@"%@ %@", self.firstName, self.lastName];
 }
 
 @end

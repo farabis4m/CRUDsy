@@ -17,8 +17,8 @@
 @property (nonatomic, strong) NSString *login;
 @property (nonatomic, strong) NSString *password;
 
-@property (nonatomic, strong) NSString *firstname;
-@property (nonatomic, strong) NSString *lastname;
+@property (nonatomic, strong) NSString *firstName;
+@property (nonatomic, strong) NSString *lastName;
 @property (nonatomic, assign) NSInteger age;
 
 - (NSString *)fullname;

@@ -22,8 +22,7 @@
 
 @implementation APIAppDelegate
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     [[APIRouter sharedInstance] registerClass:[APIUser class]];
     
     [MagicalRecord setupCoreDataStackWithStoreNamed:@"CRUD"];

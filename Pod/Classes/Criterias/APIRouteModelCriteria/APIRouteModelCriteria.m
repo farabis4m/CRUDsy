@@ -26,7 +26,7 @@
 
 - (NSDictionary *)JSONWithError:(NSError *__autoreleasing *)error {
     NSObject *model = (NSObject *)self.model;
-    return [model exportValuesWithKeys:nil];
+    return [model exportWithUserInfo:@{@"action" : APIShowKey} error:error];
 }
 
 - (NSDictionary *)JSON {

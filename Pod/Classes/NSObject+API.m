@@ -77,7 +77,7 @@
     NSString *method = [[APIRouter sharedInstance] methodForClassString:modelString action:key];
     NSMutableDictionary *parametrs = [NSMutableDictionary dictionary];
     for(APICriteria *criteria in criterias) {
-        [parametrs addEntriesFromDictionary:[criteria exportValuesWithKeys:nil]];
+        [parametrs addEntriesFromDictionary:[criteria exportWithUserInfo:nil error:nil]];
     }
     [self callWithURL:URLString Method:method route:route action:key parameters:parametrs importType:importType completionBlock:completionBlock];
 }
@@ -86,7 +86,7 @@
     NSString *URLString = [[APIRouter sharedInstance] urlForClassString:[self modelString] action:key];
     NSMutableDictionary *parametrs = [NSMutableDictionary dictionary];
     for(APICriteria *criteria in criterias) {
-        [parametrs addEntriesFromDictionary:[criteria exportValuesWithKeys:nil]];
+        [parametrs addEntriesFromDictionary:[criteria exportWithUserInfo:nil error:nil]];
     }
     [self callWithURL:URLString Method:method route:route action:key parameters:parametrs importType:importType completionBlock:completionBlock];
 }
@@ -119,7 +119,7 @@
                 NSArray *keys = [json allKeys];
                 json = json[keys.lastObject];
             }
-            return [class importValues:json context:context userInfo:@{@"action" : action} error:error]
+            return [class importValue:json context:context userInfo:@{@"action" : action} error:error]
             ;
         }
             

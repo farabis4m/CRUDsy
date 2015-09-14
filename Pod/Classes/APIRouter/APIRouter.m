@@ -34,7 +34,7 @@ static NSMutableDictionary *definedMethods = nil;
 
 @property (nonatomic, strong) NSMutableArray *registeredClasses;
 
-@property (nonatomic, strong) NSDictionary *predefinedRoutes;
+@property (nonatomic, strong) NSMutableDictionary *predefinedRoutes;
 
 @end
 
@@ -155,7 +155,10 @@ static NSMutableDictionary *definedMethods = nil;
 }
 
 - (NSDictionary *)responseParametersJSONKeyPathsByPropertyKey:(Class)class action:(NSString *)action; {
-    return self.predefinedRoutes[[class modelString]][action][@"response"][@"parameters"] ?: [class keysForKeyPaths:@{@"action" : action}];
+    if(!action) {
+        return nil;
+    }
+    return self.predefinedRoutes[[class modelString]][action][@"response"][@"parameters"];
 }
 
 #pragma mark - Utils
@@ -178,6 +181,7 @@ static NSMutableDictionary *definedMethods = nil;
             [[self class] setRoute:route forKey:APIKey model:classString];
         }
     }
+    [self.predefinedRoutes setObject:classRoutes forKey:classString];
 }
 
 @end

@@ -55,16 +55,20 @@
 #pragma mark - Utils
 
 - (void)loadUsers {
-    [SVProgressHUD show];
-    [APIUser listWithCompletionBlock:^(APIResponse *response) {
-        if(!response.error) {
-            self.users = response.data;
-            [self.tableView reloadData];
-        } else {
-            NSLog(@"ERROR : %@", response.error);
-        }
-        [SVProgressHUD dismiss];
-    }];
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"users" ofType:@"json"];
+    NSData *fileData = [NSData dataWithContentsOfFile:filePath];
+    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:fileData options:0 error:nil];
+    self.users = [APIUser importValue:json userInfo:@{@"action" : @"index"} error:nil];
+//    [SVProgressHUD show];
+//    [APIUser listWithCompletionBlock:^(APIResponse *response) {
+//        if(!response.error) {
+//            self.users = response.data;
+//            [self.tableView reloadData];
+//        } else {
+//            NSLog(@"ERROR : %@", response.error);
+//        }
+//        [SVProgressHUD dismiss];
+//    }];
 }
 
 /*
