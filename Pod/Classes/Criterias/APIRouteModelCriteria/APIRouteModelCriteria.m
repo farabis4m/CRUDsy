@@ -24,14 +24,13 @@
 
 #pragma mark - JSON
 
-- (NSDictionary *)JSONWithError:(NSError *__autoreleasing *)error {
+- (id)exportWithUserInfo:(NSDictionary *)userInfo error:(NSError *__autoreleasing *)error {
     NSObject *model = (NSObject *)self.model;
-    return [model exportWithUserInfo:@{@"action" : APIShowKey} error:error];
-}
-
-- (NSDictionary *)JSON {
-    NSError *error = nil;
-    return [self JSONWithError:&error];
+    NSMutableDictionary *mutableUserInfo = [NSMutableDictionary dictionary];
+    [mutableUserInfo addEntriesFromDictionary:userInfo];
+    [mutableUserInfo addEntriesFromDictionary:self.userInfo];
+    [mutableUserInfo addEntriesFromDictionary:@{@"type" : @"request"}];
+    return [model exportWithUserInfo:mutableUserInfo error:error];
 }
 
 @end
