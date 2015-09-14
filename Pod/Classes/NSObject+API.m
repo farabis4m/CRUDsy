@@ -31,7 +31,15 @@
 
 + (NSDictionary *)keysForKeyPaths:(NSDictionary *)userInfo {
     // TODO: use method parameters as userInfo dictionary.
-    return [[APIRouter sharedInstance] responseParametersJSONKeyPathsByPropertyKey:[self class] action:userInfo[@"action"]];
+    NSDictionary *keys = [[APIRouter sharedInstance] responseParametersJSONKeyPathsByPropertyKey:[self class] action:userInfo[@"action"]];
+    if(!keys[@"identifier"]) {
+        NSMutableDictionary *mutableKeys = [NSMutableDictionary dictionaryWithDictionary:keys];
+        // TODO: handle to customize it
+        NSArray *ids = @[@"id", @"identifier", @"Id"];
+        [mutableKeys setObject:ids forKey:@"identifier"];
+        keys = mutableKeys;
+    }
+    return keys;
 }
 
 #pragma mark - API
