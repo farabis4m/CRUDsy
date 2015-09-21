@@ -34,6 +34,13 @@
 - (void)showWithCompletionBlock:(APIResponseCompletionBlock)completionBlock;
 
 /**
+ Method to get details of object.
+ Based on id.
+ /items/:id?p1=val1&p2=val2
+ */
+- (void)showWithCriterias:(NSArray *)criterias completionBlock:(APIResponseCompletionBlock)completionBlock;
+
+/**
  Method to add new item.
  URL: POST /items
  */

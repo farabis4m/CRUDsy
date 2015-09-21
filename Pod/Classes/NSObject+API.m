@@ -62,6 +62,12 @@
     [[self class] requestWithKey:APIShowKey criterias:@[criteria] importType:APIImportTypeDictionary completionBlock:completionBlock];
 }
 
+- (void)showWithCriterias:(NSArray *)criterias completionBlock:(APIResponseCompletionBlock)completionBlock {
+    id criteria = [APIRouteModelCriteria criteriaWithModel:self action:APIShowKey];
+    NSArray *allCriterias = [criterias arrayByAddingObject:criteria];
+    [[self class] requestWithKey:APIShowKey criterias:allCriterias importType:APIImportTypeDictionary completionBlock:completionBlock];
+}
+
 - (void)createWithCompletionBlock:(APIResponseCompletionBlock)completionBlock {
     id criteria = [APIRouteModelCriteria criteriaWithModel:self action:APICreateKey];
     [[self class] requestWithKey:APICreateKey criterias:@[criteria] importType:APIImportTypeDictionary completionBlock:completionBlock];
