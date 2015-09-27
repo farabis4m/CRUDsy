@@ -72,8 +72,10 @@ static NSMutableDictionary *definedMethods = nil;
 
 - (void)registerClass:(Class)class {
     NSString *classString = NSStringFromClass(class);
-    [self.registeredClasses addObject:classString];
-    [self flushRoutesForClass:[class modelString]];
+    if(![self.registeredClasses containsObject:classString]) {
+        [self.registeredClasses addObject:classString];
+        [self flushRoutesForClass:[class modelString]];
+    }
 }
 
 + (void)setURL:(NSString *)url forKey:(NSString *)key model:(NSString *)model {

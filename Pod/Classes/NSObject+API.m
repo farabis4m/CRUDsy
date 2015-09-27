@@ -90,6 +90,7 @@
 }
 
 + (void)requestWithKey:(NSString *)key criterias:(NSArray *)criterias importType:(APIImportType)importType completionBlock:(APIResponseCompletionBlock)completionBlock {
+    [[APIRouter sharedInstance] registerClass:self];
     NSString *modelString = [self modelString];
     NSString *URLString = [[APIRouter sharedInstance] urlForClassString:modelString action:key];
     NSString *route = [[APIRouter sharedInstance] routeForClassString:modelString action:key];
@@ -102,6 +103,7 @@
 }
 
 + (void)requestWithKey:(NSString *)key method:(NSString *)method route:(NSString *)route criterias:(NSArray *)criterias importType:(APIImportType)importType completionBlock:(APIResponseCompletionBlock)completionBlock {
+    [[APIRouter sharedInstance] registerClass:self];
     NSString *URLString = [[APIRouter sharedInstance] urlForClassString:[self modelString] action:key];
     NSMutableDictionary *parametrs = [NSMutableDictionary dictionary];
     for(APICriteria *criteria in criterias) {
