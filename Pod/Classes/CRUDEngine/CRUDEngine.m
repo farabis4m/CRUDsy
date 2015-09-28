@@ -61,6 +61,56 @@
 
 #pragma mark - Utils
 
+- (id)HTTPRequestOperationURL:(NSURL *)URL HTTPMethod:(NSString *)method URLString:(NSString *)URLString parameters:(NSDictionary *)parameters multipart:(BOOL)multipart completionBlock:(APIResponseCompletionBlock)completionBlock {
+    
+    NSArray *values = [parameters allValues];
+    NSArray *dataObjects = [values filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"class == %@", [NSData class]]];
+    NSMutableArray *dataKeys = [NSMutableArray array];
+    for(id dataObject in dataObjects) {
+        NSArray *keys = [parameters allKeysForObject:dataObject];
+        [dataKeys addObjectsFromArray:keys];
+    }
+    
+    NSMutableDictionary *allParameters = [NSMutableDictionary dictionaryWithDictionary:parameters];
+    NSDictionary *dataParameters = [allParameters dictionaryWithValuesForKeys:dataKeys];
+    [allParameters removeObjectsForKeys:dataKeys];
+    
+    NSError *serializationError = nil;
+    NSURL *fullURL = [URL URLByAppendingPathComponent:URLString];
+    NSString *relativeURLString = [fullURL absoluteString];
+    NSURLRequest *request = [self.requestSerializer multipartFormRequestWithMethod:method URLString:relativeURLString parameters:allParameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+        for(id key in dataKeys) {
+            [formData appendPartWithFormData:dataParameters[key] name:key];
+        }
+    } error:&serializationError];
+    
+    id operation = [self.operationManager HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        id responseResult = responseObject;//[self.APIAdapter prepareForParsingResponseObject:responseObject];
+        APIResponse *response = [[APIResponse alloc] init];
+        response.data = responseResult;
+        completionBlock(response);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSString *responseString = nil;
+        if(operation.responseData.bytes > 0) {
+            responseString = [NSString stringWithUTF8String:[operation.responseData bytes]];
+        }
+        NSLog(@"ERROR :%@ %@", [error localizedDescription], responseString);
+        NSLog(@"ERROR DESCR: %@", [NSHTTPURLResponse localizedStringForStatusCode:operation.response.statusCode]);
+        APIResponse *response = [[APIResponse alloc] init];
+        response.error = error;
+        if(operation.response.statusCode == 401) {
+            NSError *error = [NSError errorWithDomain:@"com.API" code:0 userInfo:@{NSLocalizedDescriptionKey : operation.responseObject[@"ErrorMessage"]}];
+            response.error = error;
+            completionBlock(response);
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"Unauthorized" object:nil];
+        } else {
+            completionBlock(response);
+        }
+    }];
+    [self.operationManager.operationQueue addOperation:operation];
+    return operation;
+}
+
 - (id)HTTPRequestOperationURL:(NSURL *)URL HTTPMethod:(NSString *)method URLString:(NSString *)URLString parameters:(id)parameters completionBlock:(APIResponseCompletionBlock)completionBlock {
     NSError *serializationError = nil;
     NSURL *fullURL = [URL URLByAppendingPathComponent:URLString];
