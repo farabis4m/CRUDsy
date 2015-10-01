@@ -15,6 +15,7 @@
 @property (nonatomic, strong) id<ModelIDProtocol> model;
 
 + (instancetype)criteriaWithModel:(id<ModelIDProtocol>)model;
++ (NSArray *)criteriasWithModels:(NSArray *)models;
 
 - (instancetype)initWithModel:(id<ModelIDProtocol>)model;
 

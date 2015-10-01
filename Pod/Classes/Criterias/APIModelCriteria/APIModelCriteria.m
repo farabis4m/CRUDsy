@@ -18,6 +18,15 @@
     return [[self alloc] initWithModel:model];
 }
 
++ (NSArray *)criteriasWithModels:(NSArray *)models {
+    NSMutableArray *criterias = [NSMutableArray array];
+    for(id<ModelIDProtocol> model in models) {
+        APICriteria *criteria = [APIModelCriteria criteriaWithModel:model];
+        [criterias addObject:criteria];
+    }
+    return criterias;
+}
+
 - (instancetype)initWithModel:(id<ModelIDProtocol>)model {
     self = [super init];
     if(self) {
