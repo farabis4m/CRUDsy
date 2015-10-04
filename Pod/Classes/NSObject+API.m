@@ -90,11 +90,17 @@
 }
 
 + (void)requestWithKey:(NSString *)key criterias:(NSArray *)criterias importType:(APIImportType)importType completionBlock:(APIResponseCompletionBlock)completionBlock {
-    [[APIRouter sharedInstance] registerClass:self];
-    NSString *modelString = [self modelString];
-    NSString *URLString = [[APIRouter sharedInstance] urlForClassString:modelString action:key];
-    NSString *route = [[APIRouter sharedInstance] routeForClassString:modelString action:key];
-    NSString *method = [[APIRouter sharedInstance] methodForClassString:modelString action:key];
+    [self requestWithKey:key routeSource:self criterias:criterias importType:importType completionBlock:completionBlock];
+}
+
++ (void)requestWithKey:(NSString *)key routeSource:(Class)routeSource criterias:(NSArray *)criterias importType:(APIImportType)importType completionBlock:(APIResponseCompletionBlock)completionBlock {
+    APIRouter *router = [APIRouter sharedInstance];
+    [router registerClass:self];
+    [router registerClass:routeSource];
+    NSString *modelString = [routeSource modelString];
+    NSString *URLString = [router urlForClassString:modelString action:key];
+    NSString *route = [router routeForClassString:modelString action:key];
+    NSString *method = [router methodForClassString:modelString action:key];
     NSMutableDictionary *parametrs = [NSMutableDictionary dictionary];
     for(APICriteria *criteria in criterias) {
         [parametrs addEntriesFromDictionary:[criteria exportWithUserInfo:nil error:nil]];
