@@ -19,12 +19,12 @@ NSString *const FJModelIdValueTransformer = @"FJModelIdValueTransformer";
 #pragma mark - Lifecycle
 
 + (void)load {
-    
+    [self setupModelTransformer];
 }
 
 #pragma mark - Setup
 
-- (void)setupModelTransformer {
++ (void)setupModelTransformer {
     FJValueTransformer *modelTransformer = [FJValueTransformer transformerUsingReversibleBlock:^id(id value, BOOL *success, NSError *__autoreleasing *error) {
         if(![value conformsToProtocol:@protocol(ModelIDProtocol)]) {
             NSString *message = NSLocalizedString(@"Model doesn't conform ModelIDProtocol", nil);
