@@ -13,3 +13,8 @@ extern NSString *const APICreateKey;
 extern NSString *const APIShowKey;
 extern NSString *const APIUpdateKey;
 extern NSString *const APIDeleteKey;
+
+extern NSString *const APIActionKey;
+
+extern NSString *const APIRequestKey;
+extern NSString *const APIResponseKey;
