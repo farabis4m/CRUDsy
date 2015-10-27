@@ -18,3 +18,5 @@ extern NSString *const APIActionKey;
 
 extern NSString *const APIRequestKey;
 extern NSString *const APIResponseKey;
+
+extern NSString *const APITypeKey;

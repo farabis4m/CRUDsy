@@ -18,3 +18,5 @@ NSString *const APIActionKey = @"action";
 
 NSString *const APIRequestKey = @"request";
 NSString *const APIResponseKey = @"response";
+
+NSString *const APITypeKey = @"type";
