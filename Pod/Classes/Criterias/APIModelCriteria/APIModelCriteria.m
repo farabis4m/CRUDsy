@@ -35,13 +35,16 @@
     return self;
 }
 
-#pragma mark - JSON
+#pragma mark - Export
 
-- (NSDictionary *)JSON {
-    if(self.model.identifier) {
-        NSString *key = [[self.model class] keysForKeyPaths:self.userInfo][@"identifier"];
-        if(key.length) {
-            return @{key : self.model.identifier};
+- (id)exportWithUserInfo:(NSDictionary *)userInfo error:(NSError *__autoreleasing  _Nullable *)error {
+    if([self.model conformsToProtocol:@protocol(ModelIDProtocol)]) {
+        if(self.model.identifier) {
+            id keys = [[self.model class] keysForKeyPaths:self.userInfo][@"identifier"];
+            NSString *key = [keys isKindOfClass:[NSArray class]] ? [keys firstObject] : keys;
+            if(key.length) {
+                return @{key : self.model.identifier};
+            }
         }
     }
     return @{};
