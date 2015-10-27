@@ -10,12 +10,6 @@
 
 #import "APIMethods.h"
 
-NSString *const APIIndexKey = @"index";
-NSString *const APICreateKey = @"create";
-NSString *const APIShowKey = @"show";
-NSString *const APIUpdateKey = @"update";
-NSString *const APIDeleteKey = @"delete";
-
 NSString *const APIFormatArray = @"array";
 NSString *const APIFormatDictionary = @"dictionary";
 NSString *const APIFormatNone = @"none";

@@ -10,11 +10,7 @@
 
 #import "APIImportType.h"
 
-extern NSString *const APIIndexKey;
-extern NSString *const APICreateKey;
-extern NSString *const APIShowKey;
-extern NSString *const APIUpdateKey;
-extern NSString *const APIDeleteKey;
+#import "APIRouteKeys.h"
 
 /**
  Class that handle pattern based URLs to custom user defined.
