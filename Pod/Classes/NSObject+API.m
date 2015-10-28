@@ -99,7 +99,7 @@
     [router registerClass:self];
     [router registerClass:routeSource];
     NSString *modelString = [routeSource modelString];
-    NSString *URLString = [router urlForClassString:modelString action:key];
+    NSString *URLString = [[APIRouter sharedInstance] buildURLForClass:[self modelString] action:key];
     NSString *route = [router routeForClassString:modelString action:key];
     NSString *method = [router methodForClassString:modelString action:key];
     NSMutableDictionary *parametrs = [NSMutableDictionary dictionary];
