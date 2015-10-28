@@ -10,8 +10,6 @@
 
 #import "APIImportType.h"
 
-#import "APIRouteKeys.h"
-
 /**
  Class that handle pattern based URLs to custom user defined.
  Example: GET /items to POST /GETMyItems.

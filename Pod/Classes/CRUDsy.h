@@ -16,4 +16,7 @@
 #import "APIRouter.h"
 #import "APIRouteModelCriteria.h"
 
+#import "APIMethods.h"
+#import "APIRouteKeys.h"
+
 #endif /* CRUDsy_h */

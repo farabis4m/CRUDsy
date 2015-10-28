@@ -13,6 +13,7 @@
 #import "APIRouter.h"
 
 #import "APIMethods.h"
+#import "APIRouteKeys.h"
 
 #import "APICriteria.h"
 #import "APIRouteModelCriteria.h"
