@@ -111,7 +111,7 @@
 
 + (void)requestWithKey:(NSString *)key method:(NSString *)method route:(NSString *)route criterias:(NSArray *)criterias importType:(APIImportType)importType completionBlock:(APIResponseCompletionBlock)completionBlock {
     [[APIRouter sharedInstance] registerClass:self];
-    NSString *URLString = [[APIRouter sharedInstance] urlForClassString:[self modelString] action:key];
+    NSString *URLString = [[APIRouter sharedInstance] buildURLForClass:[self modelString] action:key];
     NSMutableDictionary *parametrs = [NSMutableDictionary dictionary];
     for(APICriteria *criteria in criterias) {
         [parametrs addEntriesFromDictionary:[criteria exportWithUserInfo:nil error:nil]];
@@ -122,7 +122,7 @@
 + (void)callWithURL:(NSString *)URLString Method:(NSString *)method route:(NSString *)route action:(NSString *)action parameters:(id)parameters importType:(APIImportType)importType completionBlock:(APIResponseCompletionBlock)completionBlock {
     CRUDEngine *engine = [CRUDEngine sharedInstance];
     
-    NSURL *URL = [NSURL URLWithString:URLString ?: [APIRouter sharedInstance].baseURL];
+    NSURL *URL = [NSURL URLWithString:URLString];
     [engine HTTPRequestOperationURL:URL HTTPMethod:method URLString:route parameters:parameters completionBlock:^(APIResponse *response) {
         if(!response.error) {
             NSError *parseError = nil;

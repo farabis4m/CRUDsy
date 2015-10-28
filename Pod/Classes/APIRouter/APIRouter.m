@@ -158,6 +158,15 @@ static NSMutableDictionary *definedMethods = nil;
     return self.predefinedRoutes[[class modelString]][action][@"response"][@"parameters"];
 }
 
+- (NSString *)buildURLForClass:(NSString *)class action:(NSString *)action {
+    NSString *defaultURL = [self urlForClassString:class action:action];
+    NSString *finalURL = defaultURL;
+    if(self.urlBuilder) {
+        finalURL = [self.urlBuilder buildURLWithString:defaultURL];
+    }
+    return finalURL;
+}
+
 #pragma mark - Utils
 
 - (void)flushRoutesForClass:(NSString *)classString {

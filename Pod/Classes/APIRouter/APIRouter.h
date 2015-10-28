@@ -10,6 +10,8 @@
 
 #import "APIImportType.h"
 
+#import "APIURLBuilder.h"
+
 /**
  Class that handle pattern based URLs to custom user defined.
  Example: GET /items to POST /GETMyItems.
@@ -18,6 +20,8 @@
 @interface APIRouter : NSObject
 
 @property (nonatomic, strong) NSString *baseURL;
+
+@property (nonatomic, strong) id<APIURLBuilder> urlBuilder;
 
 + (instancetype)sharedInstance;
 
@@ -34,5 +38,7 @@
 + (void)setURL:(NSString *)url forKey:(NSString *)key model:(NSString *)model;
 + (void)setRoute:(NSString *)route forKey:(NSString *)key model:(NSString *)model;
 + (void)setMethod:(NSString *)method forKey:(NSString *)key model:(NSString *)model;
+
+- (NSString *)buildURLForClass:(NSString *)class action:(NSString *)action;
 
 @end
