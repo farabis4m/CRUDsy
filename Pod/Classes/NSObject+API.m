@@ -140,6 +140,8 @@
         importType = definedImportType;
     }
     id context = [[[CRUDEngine sharedInstance] contextManager] contextForModelClass:self action:action];
+    NSDictionary *userInfo = @{APIActionKey : action,
+                               APITypeKey : APIResponseKey};
     switch (importType) {
         case APIImportTypeArray: {
             BOOL isDictionary = [json isKindOfClass:[NSDictionary class]];
@@ -147,11 +149,10 @@
                 NSArray *keys = [json allKeys];
                 json = json[keys.lastObject];
             }
-            return [class importValue:json context:context userInfo:@{@"action" : action} error:error]
+            return [class importValue:json context:context userInfo:userInfo error:error]
             ;
         }
-            
-        case APIImportTypeDictionary: return [class importValue:json context:context userInfo:@{@"action" : action} error:error];
+        case APIImportTypeDictionary: return [class importValue:json context:context userInfo:userInfo error:error];
         case APIImportTypeNone: return json;
         case APIImportTypeUndefined: return nil;
     }
