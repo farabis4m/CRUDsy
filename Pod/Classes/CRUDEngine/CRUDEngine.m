@@ -59,6 +59,12 @@
     self.operationManager.responseSerializer = responseSerializer;
 }
 
+#pragma mark - Management
+
+- (void)cancelAllRequests {
+    [self.operationManager.operationQueue cancelAllOperations];
+}
+
 #pragma mark - Utils
 
 - (id)HTTPRequestOperationURL:(NSURL *)URL HTTPMethod:(NSString *)method URLString:(NSString *)URLString parameters:(NSDictionary *)parameters multipart:(BOOL)multipart completionBlock:(APIResponseCompletionBlock)completionBlock {

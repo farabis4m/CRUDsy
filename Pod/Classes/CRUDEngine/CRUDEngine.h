@@ -31,6 +31,8 @@
 
 + (instancetype)sharedInstance;
 
+- (void)cancelAllRequests;
+
 - (id)HTTPRequestOperationURL:(NSURL *)URL HTTPMethod:(NSString *)method URLString:(NSString *)URLString parameters:(id)parameters completionBlock:(APIResponseCompletionBlock)completionBlock;
 
 // TOOD: test method
