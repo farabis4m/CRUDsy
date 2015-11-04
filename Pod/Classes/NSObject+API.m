@@ -132,9 +132,9 @@
         completionBlock(response);
     };
     if([[APIRouter sharedInstance] isMultipart:[self modelString] action:action]) {
-        [engine HTTPMutipartRequestOperationURL:URL HTTPMethod:method URLString:URLString parameters:parameters completionBlock:completion];
+        [engine HTTPMutipartRequestOperationURL:URL HTTPMethod:method URLString:route parameters:parameters completionBlock:completion];
     } else {
-        [engine HTTPRequestOperationURL:URL HTTPMethod:method URLString:URLString parameters:parameters completionBlock:completion];
+        [engine HTTPRequestOperationURL:URL HTTPMethod:method URLString:route parameters:parameters completionBlock:completion];
     }
 }
 
