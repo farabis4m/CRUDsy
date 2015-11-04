@@ -121,9 +121,8 @@
 
 + (void)callWithURL:(NSString *)URLString Method:(NSString *)method route:(NSString *)route action:(NSString *)action parameters:(id)parameters importType:(APIImportType)importType completionBlock:(APIResponseCompletionBlock)completionBlock {
     CRUDEngine *engine = [CRUDEngine sharedInstance];
-    
     NSURL *URL = [NSURL URLWithString:URLString];
-    [engine HTTPRequestOperationURL:URL HTTPMethod:method URLString:route parameters:parameters completionBlock:^(APIResponse *response) {
+    APIResponseCompletionBlock completion = ^(APIResponse *response) {
         if(!response.error) {
             NSError *parseError = nil;
             id result = [self parseJson:response.data importType:importType class:[self class] action:action error:&parseError];
@@ -131,7 +130,12 @@
             response.error = parseError;
         }
         completionBlock(response);
-    }];
+    };
+    if([[APIRouter sharedInstance] isMultipart:[self modelString] action:action]) {
+        [engine HTTPMutipartRequestOperationURL:URL HTTPMethod:method URLString:URLString parameters:parameters completionBlock:completion];
+    } else {
+        [engine HTTPRequestOperationURL:URL HTTPMethod:method URLString:URLString parameters:parameters completionBlock:completion];
+    }
 }
 
 + (id)parseJson:(id)json importType:(APIImportType)importType class:(Class)class action:(NSString *)action error:(NSError **)error {

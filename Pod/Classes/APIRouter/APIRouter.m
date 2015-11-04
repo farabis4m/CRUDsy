@@ -158,6 +158,11 @@ static NSMutableDictionary *definedMethods = nil;
     return self.predefinedRoutes[[class modelString]][action][@"response"][@"parameters"];
 }
 
+- (BOOL)isMultipart:(NSString *)classString action:(NSString *)action {
+    BOOL multipart = [self.predefinedRoutes[classString][action][@"multipart"] boolValue];
+    return multipart;
+}
+
 - (NSString *)buildURLForClass:(NSString *)class action:(NSString *)action {
     NSString *defaultURL = [self urlForClassString:class action:action];
     NSString *finalURL = defaultURL;

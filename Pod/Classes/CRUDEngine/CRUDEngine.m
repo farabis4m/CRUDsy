@@ -67,7 +67,7 @@
 
 #pragma mark - Utils
 
-- (id)HTTPRequestOperationURL:(NSURL *)URL HTTPMethod:(NSString *)method URLString:(NSString *)URLString parameters:(NSDictionary *)parameters multipart:(BOOL)multipart completionBlock:(APIResponseCompletionBlock)completionBlock {
+- (id)HTTPMutipartRequestOperationURL:(NSURL *)URL HTTPMethod:(NSString *)method URLString:(NSString *)URLString parameters:(NSDictionary *)parameters completionBlock:(APIResponseCompletionBlock)completionBlock {
     
     NSArray *values = [parameters allValues];
     NSArray *dataObjects = [values filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"class == %@", [NSData class]]];
