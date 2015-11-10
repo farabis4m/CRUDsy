@@ -25,7 +25,9 @@ NSString *const FJModelIdValueTransformer = @"FJModelIdValueTransformer";
 #pragma mark - Setup
 
 + (void)setupModelTransformer {
-    FJValueTransformer *modelTransformer = [FJValueTransformer transformerUsingReversibleBlock:^id(id value, BOOL *success, NSError *__autoreleasing *error) {
+    FJValueTransformer *modelTransformer = [FJValueTransformer transformerUsingForwardBlock:^id(id value, BOOL *success, NSError *__autoreleasing *error) {
+        return value;
+    } reverseBlock:^id(id value, BOOL *success, NSError *__autoreleasing *error) {
         if(![value conformsToProtocol:@protocol(ModelIDProtocol)]) {
             NSString *message = NSLocalizedString(@"Model doesn't conform ModelIDProtocol", nil);
             NSDictionary *userInfo = @{NSLocalizedDescriptionKey : message,
