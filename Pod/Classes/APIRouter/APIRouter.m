@@ -163,6 +163,12 @@ static NSMutableDictionary *definedMethods = nil;
     return multipart;
 }
 
+- (BOOL)shouldParseWithClassString:(NSString *)classString action:(NSString *)action {
+    NSNumber *shouldParseNumber = self.predefinedRoutes[classString][action][@"shouldParse"];
+    BOOL shouldParse = shouldParseNumber ? [shouldParseNumber boolValue] : YES;
+    return shouldParse;
+}
+
 - (NSString *)buildURLForClass:(NSString *)class action:(NSString *)action {
     NSString *defaultURL = [self urlForClassString:class action:action];
     NSString *finalURL = defaultURL;
