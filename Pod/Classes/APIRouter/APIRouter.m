@@ -12,7 +12,7 @@
 #import "APIRouteKeys.h"
 
 NSString *const APIFormatArray = @"array";
-NSString *const APIFormatDictionary = @"dictionary";
+NSString *const APIFormatDictionary = @"object";
 NSString *const APIFormatNone = @"none";
 
 static NSMutableDictionary *definedRoutes = nil;
