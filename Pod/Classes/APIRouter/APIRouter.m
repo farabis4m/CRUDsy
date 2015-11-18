@@ -162,11 +162,6 @@ APIImportType APIImportTypeForAction(NSString *action) {
     return self.predefinedRoutes[[class modelString]][action][@"response"][@"parameters"];
 }
 
-- (BOOL)isMultipart:(NSString *)classString action:(NSString *)action {
-    BOOL multipart = [self.predefinedRoutes[classString][action][@"multipart"] boolValue];
-    return multipart;
-}
-
 - (NSString *)requestTypeForClassString:(NSString *)classString action:(NSString *)action {
     NSDictionary *bindings = @{@"multipart" : APIRequestTypeMultipartData,
                                @"url" : APIRequestTypeURLEncoded,

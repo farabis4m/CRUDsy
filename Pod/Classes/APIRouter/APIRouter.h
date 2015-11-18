@@ -38,7 +38,6 @@ APIImportType APIImportTypeForAction(NSString *action);
 - (NSString *)methodForClassString:(NSString *)classString action:(NSString *)action;
 - (NSDictionary *)requestParametersJSONKeyPathsByPropertyKey:(Class)class action:(NSString *)action;
 - (NSDictionary *)responseParametersJSONKeyPathsByPropertyKey:(Class)class action:(NSString *)action;
-- (BOOL)isMultipart:(NSString *)classString action:(NSString *)action;
 - (NSString *)requestTypeForClassString:(NSString *)classString action:(NSString *)action;
 - (BOOL)shouldParseWithClassString:(NSString *)classString action:(NSString *)action;
 
