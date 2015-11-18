@@ -13,14 +13,14 @@
 
 @implementation APICRUDProxy
 
-+ (NSOperation *)operationForAction:(NSString *)action modelClass:(Class)modelClass routeSource:(Class)routeSource parameters:(id)parameters model:(id)model start:(BOOL)start completionBlock:(APIResponseCompletionBlock)completionBlock {
++ (NSOperation *)operationForAction:(NSString *)action modelClass:(Class)modelClass routeSource:(Class)routeSource parameters:(id)parameters model:(id)model criterias:(NSArray *)criterias start:(BOOL)start completionBlock:(APIResponseCompletionBlock)completionBlock {
     CRUDEngine *engine = [CRUDEngine sharedInstance];
     APIRouter *router = [APIRouter sharedInstance];
     [router registerClass:modelClass];
     [router registerClass:routeSource];
     NSString *modelString = [routeSource modelIdentifier];
     NSString *URLString = [[APIRouter sharedInstance] buildURLForClass:[modelClass modelIdentifier] action:action];
-    NSString *route = [router routeForClassString:modelString action:action];
+    NSString *route = [self routeForModelClass:modelClass action:action parameters:criterias];
     NSString *method = [router methodForClassString:modelString action:action];
     
     NSURL *URL = [NSURL URLWithString:URLString];
@@ -36,6 +36,10 @@
         [[CRUDEngine sharedInstance] startOperation:operaiton];
     }
     return operaiton;
+}
+
++ (NSString *)routeForModelClass:(Class)class action:(NSString *)action parameters:(NSArray *)parameters {
+    return [[APIRouter sharedInstance] routeForClassString:[class modelIdentifier] action:action];
 }
 
 @end

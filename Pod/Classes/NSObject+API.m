@@ -113,10 +113,12 @@ NSString *const APIStartKey = @"start";
 
 + (NSOperation *)requestWithAction:(NSString *)action routeSource:(Class)routeSource criterias:(NSArray *)criterias start:(BOOL)start model:(id)model completionBlock:(APIResponseCompletionBlock)completionBlock {
     NSMutableDictionary *parametrs = [NSMutableDictionary dictionary];
+    NSPredicate *queryPredicate = [NSPredicate predicateWithFormat:@"class == %@", [APIModelCriteria modelIdentifier]];
+    NSArray *queryCriterias = [criterias filteredArrayUsingPredicate:queryPredicate];
     for(APICriteria *criteria in criterias) {
         [parametrs addEntriesFromDictionary:[criteria exportWithUserInfo:nil error:nil]];
     }
-    return [APICRUDProxy operationForAction:action modelClass:self routeSource:routeSource parameters:parametrs model:model start:start completionBlock:completionBlock];
+    return [APICRUDProxy operationForAction:action modelClass:self routeSource:routeSource parameters:parametrs model:model criterias:queryCriterias start:start completionBlock:completionBlock];
 }
 
 + (id)findSpecificClassItemInArray:(NSArray *)array subitemClass:(Class)subitemClass {
