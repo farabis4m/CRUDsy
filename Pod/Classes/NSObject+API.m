@@ -55,43 +55,15 @@ NSString *const APIStartKey = @"start";
 #pragma mark - API
 
 - (NSOperation *)action:(NSString *)action parameters:(id)parameters completionBlock:(APIResponseCompletionBlock)completionBlock {
-    NSArray *criterias = nil;
-    NSDictionary *attributes = nil;
-    BOOL start = FALSE;
-    if([parameters isKindOfClass:[NSArray class]]) {
-        criterias = [[self class] findSpecificClassItemInArray:parameters subitemClass:[NSArray class]];
-        attributes = [[self class] findSpecificClassItemInArray:parameters subitemClass:[NSDictionary class]];
-        NSNumber *startNumber = [[self class] findSpecificClassItemInArray:parameters subitemClass:[NSNumber class]];
-        start = startNumber ? [startNumber boolValue] : FALSE;
-    } else if([parameters isKindOfClass:[NSDictionary class]]) {
-        criterias = [parameters objectForKey:APICreateKey];
-        attributes = [parameters objectForKey:APIAttributesKey];
-        NSNumber *startNumber = [parameters objectForKey:APIStartKey];
-        start = startNumber ? [startNumber boolValue] : FALSE;
-    }
-    return [self action:action criterias:criterias completionBlock:completionBlock start:start];
+    return [[self class] action:action parameters:parameters model:self completionBlock:completionBlock];
 }
 
 + (NSOperation *)action:(NSString *)action parameters:(id)parameters completionBlock:(APIResponseCompletionBlock)completionBlock {
-    NSArray *criterias = nil;
-    NSDictionary *attributes = nil;
-    BOOL start = FALSE;
-    if([parameters isKindOfClass:[NSArray class]]) {
-        criterias = [[self class] findSpecificClassItemInArray:parameters subitemClass:[NSArray class]];
-        attributes = [[self class] findSpecificClassItemInArray:parameters subitemClass:[NSDictionary class]];
-        NSNumber *startNumber = [[self class] findSpecificClassItemInArray:parameters subitemClass:[NSNumber class]];
-        start = startNumber ? [startNumber boolValue] : FALSE;
-    } else if([parameters isKindOfClass:[NSDictionary class]]) {
-        criterias = [parameters objectForKey:APICreateKey];
-        attributes = [parameters objectForKey:APIAttributesKey];
-        NSNumber *startNumber = [parameters objectForKey:APIStartKey];
-        start = startNumber ? [startNumber boolValue] : FALSE;
-    }
-    return [self action:action attributes:attributes criterias:criterias completionBlock:completionBlock start:start];
+    return [self action:action parameters:parameters model:nil completionBlock:completionBlock];
 }
 
 - (NSOperation *)action:(NSString *)action criterias:(NSArray *)criterias completionBlock:(APIResponseCompletionBlock)completionBlock start:(BOOL)start {
-    return [self requestWithKey:action routeSource:[self class] criterias:criterias start:start completionBlock:completionBlock];
+    return [[self class] requestWithKey:action routeSource:[self class] criterias:criterias start:start model:self completionBlock:completionBlock];
 }
 
 - (NSOperation *)action:(NSString *)action criterias:(NSArray *)criterias completionBlock:(APIResponseCompletionBlock)completionBlock {
@@ -100,11 +72,29 @@ NSString *const APIStartKey = @"start";
 
 + (NSOperation *)action:(NSString *)action attributes:(NSDictionary *)attributes criterias:(NSArray *)criterias completionBlock:(APIResponseCompletionBlock)completionBlock start:(BOOL)start {
     APICriteria *criteria = [[APICriteria alloc] initWithUserInfo:attributes];
-    return [self requestWithKey:action routeSource:self criterias:[criterias arrayByAddingObject:criteria] start:start completionBlock:completionBlock];
+    return [self requestWithKey:action routeSource:self criterias:[criterias arrayByAddingObject:criteria] start:start model:nil completionBlock:completionBlock];
 }
 
 + (NSOperation *)action:(NSString *)action attributes:(NSDictionary *)attributes criterias:(NSArray *)criterias completionBlock:(APIResponseCompletionBlock)completionBlock {
     return [self action:action attributes:attributes criterias:criterias completionBlock:completionBlock start:FALSE];
+}
+
++ (NSOperation *)action:(NSString *)action parameters:(id)parameters model:(id)model completionBlock:(APIResponseCompletionBlock)completionBlock {
+    NSArray *criterias = nil;
+    NSDictionary *attributes = nil;
+    BOOL start = FALSE;
+    if([parameters isKindOfClass:[NSArray class]]) {
+        criterias = [[self class] findSpecificClassItemInArray:parameters subitemClass:[NSArray class]];
+        attributes = [[self class] findSpecificClassItemInArray:parameters subitemClass:[NSDictionary class]];
+        NSNumber *startNumber = [[self class] findSpecificClassItemInArray:parameters subitemClass:[NSNumber class]];
+        start = startNumber ? [startNumber boolValue] : FALSE;
+    } else if([parameters isKindOfClass:[NSDictionary class]]) {
+        criterias = [parameters objectForKey:APICreateKey];
+        attributes = [parameters objectForKey:APIAttributesKey];
+        NSNumber *startNumber = [parameters objectForKey:APIStartKey];
+        start = startNumber ? [startNumber boolValue] : FALSE;
+    }
+    return [self requestWithKey:action routeSource:self criterias:criterias start:start model:model completionBlock:completionBlock];
 }
 
 #pragma mark - Utils
@@ -118,19 +108,19 @@ NSString *const APIStartKey = @"start";
 }
 
 + (NSOperation *)requestWithKey:(NSString *)key routeSource:(Class)routeSource criterias:(NSArray *)criterias start:(BOOL)start completionBlock:(APIResponseCompletionBlock)completionBlock {
-    NSMutableDictionary *parametrs = [NSMutableDictionary dictionary];
-    for(APICriteria *criteria in criterias) {
-        [parametrs addEntriesFromDictionary:[criteria exportWithUserInfo:nil error:nil]];
-    }
-    return [self callWithAction:key routeSource:self parameters:parametrs model:nil start:start completionBlock:completionBlock];
+    return [self requestWithKey:key routeSource:[self class] criterias:criterias start:start model:nil completionBlock:completionBlock];
 }
 
 - (NSOperation *)requestWithKey:(NSString *)key routeSource:(Class)routeSource criterias:(NSArray *)criterias start:(BOOL)start completionBlock:(APIResponseCompletionBlock)completionBlock {
+    return [[self class] requestWithKey:key routeSource:[self class] criterias:criterias start:start model:self completionBlock:completionBlock];
+}
+
++ (NSOperation *)requestWithKey:(NSString *)key routeSource:(Class)routeSource criterias:(NSArray *)criterias start:(BOOL)start model:(id)model completionBlock:(APIResponseCompletionBlock)completionBlock {
     NSMutableDictionary *parametrs = [NSMutableDictionary dictionary];
     for(APICriteria *criteria in criterias) {
         [parametrs addEntriesFromDictionary:[criteria exportWithUserInfo:nil error:nil]];
     }
-    return [[self class] callWithAction:key routeSource:[self class] parameters:parametrs model:self start:start completionBlock:completionBlock];
+    return [self callWithAction:key routeSource:self parameters:parametrs model:model start:start completionBlock:completionBlock];
 }
 
 + (NSOperation *)callWithAction:(NSString *)action routeSource:(Class)routeSource parameters:(id)parameters model:(id)model start:(BOOL)start completionBlock:(APIResponseCompletionBlock)completionBlock {
