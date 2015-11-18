@@ -21,9 +21,8 @@ static NSMutableDictionary *definedMethods = nil;
 
 #import "NSObject+Model.h"
 
-#import "NSString+Pluralize.h"
-
 #import <FluentJ/FluentJ.h>
+#import <InflectorKit/NSString+InflectorKit.h>
 
 APIImportType APIImportTypeForAction(NSString *action) {
     return [[APIRouter APIActionImportTypes][action] integerValue];
@@ -128,7 +127,7 @@ APIImportType APIImportTypeForAction(NSString *action) {
 }
 
 - (NSString *)routeForClassString:(NSString *)classString action:(NSString *)action {
-    return self.predefinedRoutes[classString][action][APIRouteKey] ?: [classString pluralize];
+    return self.predefinedRoutes[classString][action][APIRouteKey] ?: [classString pluralizedString];
 }
 
 - (NSString *)methodForClassString:(NSString *)classString action:(NSString *)action {

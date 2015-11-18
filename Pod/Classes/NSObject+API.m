@@ -18,8 +18,6 @@
 
 #import "NSObject+Model.h"
 
-#import "NSString+Pluralize.h"
-
 #import "APICRUDProxy.h"
 
 #import <FluentJ/FluentJ.h>
