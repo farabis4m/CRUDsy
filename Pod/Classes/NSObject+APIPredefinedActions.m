@@ -14,6 +14,10 @@
 
 #import "APIRouteModelCriteria.h"
 
+@interface NSObject () <ModelIDProtocol>
+
+@end
+
 @implementation NSObject (APIPredefinedActions)
 
 #pragma mark - APICreateKey

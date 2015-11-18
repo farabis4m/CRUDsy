@@ -11,6 +11,8 @@
 #import "CRUDEngine.h"
 #import "NSObject+Model.h"
 
+#import "APIModelCriteria.h"
+
 @implementation APICRUDProxy
 
 + (NSOperation *)operationForAction:(NSString *)action modelClass:(Class)modelClass routeSource:(Class)routeSource parameters:(id)parameters model:(id)model criterias:(NSArray *)criterias start:(BOOL)start completionBlock:(APIResponseCompletionBlock)completionBlock {
@@ -20,7 +22,7 @@
     [router registerClass:routeSource];
     NSString *modelString = [routeSource modelIdentifier];
     NSString *URLString = [[APIRouter sharedInstance] buildURLForClass:[modelClass modelIdentifier] action:action];
-    NSString *route = [self routeForModelClass:routeSource action:action parameters:criterias];
+    NSString *route = [self routeForModelClass:routeSource action:action criterias:criterias];
     NSString *method = [router methodForClassString:modelString action:action];
     
     NSURL *URL = [NSURL URLWithString:URLString];
@@ -38,8 +40,17 @@
     return operaiton;
 }
 
-+ (NSString *)routeForModelClass:(Class)class action:(NSString *)action parameters:(NSArray *)parameters {
-    return [[APIRouter sharedInstance] routeForClassString:[class modelIdentifier] action:action];
++ (NSString *)routeForModelClass:(Class)class action:(NSString *)action criterias:(NSArray *)criterias {
+    NSString *route = [[APIRouter sharedInstance] routeForClassString:[class modelIdentifier] action:action];
+    for(APIModelCriteria *criteria in criterias) {
+        if(criteria.templateKey && [route containsString:criteria.templateKey]) {
+            id model = criteria.model;
+            id value = [model valueForKeyPath:criteria.templateKey];
+            NSString *valueString = [NSString stringWithFormat:@"%@", value];
+            [route stringByReplacingOccurrencesOfString:criteria.templateKey withString:valueString];
+        }
+    }
+    return route;
 }
 
 @end

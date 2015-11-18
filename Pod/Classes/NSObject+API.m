@@ -26,7 +26,7 @@ NSString *const APICriteriasKey = @"criterias";
 NSString *const APIAttributesKey = @"attributes";
 NSString *const APIStartKey = @"start";
 
-@interface NSObject () <ModelIDProtocol>
+@interface NSObject ()
 
 @end
 

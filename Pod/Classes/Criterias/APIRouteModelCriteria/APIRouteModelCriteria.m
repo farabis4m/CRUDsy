@@ -10,6 +10,8 @@
 
 #import "APIRouter.h"
 
+#import "APIRouteKeys.h"
+
 #import <FluentJ/FluentJ.h>
 
 @implementation APIRouteModelCriteria
@@ -29,9 +31,9 @@
     NSMutableDictionary *mutableUserInfo = [NSMutableDictionary dictionary];
     [mutableUserInfo addEntriesFromDictionary:userInfo];
     [mutableUserInfo addEntriesFromDictionary:self.userInfo];
-    [mutableUserInfo addEntriesFromDictionary:@{@"type" : @"request"}];
+    [mutableUserInfo addEntriesFromDictionary:@{APITypeKey : APIRequestKey}];
     if(self.action) {
-        [mutableUserInfo addEntriesFromDictionary:@{@"action" : self.action}];
+        [mutableUserInfo addEntriesFromDictionary:@{APIActionKey : self.action}];
     }
     return [model exportWithUserInfo:mutableUserInfo error:error];
 }
