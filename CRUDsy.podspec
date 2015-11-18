@@ -36,5 +36,6 @@ Pod::Spec.new do |s|
   # s.frameworks = 'UIKit', 'MapKit'
     s.dependency 'AFNetworking', '~> 2.5.4'
     s.dependency 'FluentJ'
+    s.dependency 'InflectorKit'
 
 end
