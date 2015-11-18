@@ -12,6 +12,8 @@
 
 #import <AFNetworking/AFNetworkActivityIndicatorManager.h>
 
+#import "CRUDParser.h"
+
 @interface CRUDEngine ()
 
 @property (nonatomic, strong) AFHTTPRequestOperationManager *operationManager;
@@ -38,6 +40,7 @@
     if(self) {
         [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
         self.operationManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:@""]];
+        self.parser = [[CRUDParser alloc] init];
     }
     return self;
 }

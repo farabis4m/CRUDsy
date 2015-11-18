@@ -12,6 +12,10 @@
 
 #import "APIImportType.h"
 
+extern NSString *const APICriteriasKey;
+extern NSString *const APIAttributesKey;
+extern NSString *const APIStartKey;
+
 @interface NSObject (API)
 
 /**
@@ -34,8 +38,6 @@
 + (NSOperation *)action:(NSString *)action attributes:(NSDictionary *)attributes criterias:(NSArray *)criterias completionBlock:(APIResponseCompletionBlock)completionBlock start:(BOOL)start;
 + (NSOperation *)action:(NSString *)action attributes:(NSDictionary *)attributes criterias:(NSArray *)criterias completionBlock:(APIResponseCompletionBlock)completionBlock;
 
-+ (NSString *)modelString;
-
 /**
  Method to launch request.
  @param key `NSString` object that represents key action from defined list. Also this value checked in routes.plist file.
@@ -45,7 +47,7 @@
  @param importType Import type of expected response.
  @param completionBlock Block that will be called after request finished.
  */
-//+ (NSOperation *)requestWithKey:(NSString *)key method:(NSString *)method route:(NSString *)route criterias:(NSArray *)criterias completionBlock:(APIResponseCompletionBlock)completionBlock;
+//+ (NSOperation *)requestWithAction:(NSString *)action method:(NSString *)method route:(NSString *)route criterias:(NSArray *)criterias completionBlock:(APIResponseCompletionBlock)completionBlock;
 
 /**
  Method to launch request.
@@ -54,7 +56,7 @@
  @param importType Import type of expected response.
  @param completionBlock Block that will be called after request finished.
  */
-+ (NSOperation *)requestWithKey:(NSString *)key criterias:(NSArray *)criterias start:(BOOL)start completionBlock:(APIResponseCompletionBlock)completionBlock;
++ (NSOperation *)requestWithAction:(NSString *)action criterias:(NSArray *)criterias start:(BOOL)start completionBlock:(APIResponseCompletionBlock)completionBlock;
 
 /**
  Method to launch request.
@@ -64,7 +66,7 @@
  @param importType Import type of expected response.
  @param completionBlock Block that will be called after request finished.
  */
-+ (NSOperation *)requestWithKey:(NSString *)key routeSource:(Class)routeSource criterias:(NSArray *)criterias start:(BOOL)start completionBlock:(APIResponseCompletionBlock)completionBlock;
-- (NSOperation *)requestWithKey:(NSString *)key routeSource:(Class)routeSource criterias:(NSArray *)criterias start:(BOOL)start completionBlock:(APIResponseCompletionBlock)completionBlock;
++ (NSOperation *)requestWithAction:(NSString *)action routeSource:(Class)routeSource criterias:(NSArray *)criterias start:(BOOL)start completionBlock:(APIResponseCompletionBlock)completionBlock;
+- (NSOperation *)requestWithAction:(NSString *)action routeSource:(Class)routeSource criterias:(NSArray *)criterias start:(BOOL)start completionBlock:(APIResponseCompletionBlock)completionBlock;
 
 @end

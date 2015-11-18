@@ -8,8 +8,6 @@
 
 #import "NSObject+API.h"
 
-#import "CRUDEngine.h"
-
 #import "APIRouter.h"
 
 #import "APIMethods.h"
@@ -18,7 +16,11 @@
 #import "APICriteria.h"
 #import "APIRouteModelCriteria.h"
 
+#import "NSObject+Model.h"
+
 #import "NSString+Pluralize.h"
+
+#import "APICRUDProxy.h"
 
 #import <FluentJ/FluentJ.h>
 
@@ -63,7 +65,7 @@ NSString *const APIStartKey = @"start";
 }
 
 - (NSOperation *)action:(NSString *)action criterias:(NSArray *)criterias completionBlock:(APIResponseCompletionBlock)completionBlock start:(BOOL)start {
-    return [[self class] requestWithKey:action routeSource:[self class] criterias:criterias start:start model:self completionBlock:completionBlock];
+    return [[self class] requestWithAction:action routeSource:[self class] criterias:criterias start:start model:self completionBlock:completionBlock];
 }
 
 - (NSOperation *)action:(NSString *)action criterias:(NSArray *)criterias completionBlock:(APIResponseCompletionBlock)completionBlock {
@@ -72,7 +74,7 @@ NSString *const APIStartKey = @"start";
 
 + (NSOperation *)action:(NSString *)action attributes:(NSDictionary *)attributes criterias:(NSArray *)criterias completionBlock:(APIResponseCompletionBlock)completionBlock start:(BOOL)start {
     APICriteria *criteria = [[APICriteria alloc] initWithUserInfo:attributes];
-    return [self requestWithKey:action routeSource:self criterias:[criterias arrayByAddingObject:criteria] start:start model:nil completionBlock:completionBlock];
+    return [self requestWithAction:action routeSource:self criterias:[criterias arrayByAddingObject:criteria] start:start model:nil completionBlock:completionBlock];
 }
 
 + (NSOperation *)action:(NSString *)action attributes:(NSDictionary *)attributes criterias:(NSArray *)criterias completionBlock:(APIResponseCompletionBlock)completionBlock {
@@ -94,97 +96,29 @@ NSString *const APIStartKey = @"start";
         NSNumber *startNumber = [parameters objectForKey:APIStartKey];
         start = startNumber ? [startNumber boolValue] : FALSE;
     }
-    return [self requestWithKey:action routeSource:self criterias:criterias start:start model:model completionBlock:completionBlock];
+    return [self requestWithAction:action routeSource:self criterias:criterias start:start model:model completionBlock:completionBlock];
 }
 
 #pragma mark - Utils
 
-+ (NSString *)modelString {
-    return NSStringFromClass([self class]);
++ (NSOperation *)requestWithAction:(NSString *)action criterias:(NSArray *)criterias start:(BOOL)start completionBlock:(APIResponseCompletionBlock)completionBlock {
+    return [self requestWithAction:action routeSource:self criterias:criterias start:start completionBlock:completionBlock];
 }
 
-+ (NSOperation *)requestWithKey:(NSString *)key criterias:(NSArray *)criterias start:(BOOL)start completionBlock:(APIResponseCompletionBlock)completionBlock {
-    return [self requestWithKey:key routeSource:self criterias:criterias start:start completionBlock:completionBlock];
++ (NSOperation *)requestWithAction:(NSString *)action routeSource:(Class)routeSource criterias:(NSArray *)criterias start:(BOOL)start completionBlock:(APIResponseCompletionBlock)completionBlock {
+    return [self requestWithAction:action routeSource:[self class] criterias:criterias start:start model:nil completionBlock:completionBlock];
 }
 
-+ (NSOperation *)requestWithKey:(NSString *)key routeSource:(Class)routeSource criterias:(NSArray *)criterias start:(BOOL)start completionBlock:(APIResponseCompletionBlock)completionBlock {
-    return [self requestWithKey:key routeSource:[self class] criterias:criterias start:start model:nil completionBlock:completionBlock];
+- (NSOperation *)requestWithAction:(NSString *)action routeSource:(Class)routeSource criterias:(NSArray *)criterias start:(BOOL)start completionBlock:(APIResponseCompletionBlock)completionBlock {
+    return [[self class] requestWithAction:action routeSource:[self class] criterias:criterias start:start model:self completionBlock:completionBlock];
 }
 
-- (NSOperation *)requestWithKey:(NSString *)key routeSource:(Class)routeSource criterias:(NSArray *)criterias start:(BOOL)start completionBlock:(APIResponseCompletionBlock)completionBlock {
-    return [[self class] requestWithKey:key routeSource:[self class] criterias:criterias start:start model:self completionBlock:completionBlock];
-}
-
-+ (NSOperation *)requestWithKey:(NSString *)key routeSource:(Class)routeSource criterias:(NSArray *)criterias start:(BOOL)start model:(id)model completionBlock:(APIResponseCompletionBlock)completionBlock {
++ (NSOperation *)requestWithAction:(NSString *)action routeSource:(Class)routeSource criterias:(NSArray *)criterias start:(BOOL)start model:(id)model completionBlock:(APIResponseCompletionBlock)completionBlock {
     NSMutableDictionary *parametrs = [NSMutableDictionary dictionary];
     for(APICriteria *criteria in criterias) {
         [parametrs addEntriesFromDictionary:[criteria exportWithUserInfo:nil error:nil]];
     }
-    return [self callWithAction:key routeSource:self parameters:parametrs model:model start:start completionBlock:completionBlock];
-}
-
-+ (NSOperation *)callWithAction:(NSString *)action routeSource:(Class)routeSource parameters:(id)parameters model:(id)model start:(BOOL)start completionBlock:(APIResponseCompletionBlock)completionBlock {
-    CRUDEngine *engine = [CRUDEngine sharedInstance];
-    APIRouter *router = [APIRouter sharedInstance];
-    [router registerClass:[self class]];
-    [router registerClass:routeSource];
-    NSString *modelString = [routeSource modelString];
-    NSString *URLString = [[APIRouter sharedInstance] buildURLForClass:[[self class] modelString] action:action];
-    NSString *route = [router routeForClassString:modelString action:action];
-    NSString *method = [router methodForClassString:modelString action:action];
-
-    NSURL *URL = [NSURL URLWithString:URLString];
-    APIResponseCompletionBlock completion = ^(APIResponse *response) {
-        if(!response.error) {
-            NSError *parseError = nil;
-            id result = model;
-            [self parseJson:response.data class:[self class] action:action error:&parseError model:&result];
-            response.data = result;
-            response.error = parseError;
-        }
-        completionBlock(response);
-    };
-    NSString *requestType = [[APIRouter sharedInstance] requestTypeForClassString:modelString action:action];
-    id operaiton = [engine HTTPRequestOperationURL:URL HTTPMethod:method URLString:route type:requestType parameters:parameters completionBlock:completion];
-    if(start) {
-        [[CRUDEngine sharedInstance] startOperation:operaiton];
-    }
-    return operaiton;
-}
-
-+ (void)parseJson:(id)json class:(Class)class action:(NSString *)action error:(NSError **)error model:(id *)model {
-    id context = [[[CRUDEngine sharedInstance] contextManager] contextForModelClass:self action:action];
-    NSDictionary *userInfo = @{APIActionKey : action,
-                               APITypeKey : APIResponseKey};
-    if(model) {
-        [*model updateWithValue:json context:context userInfo:userInfo error:error];
-        return;
-    }
-    APIImportType definedImportType = [[APIRouter sharedInstance] importTypeWithClass:class action:action];
-    APIImportType importType = APIImportTypeForAction(action);
-    if(definedImportType != APIImportTypeUndefined) {
-        importType = definedImportType;
-    }
-    BOOL shouldParse = [[APIRouter sharedInstance] shouldParseWithClassString:[self modelString] action:action];
-    id result = nil;
-    if(shouldParse) {
-        switch (importType) {
-            case APIImportTypeArray: {
-                BOOL isDictionary = [json isKindOfClass:[NSDictionary class]];
-                if(isDictionary) {
-                    NSArray *keys = [json allKeys];
-                    json = json[keys.lastObject];
-                }
-                result = [class importValue:json context:context userInfo:userInfo error:error];
-            }
-            case APIImportTypeDictionary: result = [class importValue:json context:context userInfo:userInfo error:error];
-            case APIImportTypeNone: result = json;
-            case APIImportTypeUndefined: result = nil;
-        }
-    }
-    if(model) {
-        *model = result;
-    }
+    return [APICRUDProxy operationForAction:action modelClass:self routeSource:routeSource parameters:parametrs model:model start:start completionBlock:completionBlock];
 }
 
 + (id)findSpecificClassItemInArray:(NSArray *)array subitemClass:(Class)subitemClass {

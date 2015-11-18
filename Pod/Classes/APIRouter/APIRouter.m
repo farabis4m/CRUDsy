@@ -19,7 +19,7 @@ static NSMutableDictionary *definedRoutes = nil;
 static NSMutableDictionary *definedURLs = nil;
 static NSMutableDictionary *definedMethods = nil;
 
-#import "NSObject+API.h"
+#import "NSObject+Model.h"
 
 #import "NSString+Pluralize.h"
 
@@ -73,7 +73,7 @@ APIImportType APIImportTypeForAction(NSString *action) {
     NSString *classString = NSStringFromClass(class);
     if(![self.registeredClasses containsObject:classString]) {
         [self.registeredClasses addObject:classString];
-        [self flushRoutesForClass:[class modelString]];
+        [self flushRoutesForClass:[class modelIdentifier]];
     }
 }
 
@@ -123,7 +123,7 @@ APIImportType APIImportTypeForAction(NSString *action) {
                      APIFormatDictionary : @(APIImportTypeDictionary),
                      APIFormatNone : @(APIImportTypeNone)};
     });
-    id format = self.predefinedRoutes[[class modelString]][action][APIFormatKey];
+    id format = self.predefinedRoutes[[class modelIdentifier]][action][APIFormatKey];
     if([format isKindOfClass:[NSString class]]) {
         return [bindings[format] integerValue];
     }
@@ -152,14 +152,14 @@ APIImportType APIImportTypeForAction(NSString *action) {
 }
 
 - (NSDictionary *)requestParametersJSONKeyPathsByPropertyKey:(Class)class action:(NSString *)action {
-    return self.predefinedRoutes[[class modelString]][action][APIRequestKey][@"parameters"] ?: [class keysForKeyPaths:@{APIActionKey : action}];
+    return self.predefinedRoutes[[class modelIdentifier]][action][APIRequestKey][@"parameters"] ?: [class keysForKeyPaths:@{APIActionKey : action}];
 }
 
 - (NSDictionary *)responseParametersJSONKeyPathsByPropertyKey:(Class)class action:(NSString *)action; {
     if(!action) {
         return nil;
     }
-    return self.predefinedRoutes[[class modelString]][action][APIResponseKey][@"parameters"];
+    return self.predefinedRoutes[[class modelIdentifier]][action][APIResponseKey][@"parameters"];
 }
 
 - (NSString *)requestTypeForClassString:(NSString *)classString action:(NSString *)action {

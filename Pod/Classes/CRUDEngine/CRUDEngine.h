@@ -14,6 +14,7 @@
 #import "APIRouter.h"
 
 #import "APIContextProtocol.h"
+#import "APIParserProtocol.h"
 
 @class AFHTTPRequestSerializer;
 @class AFHTTPResponseSerializer;
@@ -21,6 +22,7 @@
 @interface CRUDEngine : NSObject
 
 @property (nonatomic, strong) id<APIContextProtocol> contextManager;
+@property (nonatomic, strong) id<APIParserProtocol> parser;
 
 @property (nonatomic, strong) APIRouter *APIRouter;
 
