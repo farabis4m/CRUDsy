@@ -36,7 +36,7 @@ NSString *const APIStartKey = @"start";
 
 + (NSDictionary *)keysForKeyPaths:(NSDictionary *)userInfo {
     // TODO: use method parameters as userInfo dictionary.
-    if([userInfo[@"type"] isEqualToString:@"response"]) {
+    if([userInfo[APITypeKey] isEqualToString:APIResponseKey]) {
         NSDictionary *keys = [[APIRouter sharedInstance] responseParametersJSONKeyPathsByPropertyKey:[self class] action:userInfo[@"action"]];
         if(!keys[@"identifier"]) {
             NSMutableDictionary *mutableKeys = [NSMutableDictionary dictionaryWithDictionary:keys];
@@ -46,8 +46,8 @@ NSString *const APIStartKey = @"start";
             keys = mutableKeys;
         }
         return keys;
-    } else if([userInfo[@"type"] isEqualToString:@"request"]) {
-        return [[APIRouter sharedInstance] requestParametersJSONKeyPathsByPropertyKey:[self class] action:userInfo[@"action"]];
+    } else if([userInfo[APITypeKey] isEqualToString:APIRequestKey]) {
+        return [[APIRouter sharedInstance] requestParametersJSONKeyPathsByPropertyKey:[self class] action:userInfo[APIActionKey]];
     }
     return nil;
 }

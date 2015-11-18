@@ -123,7 +123,7 @@ APIImportType APIImportTypeForAction(NSString *action) {
                      APIFormatDictionary : @(APIImportTypeDictionary),
                      APIFormatNone : @(APIImportTypeNone)};
     });
-    id format = self.predefinedRoutes[[class modelString]][action][@"format"];
+    id format = self.predefinedRoutes[[class modelString]][action][APIFormatKey];
     if([format isKindOfClass:[NSString class]]) {
         return [bindings[format] integerValue];
     }
@@ -131,15 +131,15 @@ APIImportType APIImportTypeForAction(NSString *action) {
 }
 
 - (NSString *)urlForClassString:(NSString *)classString action:(NSString *)action {
-    return self.predefinedRoutes[classString][action][@"url"] ?: self.baseURL;
+    return self.predefinedRoutes[classString][action][APIURLKey] ?: self.baseURL;
 }
 
 - (NSString *)routeForClassString:(NSString *)classString action:(NSString *)action {
-    return self.predefinedRoutes[classString][action][@"route"] ?: [classString pluralize];
+    return self.predefinedRoutes[classString][action][APIRouteKey] ?: [classString pluralize];
 }
 
 - (NSString *)methodForClassString:(NSString *)classString action:(NSString *)action {
-    NSString *method = self.predefinedRoutes[classString][action][@"method"];
+    NSString *method = self.predefinedRoutes[classString][action][APIMethodKey];
     if(!method) {
         NSDictionary *actionsTable = @{APIIndexKey : APIMethodGET,
                                        APIShowKey : APIMethodGET,
@@ -152,14 +152,14 @@ APIImportType APIImportTypeForAction(NSString *action) {
 }
 
 - (NSDictionary *)requestParametersJSONKeyPathsByPropertyKey:(Class)class action:(NSString *)action {
-    return self.predefinedRoutes[[class modelString]][action][@"request"][@"parameters"] ?: [class keysForKeyPaths:@{@"action" : action}];
+    return self.predefinedRoutes[[class modelString]][action][APIRequestKey][@"parameters"] ?: [class keysForKeyPaths:@{@"action" : action}];
 }
 
 - (NSDictionary *)responseParametersJSONKeyPathsByPropertyKey:(Class)class action:(NSString *)action; {
     if(!action) {
         return nil;
     }
-    return self.predefinedRoutes[[class modelString]][action][@"response"][@"parameters"];
+    return self.predefinedRoutes[[class modelString]][action][APIResponseKey][@"parameters"];
 }
 
 - (NSString *)requestTypeForClassString:(NSString *)classString action:(NSString *)action {
@@ -194,15 +194,15 @@ APIImportType APIImportTypeForAction(NSString *action) {
     NSDictionary *classRoutes = [NSDictionary dictionaryWithContentsOfFile:filePath];
     for(NSString *APIKey in classRoutes.allKeys) {
         NSDictionary *define = classRoutes[APIKey];
-        NSString *method = define[@"method"];
+        NSString *method = define[APIMethodKey];
         if(method.length) {
             [[self class] setMethod:method forKey:APIKey model:classString];
         }
-        NSString *url = define[@"url"];
+        NSString *url = define[APIURLKey];
         if(url.length) {
             [[self class] setURL:url forKey:APIKey model:classString];
         }
-        NSString *route = define[@"route"];
+        NSString *route = define[APIRouteKey];
         if(route.length) {
             [[self class] setRoute:route forKey:APIKey model:classString];
         }

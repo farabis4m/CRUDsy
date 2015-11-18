@@ -21,3 +21,8 @@ NSString *const APIRequestKey = @"request";
 NSString *const APIResponseKey = @"response";
 
 NSString *const APITypeKey = @"type";
+
+NSString *const APIMethodKey = @"method";
+NSString *const APIRouteKey = @"route";
+NSString *const APIURLKey = @"url";
+NSString *const APIFormatKey = @"format";
