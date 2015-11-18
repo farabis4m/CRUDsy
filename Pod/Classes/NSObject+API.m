@@ -113,7 +113,7 @@ NSString *const APIStartKey = @"start";
     return NSStringFromClass([self class]);
 }
 
-+ (NSOperation *)requestWithKey:(NSString *)key criterias:(NSArray *)criterias importType:(APIImportType)importType start:(BOOL)start completionBlock:(APIResponseCompletionBlock)completionBlock {
++ (NSOperation *)requestWithKey:(NSString *)key criterias:(NSArray *)criterias start:(BOOL)start completionBlock:(APIResponseCompletionBlock)completionBlock {
     return [self requestWithKey:key routeSource:self criterias:criterias start:start completionBlock:completionBlock];
 }
 
@@ -153,12 +153,8 @@ NSString *const APIStartKey = @"start";
         }
         completionBlock(response);
     };
-    id operaiton;
-    if([[APIRouter sharedInstance] isMultipart:[self modelString] action:action]) {
-        operaiton = [engine HTTPMutipartRequestOperationURL:URL HTTPMethod:method URLString:route parameters:parameters completionBlock:completion];
-    } else {
-        operaiton = [engine HTTPRequestOperationURL:URL HTTPMethod:method URLString:route parameters:parameters completionBlock:completion];
-    }
+    NSString *requestType = [[APIRouter sharedInstance] requestTypeForClassString:modelString action:action];
+    id operaiton = [engine HTTPRequestOperationURL:URL HTTPMethod:method URLString:route type:requestType parameters:parameters completionBlock:completion];
     if(start) {
         [[CRUDEngine sharedInstance] startOperation:operaiton];
     }

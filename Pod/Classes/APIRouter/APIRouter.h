@@ -12,6 +12,8 @@
 
 #import "APIURLBuilder.h"
 
+#import "APIRequestTypes.h"
+
 APIImportType APIImportTypeForAction(NSString *action);
 
 /**
@@ -37,6 +39,7 @@ APIImportType APIImportTypeForAction(NSString *action);
 - (NSDictionary *)requestParametersJSONKeyPathsByPropertyKey:(Class)class action:(NSString *)action;
 - (NSDictionary *)responseParametersJSONKeyPathsByPropertyKey:(Class)class action:(NSString *)action;
 - (BOOL)isMultipart:(NSString *)classString action:(NSString *)action;
+- (NSString *)requestTypeForClassString:(NSString *)classString action:(NSString *)action;
 
 - (APIImportType)importTypeWithClass:(Class)class action:(NSString *)action;
 

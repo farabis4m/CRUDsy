@@ -93,34 +93,10 @@
             [formData appendPartWithFormData:dataParameters[key] name:key];
         }
     } error:&serializationError];
-    
-    id operation = [self.operationManager HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        id responseResult = responseObject;//[self.APIAdapter prepareForParsingResponseObject:responseObject];
-        APIResponse *response = [[APIResponse alloc] init];
-        response.data = responseResult;
-        completionBlock(response);
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSString *responseString = nil;
-        if(operation.responseData.bytes > 0) {
-            responseString = [NSString stringWithUTF8String:[operation.responseData bytes]];
-        }
-        NSLog(@"ERROR :%@ %@", [error localizedDescription], responseString);
-        NSLog(@"ERROR DESCR: %@", [NSHTTPURLResponse localizedStringForStatusCode:operation.response.statusCode]);
-        APIResponse *response = [[APIResponse alloc] init];
-        response.error = error;
-        if(operation.response.statusCode == 401) {
-            NSError *error = [NSError errorWithDomain:@"com.API" code:0 userInfo:@{NSLocalizedDescriptionKey : operation.responseObject[@"ErrorMessage"]}];
-            response.error = error;
-            completionBlock(response);
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"Unauthorized" object:nil];
-        } else {
-            completionBlock(response);
-        }
-    }];
-    return operation;
+    return [self operationWithReqiest:request completionBlock:completionBlock];
 }
 
-- (id)HTTPRequestOperationURL:(NSURL *)URL HTTPMethod:(NSString *)method URLString:(NSString *)URLString parameters:(id)parameters completionBlock:(APIResponseCompletionBlock)completionBlock {
+- (id)HTTPSimpleRequestOperationURL:(NSURL *)URL HTTPMethod:(NSString *)method URLString:(NSString *)URLString parameters:(id)parameters completionBlock:(APIResponseCompletionBlock)completionBlock {
     NSError *serializationError = nil;
     NSURL *fullURL = [URL URLByAppendingPathComponent:URLString];
     NSString *relativeURLString = [fullURL absoluteString];
@@ -135,12 +111,27 @@
         }
         return nil;
     }
-    AFHTTPRequestOperation *operation = [self.operationManager HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    return [self operationWithReqiest:request completionBlock:completionBlock];
+}
+
+- (id)HTTPRequestOperationURL:(NSURL *)URL HTTPMethod:(NSString *)method URLString:(NSString *)URLString type:(NSString *)type parameters:(id)parameters completionBlock:(APIResponseCompletionBlock)completionBlock {
+    if(type == APIRequestTypeMultipartData) {
+        return [self HTTPMutipartRequestOperationURL:URL HTTPMethod:method URLString:URLString parameters:parameters completionBlock:completionBlock];
+    } else if(type == APIRequestTypeURLEncoded) {
+        return [self HTTPSimpleRequestOperationURL:URL HTTPMethod:method URLString:URLString parameters:parameters completionBlock:completionBlock];
+    }
+    return nil;
+}
+
+- (AFHTTPRequestOperation *)operationWithReqiest:(NSURLRequest *)request completionBlock:(APIResponseCompletionBlock)completionBlock {
+    id operation = [self.operationManager HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         id responseResult = responseObject;//[self.APIAdapter prepareForParsingResponseObject:responseObject];
         APIResponse *response = [[APIResponse alloc] init];
         response.data = responseResult;
         completionBlock(response);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        // TODO: fix notification
+        // TODO: support for repeat operation
         NSString *responseString = nil;
         if(operation.responseData.bytes > 0) {
             responseString = [NSString stringWithUTF8String:[operation.responseData bytes]];

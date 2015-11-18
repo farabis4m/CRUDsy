@@ -167,6 +167,13 @@ APIImportType APIImportTypeForAction(NSString *action) {
     return multipart;
 }
 
+- (NSString *)requestTypeForClassString:(NSString *)classString action:(NSString *)action {
+    NSDictionary *bindings = @{@"multipart" : APIRequestTypeMultipartData,
+                               @"url" : APIRequestTypeURLEncoded,
+                               @"raw" : APIRequestTypeRaw};
+    return bindings[self.predefinedRoutes[classString][action][APIRequestKey][APITypeKey]];
+}
+
 - (NSString *)buildURLForClass:(NSString *)class action:(NSString *)action {
     NSString *defaultURL = [self urlForClassString:class action:action];
     NSString *finalURL = defaultURL;

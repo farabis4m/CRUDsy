@@ -34,7 +34,7 @@
 - (void)cancelAllRequests;
 - (void)startOperation:(NSOperation *)operation;
 
-- (id)HTTPRequestOperationURL:(NSURL *)URL HTTPMethod:(NSString *)method URLString:(NSString *)URLString parameters:(id)parameters completionBlock:(APIResponseCompletionBlock)completionBlock;
+- (id)HTTPRequestOperationURL:(NSURL *)URL HTTPMethod:(NSString *)method URLString:(NSString *)URLString type:(NSString *)type parameters:(id)parameters completionBlock:(APIResponseCompletionBlock)completionBlock;
 
 - (id)HTTPMutipartRequestOperationURL:(NSURL *)URL HTTPMethod:(NSString *)method URLString:(NSString *)URLString parameters:(NSDictionary *)parameters completionBlock:(APIResponseCompletionBlock)completionBlock;
 
