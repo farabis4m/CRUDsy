@@ -20,7 +20,7 @@
     [router registerClass:routeSource];
     NSString *modelString = [routeSource modelIdentifier];
     NSString *URLString = [[APIRouter sharedInstance] buildURLForClass:[modelClass modelIdentifier] action:action];
-    NSString *route = [self routeForModelClass:modelClass action:action parameters:criterias];
+    NSString *route = [self routeForModelClass:routeSource action:action parameters:criterias];
     NSString *method = [router methodForClassString:modelString action:action];
     
     NSURL *URL = [NSURL URLWithString:URLString];
@@ -28,7 +28,7 @@
     id operaiton = [engine HTTPRequestOperationURL:URL HTTPMethod:method URLString:route type:requestType parameters:parameters completionBlock:^(APIResponse *response) {
         if(!response.error) {
             NSError *error = nil;
-            response.data = [engine.parser parse:response.data class:routeSource action:action error:&error model:model];
+            response.data = [engine.parser parse:response.data class:modelClass routeClass:routeSource action:action error:&error model:model];
         }
         completionBlock(response);
     }];

@@ -104,16 +104,16 @@ NSString *const APIStartKey = @"start";
 }
 
 + (NSOperation *)requestWithAction:(NSString *)action routeSource:(Class)routeSource criterias:(NSArray *)criterias start:(BOOL)start completionBlock:(APIResponseCompletionBlock)completionBlock {
-    return [self requestWithAction:action routeSource:[self class] criterias:criterias start:start model:nil completionBlock:completionBlock];
+    return [self requestWithAction:action routeSource:routeSource criterias:criterias start:start model:nil completionBlock:completionBlock];
 }
 
 - (NSOperation *)requestWithAction:(NSString *)action routeSource:(Class)routeSource criterias:(NSArray *)criterias start:(BOOL)start completionBlock:(APIResponseCompletionBlock)completionBlock {
-    return [[self class] requestWithAction:action routeSource:[self class] criterias:criterias start:start model:self completionBlock:completionBlock];
+    return [[self class] requestWithAction:action routeSource:routeSource criterias:criterias start:start model:self completionBlock:completionBlock];
 }
 
 + (NSOperation *)requestWithAction:(NSString *)action routeSource:(Class)routeSource criterias:(NSArray *)criterias start:(BOOL)start model:(id)model completionBlock:(APIResponseCompletionBlock)completionBlock {
     NSMutableDictionary *parametrs = [NSMutableDictionary dictionary];
-    NSPredicate *queryPredicate = [NSPredicate predicateWithFormat:@"class == %@", [APIModelCriteria modelIdentifier]];
+    NSPredicate *queryPredicate = [NSPredicate predicateWithFormat:@"class = %@", [APIModelCriteria modelIdentifier]];
     NSArray *queryCriterias = [criterias filteredArrayUsingPredicate:queryPredicate];
     for(APICriteria *criteria in criterias) {
         [parametrs addEntriesFromDictionary:[criteria exportWithUserInfo:nil error:nil]];
