@@ -41,17 +41,6 @@ extern NSString *const APIStartKey;
 /**
  Method to launch request.
  @param key `NSString` object that represents key action from defined list. Also this value checked in routes.plist file.
- @param method Method of request. Must be value of predefined `NSString` object.
- @param route Relative URL string of request.
- @param criterias Array of criterias.
- @param importType Import type of expected response.
- @param completionBlock Block that will be called after request finished.
- */
-//+ (NSOperation *)requestWithAction:(NSString *)action method:(NSString *)method route:(NSString *)route criterias:(NSArray *)criterias completionBlock:(APIResponseCompletionBlock)completionBlock;
-
-/**
- Method to launch request.
- @param key `NSString` object that represents key action from defined list. Also this value checked in routes.plist file.
  @param criterias Array of criterias.
  @param importType Import type of expected response.
  @param completionBlock Block that will be called after request finished.
