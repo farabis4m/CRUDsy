@@ -116,16 +116,9 @@ APIImportType APIImportTypeForAction(NSString *action) {
 #pragma mark - Accessors
 
 - (APIImportType)importTypeWithClass:(Class)class action:(NSString *)action {
-    static NSDictionary *bindings = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        bindings = @{APIFormatArray : @(APIImportTypeArray),
-                     APIFormatDictionary : @(APIImportTypeDictionary),
-                     APIFormatNone : @(APIImportTypeNone)};
-    });
     id format = self.predefinedRoutes[[class modelIdentifier]][action][APIFormatKey];
     if([format isKindOfClass:[NSString class]]) {
-        return [bindings[format] integerValue];
+        return [[APIRouter APIConfigurationImportTypes][format] integerValue];
     }
     return [format integerValue];
 }
@@ -139,15 +132,7 @@ APIImportType APIImportTypeForAction(NSString *action) {
 }
 
 - (NSString *)methodForClassString:(NSString *)classString action:(NSString *)action {
-    NSString *method = self.predefinedRoutes[classString][action][APIMethodKey];
-    if(!method) {
-        NSDictionary *actionsTable = @{APIIndexKey : APIMethodGET,
-                                       APIShowKey : APIMethodGET,
-                                       APIDeleteKey : APIMethodDELETE,
-                                       APICreateKey : APIMethodPOST,
-                                       APIUpdateKey : APIMethodPUT};
-        method = actionsTable[action];
-    }
+    NSString *method = self.predefinedRoutes[classString][action][APIMethodKey] ?: [APIRouter APIActionMethods][action];
     return method;
 }
 
@@ -225,5 +210,30 @@ APIImportType APIImportTypeForAction(NSString *action) {
     return bindings;
 }
 
++ (NSMutableDictionary *)APIActionMethods {
+    static dispatch_once_t onceToken;
+    static NSMutableDictionary *bindings = nil;
+    dispatch_once(&onceToken, ^{
+        bindings = [[NSMutableDictionary alloc] init];
+        [bindings addEntriesFromDictionary:@{APIIndexKey  : APIMethodGET,
+                                             APIShowKey   : APIMethodGET,
+                                             APIDeleteKey : APIMethodDELETE,
+                                             APICreateKey : APIMethodPOST,
+                                             APIUpdateKey : APIMethodPUT,
+                                             APIPatchKey  : APIMethodPATCH}];
+    });
+    return bindings;
+}
+
++ (NSDictionary *)APIConfigurationImportTypes {
+    static NSDictionary *bindings = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        bindings = @{APIFormatArray : @(APIImportTypeArray),
+                     APIFormatDictionary : @(APIImportTypeDictionary),
+                     APIFormatNone : @(APIImportTypeNone)};
+    });
+    return bindings;
+}
 
 @end

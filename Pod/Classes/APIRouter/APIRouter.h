@@ -29,7 +29,16 @@ APIImportType APIImportTypeForAction(NSString *action);
 
 + (instancetype)sharedInstance;
 
+/**
+ Defaults for import types.
+ {action : import type}
+ */
 + (NSMutableDictionary *)APIActionImportTypes;
+/**
+ Defaults for actions.
+ {action : method}
+ */
++ (NSMutableDictionary *)APIActionMethods;
 
 - (void)registerClass:(Class)class;
 
