@@ -21,7 +21,7 @@ extern NSString *const APIStartKey;
 /**
  Method to perform action on model.
  @param action action name
- @param parameters array of parameters. Available parameters [[<Attribute>], [<Criteria>]] or {"criterias" => [], "attributes" => {}}
+ @param parameters array of parameters. Available parameters [[<Attribute>], [<Criteria>], <Start>] or {"criterias" => [], "attributes" => {}, "start" => @YES/@NO}
  */
 - (NSOperation *)action:(NSString *)action parameters:(id)parameters completionBlock:(APIResponseCompletionBlock)completionBlock;
 + (NSOperation *)action:(NSString *)action parameters:(id)parameters completionBlock:(APIResponseCompletionBlock)completionBlock;
