@@ -171,7 +171,7 @@ APIImportType APIImportTypeForAction(NSString *action) {
     NSDictionary *bindings = @{@"multipart" : APIRequestTypeMultipartData,
                                @"url" : APIRequestTypeURLEncoded,
                                @"raw" : APIRequestTypeRaw};
-    return bindings[self.predefinedRoutes[classString][action][APIRequestKey][APITypeKey]];
+    return bindings[self.predefinedRoutes[classString][action][APIRequestKey][APITypeKey]] ?: APIRequestTypeURLEncoded;
 }
 
 - (BOOL)shouldParseWithClassString:(NSString *)classString action:(NSString *)action {
