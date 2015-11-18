@@ -152,7 +152,7 @@ APIImportType APIImportTypeForAction(NSString *action) {
 }
 
 - (NSDictionary *)requestParametersJSONKeyPathsByPropertyKey:(Class)class action:(NSString *)action {
-    return self.predefinedRoutes[[class modelString]][action][APIRequestKey][@"parameters"] ?: [class keysForKeyPaths:@{@"action" : action}];
+    return self.predefinedRoutes[[class modelString]][action][APIRequestKey][@"parameters"] ?: [class keysForKeyPaths:@{APIActionKey : action}];
 }
 
 - (NSDictionary *)responseParametersJSONKeyPathsByPropertyKey:(Class)class action:(NSString *)action; {
