@@ -12,4 +12,6 @@
 
 @property (nonatomic, strong) NSDictionary *userInfo;
 
+- (instancetype)initWithUserInfo:(NSDictionary *)userInfo;
+
 @end

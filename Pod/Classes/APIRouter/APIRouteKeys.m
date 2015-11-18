@@ -12,6 +12,7 @@ NSString *const APIIndexKey = @"index";
 NSString *const APICreateKey = @"create";
 NSString *const APIShowKey = @"show";
 NSString *const APIUpdateKey = @"update";
+NSString *const APIPatchKey = @"patch";
 NSString *const APIDeleteKey = @"delete";
 
 NSString *const APIActionKey = @"action";

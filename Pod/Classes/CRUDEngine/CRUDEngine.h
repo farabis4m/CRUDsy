@@ -32,6 +32,7 @@
 + (instancetype)sharedInstance;
 
 - (void)cancelAllRequests;
+- (void)startOperation:(NSOperation *)operation;
 
 - (id)HTTPRequestOperationURL:(NSURL *)URL HTTPMethod:(NSString *)method URLString:(NSString *)URLString parameters:(id)parameters completionBlock:(APIResponseCompletionBlock)completionBlock;
 

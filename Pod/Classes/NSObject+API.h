@@ -15,48 +15,24 @@
 @interface NSObject (API)
 
 /**
- Method to retrieve list of items.
- URL: GET /items
+ Method to perform action on model.
+ @param action action name
+ @param parameters array of parameters. Available parameters [[<Attribute>], [<Criteria>]] or {"criterias" => [], "attributes" => {}}
  */
-+ (void)listWithCompletionBlock:(APIResponseCompletionBlock)completionBlock;
+- (NSOperation *)action:(NSString *)action parameters:(id)parameters completionBlock:(APIResponseCompletionBlock)completionBlock;
++ (NSOperation *)action:(NSString *)action parameters:(id)parameters completionBlock:(APIResponseCompletionBlock)completionBlock;
 
 /**
- Method identical to list but with list of specified criterias like offset, length.
- URL: GET /items?p1=val1&p2=val2
+ Method to perform action on model.
+ @param action action name
+ @param start starts operation immediately. Default is TRUE
+ @param completionBlock completion block when operations is done
  */
-+ (void)listWithCriterias:(NSArray *)criterias completionBlock:(APIResponseCompletionBlock)completionBlock;
+- (NSOperation *)action:(NSString *)action criterias:(NSArray *)criterias completionBlock:(APIResponseCompletionBlock)completionBlock start:(BOOL)start;
+- (NSOperation *)action:(NSString *)action criterias:(NSArray *)criterias completionBlock:(APIResponseCompletionBlock)completionBlock;
 
-/**
- Method to get details of object.
- Based on id.
- /items/:id
- */
-- (void)showWithCompletionBlock:(APIResponseCompletionBlock)completionBlock;
-
-/**
- Method to get details of object.
- Based on id.
- /items/:id?p1=val1&p2=val2
- */
-- (void)showWithCriterias:(NSArray *)criterias completionBlock:(APIResponseCompletionBlock)completionBlock;
-
-/**
- Method to add new item.
- URL: POST /items
- */
-- (void)createWithCompletionBlock:(APIResponseCompletionBlock)completionBlock;
-
-/**
- Method to update item.
- URL: PUT /items/:id
- */
-- (void)updateWithCompletionBlock:(APIResponseCompletionBlock)completionBlock;
-
-/**
- Method to delete item.
- URL: DELETE /items/:id
- */
-- (void)deleteWithCompletionBlock:(APIResponseCompletionBlock)completionBlock;
++ (NSOperation *)action:(NSString *)action attributes:(NSDictionary *)attributes criterias:(NSArray *)criterias completionBlock:(APIResponseCompletionBlock)completionBlock start:(BOOL)start;
++ (NSOperation *)action:(NSString *)action attributes:(NSDictionary *)attributes criterias:(NSArray *)criterias completionBlock:(APIResponseCompletionBlock)completionBlock;
 
 + (NSString *)modelString;
 
@@ -69,7 +45,7 @@
  @param importType Import type of expected response.
  @param completionBlock Block that will be called after request finished.
  */
-+ (void)requestWithKey:(NSString *)key method:(NSString *)method route:(NSString *)route criterias:(NSArray *)criterias importType:(APIImportType)importType completionBlock:(APIResponseCompletionBlock)completionBlock;
+//+ (NSOperation *)requestWithKey:(NSString *)key method:(NSString *)method route:(NSString *)route criterias:(NSArray *)criterias completionBlock:(APIResponseCompletionBlock)completionBlock;
 
 /**
  Method to launch request.
@@ -78,7 +54,7 @@
  @param importType Import type of expected response.
  @param completionBlock Block that will be called after request finished.
  */
-+ (void)requestWithKey:(NSString *)key criterias:(NSArray *)criterias importType:(APIImportType)importType completionBlock:(APIResponseCompletionBlock)completionBlock;
++ (NSOperation *)requestWithKey:(NSString *)key criterias:(NSArray *)criterias start:(BOOL)start completionBlock:(APIResponseCompletionBlock)completionBlock;
 
 /**
  Method to launch request.
@@ -88,7 +64,7 @@
  @param importType Import type of expected response.
  @param completionBlock Block that will be called after request finished.
  */
-
-+ (void)requestWithKey:(NSString *)key routeSource:(Class)routeSource criterias:(NSArray *)criterias importType:(APIImportType)importType completionBlock:(APIResponseCompletionBlock)completionBlock;
++ (NSOperation *)requestWithKey:(NSString *)key routeSource:(Class)routeSource criterias:(NSArray *)criterias start:(BOOL)start completionBlock:(APIResponseCompletionBlock)completionBlock;
+- (NSOperation *)requestWithKey:(NSString *)key routeSource:(Class)routeSource criterias:(NSArray *)criterias start:(BOOL)start completionBlock:(APIResponseCompletionBlock)completionBlock;
 
 @end

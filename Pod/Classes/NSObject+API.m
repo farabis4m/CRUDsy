@@ -22,6 +22,10 @@
 
 #import <FluentJ/FluentJ.h>
 
+NSString *const APICriteriasKey = @"criterias";
+NSString *const APIAttributesKey = @"attributes";
+NSString *const APIStartKey = @"start";
+
 @interface NSObject () <ModelIDProtocol>
 
 @end
@@ -50,38 +54,57 @@
 
 #pragma mark - API
 
-+ (void)listWithCompletionBlock:(APIResponseCompletionBlock)completionBlock {
-    [self listWithCriterias:nil completionBlock:completionBlock];
+- (NSOperation *)action:(NSString *)action parameters:(id)parameters completionBlock:(APIResponseCompletionBlock)completionBlock {
+    NSArray *criterias = nil;
+    NSDictionary *attributes = nil;
+    BOOL start = FALSE;
+    if([parameters isKindOfClass:[NSArray class]]) {
+        criterias = [[self class] findSpecificClassItemInArray:parameters subitemClass:[NSArray class]];
+        attributes = [[self class] findSpecificClassItemInArray:parameters subitemClass:[NSDictionary class]];
+        NSNumber *startNumber = [[self class] findSpecificClassItemInArray:parameters subitemClass:[NSNumber class]];
+        start = startNumber ? [startNumber boolValue] : FALSE;
+    } else if([parameters isKindOfClass:[NSDictionary class]]) {
+        criterias = [parameters objectForKey:APICreateKey];
+        attributes = [parameters objectForKey:APIAttributesKey];
+        NSNumber *startNumber = [parameters objectForKey:APIStartKey];
+        start = startNumber ? [startNumber boolValue] : FALSE;
+    }
+    return [self action:action criterias:criterias completionBlock:completionBlock start:start];
 }
 
-+ (void)listWithCriterias:(NSArray *)criterias completionBlock:(APIResponseCompletionBlock)completionBlock {
-    [self requestWithKey:APIIndexKey criterias:criterias importType:APIImportTypeArray completionBlock:completionBlock];
++ (NSOperation *)action:(NSString *)action parameters:(id)parameters completionBlock:(APIResponseCompletionBlock)completionBlock {
+    NSArray *criterias = nil;
+    NSDictionary *attributes = nil;
+    BOOL start = FALSE;
+    if([parameters isKindOfClass:[NSArray class]]) {
+        criterias = [[self class] findSpecificClassItemInArray:parameters subitemClass:[NSArray class]];
+        attributes = [[self class] findSpecificClassItemInArray:parameters subitemClass:[NSDictionary class]];
+        NSNumber *startNumber = [[self class] findSpecificClassItemInArray:parameters subitemClass:[NSNumber class]];
+        start = startNumber ? [startNumber boolValue] : FALSE;
+    } else if([parameters isKindOfClass:[NSDictionary class]]) {
+        criterias = [parameters objectForKey:APICreateKey];
+        attributes = [parameters objectForKey:APIAttributesKey];
+        NSNumber *startNumber = [parameters objectForKey:APIStartKey];
+        start = startNumber ? [startNumber boolValue] : FALSE;
+    }
+    return [self action:action attributes:attributes criterias:criterias completionBlock:completionBlock start:start];
 }
 
-- (void)showWithCompletionBlock:(APIResponseCompletionBlock)completionBlock {
-    id criteria = [APIRouteModelCriteria criteriaWithModel:self action:APIShowKey];
-    [[self class] requestWithKey:APIShowKey criterias:@[criteria] importType:APIImportTypeDictionary completionBlock:completionBlock];
+- (NSOperation *)action:(NSString *)action criterias:(NSArray *)criterias completionBlock:(APIResponseCompletionBlock)completionBlock start:(BOOL)start {
+    return [self requestWithKey:action routeSource:[self class] criterias:criterias start:start completionBlock:completionBlock];
 }
 
-- (void)showWithCriterias:(NSArray *)criterias completionBlock:(APIResponseCompletionBlock)completionBlock {
-    id criteria = [APIRouteModelCriteria criteriaWithModel:self action:APIShowKey];
-    NSArray *allCriterias = [criterias arrayByAddingObject:criteria];
-    [[self class] requestWithKey:APIShowKey criterias:allCriterias importType:APIImportTypeDictionary completionBlock:completionBlock];
+- (NSOperation *)action:(NSString *)action criterias:(NSArray *)criterias completionBlock:(APIResponseCompletionBlock)completionBlock {
+    return [self action:action criterias:criterias completionBlock:completionBlock start:FALSE];
 }
 
-- (void)createWithCompletionBlock:(APIResponseCompletionBlock)completionBlock {
-    id criteria = [APIRouteModelCriteria criteriaWithModel:self action:APICreateKey];
-    [[self class] requestWithKey:APICreateKey criterias:@[criteria] importType:APIImportTypeDictionary completionBlock:completionBlock];
++ (NSOperation *)action:(NSString *)action attributes:(NSDictionary *)attributes criterias:(NSArray *)criterias completionBlock:(APIResponseCompletionBlock)completionBlock start:(BOOL)start {
+    APICriteria *criteria = [[APICriteria alloc] initWithUserInfo:attributes];
+    return [self requestWithKey:action routeSource:self criterias:[criterias arrayByAddingObject:criteria] start:start completionBlock:completionBlock];
 }
 
-- (void)updateWithCompletionBlock:(APIResponseCompletionBlock)completionBlock {
-    id criteria = [APIRouteModelCriteria criteriaWithModel:self action:APIUpdateKey];
-    [[self class] requestWithKey:APIUpdateKey criterias:@[criteria] importType:APIImportTypeDictionary completionBlock:completionBlock];
-}
-
-- (void)deleteWithCompletionBlock:(APIResponseCompletionBlock)completionBlock {
-    id criteria = [APIRouteModelCriteria criteriaWithModel:self action:APIDeleteKey];
-    [[self class] requestWithKey:APIDeleteKey criterias:@[criteria] importType:APIImportTypeDictionary completionBlock:completionBlock];
++ (NSOperation *)action:(NSString *)action attributes:(NSDictionary *)attributes criterias:(NSArray *)criterias completionBlock:(APIResponseCompletionBlock)completionBlock {
+    return [self action:action attributes:attributes criterias:criterias completionBlock:completionBlock start:FALSE];
 }
 
 #pragma mark - Utils
@@ -90,56 +113,61 @@
     return NSStringFromClass([self class]);
 }
 
-+ (void)requestWithKey:(NSString *)key criterias:(NSArray *)criterias importType:(APIImportType)importType completionBlock:(APIResponseCompletionBlock)completionBlock {
-    [self requestWithKey:key routeSource:self criterias:criterias importType:importType completionBlock:completionBlock];
++ (NSOperation *)requestWithKey:(NSString *)key criterias:(NSArray *)criterias importType:(APIImportType)importType start:(BOOL)start completionBlock:(APIResponseCompletionBlock)completionBlock {
+    return [self requestWithKey:key routeSource:self criterias:criterias start:start completionBlock:completionBlock];
 }
 
-+ (void)requestWithKey:(NSString *)key routeSource:(Class)routeSource criterias:(NSArray *)criterias importType:(APIImportType)importType completionBlock:(APIResponseCompletionBlock)completionBlock {
++ (NSOperation *)requestWithKey:(NSString *)key routeSource:(Class)routeSource criterias:(NSArray *)criterias start:(BOOL)start completionBlock:(APIResponseCompletionBlock)completionBlock {
+    NSMutableDictionary *parametrs = [NSMutableDictionary dictionary];
+    for(APICriteria *criteria in criterias) {
+        [parametrs addEntriesFromDictionary:[criteria exportWithUserInfo:nil error:nil]];
+    }
+    return [self callWithAction:key routeSource:self parameters:parametrs model:nil start:start completionBlock:completionBlock];
+}
+
+- (NSOperation *)requestWithKey:(NSString *)key routeSource:(Class)routeSource criterias:(NSArray *)criterias start:(BOOL)start completionBlock:(APIResponseCompletionBlock)completionBlock {
+    NSMutableDictionary *parametrs = [NSMutableDictionary dictionary];
+    for(APICriteria *criteria in criterias) {
+        [parametrs addEntriesFromDictionary:[criteria exportWithUserInfo:nil error:nil]];
+    }
+    return [[self class] callWithAction:key routeSource:[self class] parameters:parametrs model:self start:start completionBlock:completionBlock];
+}
+
++ (NSOperation *)callWithAction:(NSString *)action routeSource:(Class)routeSource parameters:(id)parameters model:(id)model start:(BOOL)start completionBlock:(APIResponseCompletionBlock)completionBlock {
+    CRUDEngine *engine = [CRUDEngine sharedInstance];
     APIRouter *router = [APIRouter sharedInstance];
-    [router registerClass:self];
+    [router registerClass:[self class]];
     [router registerClass:routeSource];
     NSString *modelString = [routeSource modelString];
-    NSString *URLString = [[APIRouter sharedInstance] buildURLForClass:[self modelString] action:key];
-    NSString *route = [router routeForClassString:modelString action:key];
-    NSString *method = [router methodForClassString:modelString action:key];
-    NSMutableDictionary *parametrs = [NSMutableDictionary dictionary];
-    for(APICriteria *criteria in criterias) {
-        [parametrs addEntriesFromDictionary:[criteria exportWithUserInfo:nil error:nil]];
-    }
-    [self callWithURL:URLString Method:method route:route action:key parameters:parametrs importType:importType completionBlock:completionBlock];
-}
+    NSString *URLString = [[APIRouter sharedInstance] buildURLForClass:[[self class] modelString] action:action];
+    NSString *route = [router routeForClassString:modelString action:action];
+    NSString *method = [router methodForClassString:modelString action:action];
 
-+ (void)requestWithKey:(NSString *)key method:(NSString *)method route:(NSString *)route criterias:(NSArray *)criterias importType:(APIImportType)importType completionBlock:(APIResponseCompletionBlock)completionBlock {
-    [[APIRouter sharedInstance] registerClass:self];
-    NSString *URLString = [[APIRouter sharedInstance] buildURLForClass:[self modelString] action:key];
-    NSMutableDictionary *parametrs = [NSMutableDictionary dictionary];
-    for(APICriteria *criteria in criterias) {
-        [parametrs addEntriesFromDictionary:[criteria exportWithUserInfo:nil error:nil]];
-    }
-    [self callWithURL:URLString Method:method route:route action:key parameters:parametrs importType:importType completionBlock:completionBlock];
-}
-
-+ (void)callWithURL:(NSString *)URLString Method:(NSString *)method route:(NSString *)route action:(NSString *)action parameters:(id)parameters importType:(APIImportType)importType completionBlock:(APIResponseCompletionBlock)completionBlock {
-    CRUDEngine *engine = [CRUDEngine sharedInstance];
     NSURL *URL = [NSURL URLWithString:URLString];
     APIResponseCompletionBlock completion = ^(APIResponse *response) {
         if(!response.error) {
             NSError *parseError = nil;
-            id result = [self parseJson:response.data importType:importType class:[self class] action:action error:&parseError];
+            id result = [self parseJson:response.data class:[self class] action:action error:&parseError];
             response.data = result;
             response.error = parseError;
         }
         completionBlock(response);
     };
+    id operaiton;
     if([[APIRouter sharedInstance] isMultipart:[self modelString] action:action]) {
-        [engine HTTPMutipartRequestOperationURL:URL HTTPMethod:method URLString:route parameters:parameters completionBlock:completion];
+        operaiton = [engine HTTPMutipartRequestOperationURL:URL HTTPMethod:method URLString:route parameters:parameters completionBlock:completion];
     } else {
-        [engine HTTPRequestOperationURL:URL HTTPMethod:method URLString:route parameters:parameters completionBlock:completion];
+        operaiton = [engine HTTPRequestOperationURL:URL HTTPMethod:method URLString:route parameters:parameters completionBlock:completion];
     }
+    if(start) {
+        [[CRUDEngine sharedInstance] startOperation:operaiton];
+    }
+    return operaiton;
 }
 
-+ (id)parseJson:(id)json importType:(APIImportType)importType class:(Class)class action:(NSString *)action error:(NSError **)error {
++ (id)parseJson:(id)json class:(Class)class action:(NSString *)action error:(NSError **)error {
     APIImportType definedImportType = [[APIRouter sharedInstance] importTypeWithClass:class action:action];
+    APIImportType importType = APIImportTypeForAction(action);
     if(definedImportType != APIImportTypeUndefined) {
         importType = definedImportType;
     }
@@ -153,8 +181,7 @@
                 NSArray *keys = [json allKeys];
                 json = json[keys.lastObject];
             }
-            return [class importValue:json context:context userInfo:userInfo error:error]
-            ;
+            return [class importValue:json context:context userInfo:userInfo error:error];
         }
         case APIImportTypeDictionary: return [class importValue:json context:context userInfo:userInfo error:error];
         case APIImportTypeNone: return json;
@@ -162,5 +189,17 @@
     }
     return nil;
 }
+
++ (id)findSpecificClassItemInArray:(NSArray *)array subitemClass:(Class)subitemClass {
+    id classItem = nil;
+    for(id item in array) {
+        if([item isKindOfClass:subitemClass]) {
+            classItem = item;
+            break;
+        }
+    }
+    return classItem;
+}
+
 
 @end

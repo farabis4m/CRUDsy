@@ -12,6 +12,8 @@
 
 #import "APIURLBuilder.h"
 
+APIImportType APIImportTypeForAction(NSString *action);
+
 /**
  Class that handle pattern based URLs to custom user defined.
  Example: GET /items to POST /GETMyItems.
@@ -24,6 +26,8 @@
 @property (nonatomic, strong) id<APIURLBuilder> urlBuilder;
 
 + (instancetype)sharedInstance;
+
++ (NSMutableDictionary *)APIActionImportTypes;
 
 - (void)registerClass:(Class)class;
 

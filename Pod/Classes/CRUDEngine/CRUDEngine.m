@@ -67,6 +67,10 @@
 
 #pragma mark - Utils
 
+- (void)startOperation:(NSOperation *)operation {
+    [self.operationManager.operationQueue addOperation:operation];
+}
+
 - (id)HTTPMutipartRequestOperationURL:(NSURL *)URL HTTPMethod:(NSString *)method URLString:(NSString *)URLString parameters:(NSDictionary *)parameters completionBlock:(APIResponseCompletionBlock)completionBlock {
     
     NSArray *values = [parameters allValues];
@@ -113,7 +117,6 @@
             completionBlock(response);
         }
     }];
-    [self.operationManager.operationQueue addOperation:operation];
     return operation;
 }
 
@@ -155,7 +158,6 @@
             completionBlock(response);
         }
     }];
-    [self.operationManager.operationQueue addOperation:operation];
     return operation;
 }
 

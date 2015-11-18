@@ -25,6 +25,10 @@ static NSMutableDictionary *definedMethods = nil;
 
 #import <FluentJ/FluentJ.h>
 
+APIImportType APIImportTypeForAction(NSString *action) {
+    return [[APIRouter APIActionImportTypes][action] integerValue];
+}
+
 @interface APIRouter ()
 
 @property (nonatomic, strong) NSMutableArray *registeredClasses;
@@ -197,5 +201,21 @@ static NSMutableDictionary *definedMethods = nil;
     }
     [self.predefinedRoutes setObject:classRoutes forKey:classString];
 }
+
++ (NSMutableDictionary *)APIActionImportTypes {
+    static dispatch_once_t onceToken;
+    static NSMutableDictionary *bindings = nil;
+    dispatch_once(&onceToken, ^{
+        bindings = [[NSMutableDictionary alloc] init];
+        [bindings addEntriesFromDictionary:@{APICreateKey :  @(APIImportTypeDictionary),
+                                             APIIndexKey  :  @(APIImportTypeArray),
+                                             APIShowKey   :  @(APIImportTypeDictionary),
+                                             APIDeleteKey :  @(APIImportTypeNone),
+                                             APIUpdateKey :  @(APIImportTypeDictionary),
+                                             APIPatchKey  :  @(APIImportTypeDictionary)}];
+    });
+    return bindings;
+}
+
 
 @end

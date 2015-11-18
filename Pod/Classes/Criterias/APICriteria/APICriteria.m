@@ -8,6 +8,8 @@
 
 #import "APICriteria.h"
 
+#import <FluentJ/FluentJ.h>
+
 @implementation APICriteria
 
 #pragma mark - MTL Serialization
@@ -16,6 +18,20 @@
     return @{};
 }
 
-// TODO: override JSON -> extra + MTL
+#pragma mark - Lifecycle
+
+- (instancetype)initWithUserInfo:(NSDictionary *)userInfo {
+    self = [super init];
+    if(self) {
+        self.userInfo = userInfo;
+    }
+    return self;
+}
+
+#pragma mark - Export
+
+- (id)exportWithUserInfo:(NSDictionary *)userInfo error:(NSError *__autoreleasing  _Nullable *)error {
+    return self.userInfo;
+}
 
 @end
