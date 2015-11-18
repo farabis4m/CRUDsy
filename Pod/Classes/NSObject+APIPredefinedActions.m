@@ -12,12 +12,15 @@
 
 #import "NSObject+API.h"
 
+#import "APIRouteModelCriteria.h"
+
 @implementation NSObject (APIPredefinedActions)
 
 #pragma mark - APICreateKey
 
 - (NSOperation *)createWithCompletionBlock:(APIResponseCompletionBlock)completionBlock start:(BOOL)start {
-    return [self action:APICreateKey criterias:nil completionBlock:completionBlock start:start];
+    APIRouteModelCriteria *criteria = [APIRouteModelCriteria criteriaWithModel:self action:APICreateKey];
+    return [self action:APICreateKey criterias:@[criteria] completionBlock:completionBlock start:start];
 }
 
 - (NSOperation *)createWithCompletionBlock:(APIResponseCompletionBlock)completionBlock {
