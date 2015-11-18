@@ -35,7 +35,7 @@
 #pragma mark - APIIndexKey
 
 + (NSOperation *)listWithCriterias:(NSArray *)criterias completionBlock:(APIResponseCompletionBlock)completionBlock start:(BOOL)start {
-    return [self action:APICreateKey attributes:nil criterias:criterias completionBlock:completionBlock start:start];
+    return [self action:APIIndexKey attributes:nil criterias:criterias completionBlock:completionBlock start:start];
 }
 
 + (NSOperation *)listWithCriterias:(NSArray *)criterias completionBlock:(APIResponseCompletionBlock)completionBlock {
