@@ -12,10 +12,14 @@
 
 @implementation APIModelCriteria
 
-#pragma mark - FTAPIModelCriteria lifecycle
+#pragma mark - Lifecycle
 
 + (instancetype)criteriaWithModel:(id<ModelIDProtocol>)model {
     return [[self alloc] initWithModel:model];
+}
+
++ (instancetype)criteriaWithModel:(id<ModelIDProtocol>)model template:(NSString *)template {
+    return [[self alloc] initWithModel:model template:template];
 }
 
 + (NSArray *)criteriasWithModels:(NSArray *)models {
@@ -28,9 +32,14 @@
 }
 
 - (instancetype)initWithModel:(id<ModelIDProtocol>)model {
+    return [self initWithModel:model template:nil];
+}
+
+- (instancetype)initWithModel:(id<ModelIDProtocol>)model template:(NSString *)template {
     self = [super init];
     if(self) {
         self.model = model;
+        self.templateKey = template;
     }
     return self;
 }
@@ -38,7 +47,7 @@
 #pragma mark - Export
 
 - (id)exportWithUserInfo:(NSDictionary *)userInfo error:(NSError *__autoreleasing  _Nullable *)error {
-    if([self.model conformsToProtocol:@protocol(ModelIDProtocol)]) {
+    if([self.model conformsToProtocol:@protocol(ModelIDProtocol)] && self.templateKey.length == 0) {
         if(self.model.identifier) {
             id keys = [[self.model class] keysForKeyPaths:self.userInfo][@"identifier"];
             NSString *key = [keys isKindOfClass:[NSArray class]] ? [keys firstObject] : keys;
