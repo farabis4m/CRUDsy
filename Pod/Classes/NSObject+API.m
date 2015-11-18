@@ -147,7 +147,8 @@ NSString *const APIStartKey = @"start";
     APIResponseCompletionBlock completion = ^(APIResponse *response) {
         if(!response.error) {
             NSError *parseError = nil;
-            id result = [self parseJson:response.data class:[self class] action:action error:&parseError];
+            id result = model;
+            [self parseJson:response.data class:[self class] action:action error:&parseError model:&result];
             response.data = result;
             response.error = parseError;
         }
@@ -161,17 +162,22 @@ NSString *const APIStartKey = @"start";
     return operaiton;
 }
 
-+ (id)parseJson:(id)json class:(Class)class action:(NSString *)action error:(NSError **)error {
++ (void)parseJson:(id)json class:(Class)class action:(NSString *)action error:(NSError **)error model:(id *)model {
+    id context = [[[CRUDEngine sharedInstance] contextManager] contextForModelClass:self action:action];
+    NSDictionary *userInfo = @{APIActionKey : action,
+                               APITypeKey : APIResponseKey};
+    if(model) {
+        [*model updateWithValue:json context:context userInfo:userInfo error:error];
+        return;
+    }
     APIImportType definedImportType = [[APIRouter sharedInstance] importTypeWithClass:class action:action];
     APIImportType importType = APIImportTypeForAction(action);
     if(definedImportType != APIImportTypeUndefined) {
         importType = definedImportType;
     }
     BOOL shouldParse = [[APIRouter sharedInstance] shouldParseWithClassString:[self modelString] action:action];
+    id result = nil;
     if(shouldParse) {
-        id context = [[[CRUDEngine sharedInstance] contextManager] contextForModelClass:self action:action];
-        NSDictionary *userInfo = @{APIActionKey : action,
-                                   APITypeKey : APIResponseKey};
         switch (importType) {
             case APIImportTypeArray: {
                 BOOL isDictionary = [json isKindOfClass:[NSDictionary class]];
@@ -179,14 +185,16 @@ NSString *const APIStartKey = @"start";
                     NSArray *keys = [json allKeys];
                     json = json[keys.lastObject];
                 }
-                return [class importValue:json context:context userInfo:userInfo error:error];
+                result = [class importValue:json context:context userInfo:userInfo error:error];
             }
-            case APIImportTypeDictionary: return [class importValue:json context:context userInfo:userInfo error:error];
-            case APIImportTypeNone: return json;
-            case APIImportTypeUndefined: return nil;
+            case APIImportTypeDictionary: result = [class importValue:json context:context userInfo:userInfo error:error];
+            case APIImportTypeNone: result = json;
+            case APIImportTypeUndefined: result = nil;
         }
     }
-    return nil;
+    if(model) {
+        *model = result;
+    }
 }
 
 + (id)findSpecificClassItemInArray:(NSArray *)array subitemClass:(Class)subitemClass {

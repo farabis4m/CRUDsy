@@ -10,6 +10,7 @@
 #define CRUDsy_h
 
 #import "NSObject+API.h"
+#import "NSObject+APIPredefinedActions.h"
 
 #import "NSValueTransformer+ModelId.h"
 
