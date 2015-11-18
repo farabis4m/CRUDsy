@@ -47,9 +47,9 @@
                     responseObject = responseObject[keys.lastObject];
                 }
                 result = [class importValue:responseObject context:context userInfo:userInfo error:error];
-            }
-            case APIImportTypeDictionary: result = [class importValue:responseObject context:context userInfo:userInfo error:error];
-            case APIImportTypeNone: result = responseObject;
+            } break;
+            case APIImportTypeDictionary: result = [class importValue:responseObject context:context userInfo:userInfo error:error]; break;
+            case APIImportTypeNone: result = responseObject; break;
             case APIImportTypeUndefined: result = nil;
         }
     }
