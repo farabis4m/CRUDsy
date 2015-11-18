@@ -19,6 +19,7 @@
 #pragma mark - APICreateKey
 
 - (NSOperation *)createWithCompletionBlock:(APIResponseCompletionBlock)completionBlock start:(BOOL)start {
+    // TODO: add route template engine parse
     APIRouteModelCriteria *criteria = [APIRouteModelCriteria criteriaWithModel:self action:APICreateKey];
     return [self action:APICreateKey criterias:@[criteria] completionBlock:completionBlock start:start];
 }
@@ -64,7 +65,9 @@
 }
 
 - (NSOperation *)showWithCompletionBlock:(APIResponseCompletionBlock)completionBlock start:(BOOL)start {
-    return [self showWithCriterias:nil completionBlock:completionBlock start:start];
+    // TODO: add route template engine parse
+    APIModelCriteria *criteria = [APIModelCriteria criteriaWithModel:self];
+    return [self showWithCriterias:@[criteria] completionBlock:completionBlock start:start];
 }
 
 - (NSOperation *)showWithCompletionBlock:(APIResponseCompletionBlock)completionBlock {
@@ -74,7 +77,9 @@
 #pragma mark - APIUpdateKey
 
 - (NSOperation *)updateWithCompletionBlock:(APIResponseCompletionBlock)completionBlock start:(BOOL)start {
-    return [self action:APIUpdateKey criterias:nil completionBlock:completionBlock start:start];
+    // TODO: add route template engine parse
+    APIModelCriteria *criteria = [APIModelCriteria criteriaWithModel:self];
+    return [self action:APIUpdateKey criterias:@[criteria] completionBlock:completionBlock start:start];
 }
 
 - (NSOperation *)updateWithCompletionBlock:(APIResponseCompletionBlock)completionBlock {
@@ -84,7 +89,9 @@
 #pragma mark - APIPatchKey
 
 - (NSOperation *)patchWithCompletionBlock:(APIResponseCompletionBlock)completionBlock start:(BOOL)start {
-    return [self action:APIPatchKey criterias:nil completionBlock:completionBlock start:start];
+    // TODO: add route template engine parse
+    APIModelCriteria *criteria = [APIModelCriteria criteriaWithModel:self];
+    return [self action:APIPatchKey criterias:@[criteria] completionBlock:completionBlock start:start];
 }
 
 - (NSOperation *)patchWithCompletionBlock:(APIResponseCompletionBlock)completionBlock {
@@ -94,7 +101,9 @@
 #pragma mark - APIDeleteKey
 
 - (NSOperation *)deleteWithCompletionBlock:(APIResponseCompletionBlock)completionBlock start:(BOOL)start {
-    return [self action:APIDeleteKey criterias:nil completionBlock:completionBlock start:start];
+    // TODO: add route template engine parse
+    APIModelCriteria *criteria = [APIModelCriteria criteriaWithModel:self];
+    return [self action:APIDeleteKey criterias:@[criteria] completionBlock:completionBlock start:start];
 }
 
 - (NSOperation *)deleteWithCompletionBlock:(APIResponseCompletionBlock)completionBlock {
