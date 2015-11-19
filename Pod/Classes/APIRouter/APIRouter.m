@@ -117,7 +117,7 @@ APIImportType APIImportTypeForAction(NSString *action) {
 - (APIImportType)importTypeWithClass:(Class)class action:(NSString *)action {
     id format = self.predefinedRoutes[[class modelIdentifier]][action][APIFormatKey];
     if([format isKindOfClass:[NSString class]]) {
-        return [[APIRouter APIConfigurationImportTypes][format] integerValue];
+        return [[APIRouter APIConfigurationImportTypes][[format lowercaseString]] integerValue];
     }
     return [format integerValue];
 }
@@ -127,7 +127,15 @@ APIImportType APIImportTypeForAction(NSString *action) {
 }
 
 - (NSString *)routeForClassString:(NSString *)classString action:(NSString *)action {
-    return self.predefinedRoutes[classString][action][APIRouteKey] ?: [classString pluralizedString];
+    NSString *modelIdentifier = [[self class] modelIdentifier];
+    NSRange range = [modelIdentifier rangeOfCharacterFromSet:[NSCharacterSet lowercaseLetterCharacterSet] options:NSLiteralSearch];
+    NSString *modelName = [modelIdentifier substringWithRange:NSMakeRange(range.location - 1, modelIdentifier.length - range.location)];
+    NSString *route = [modelName pluralizedString];
+    if(action == APIUpdateKey || action == APIPatchKey || action == APIDeleteKey) {
+        route = [route stringByAppendingString:@"self.identifier"];
+    }
+    
+    return self.predefinedRoutes[classString][action][APIRouteKey] ?: route;
 }
 
 - (NSString *)methodForClassString:(NSString *)classString action:(NSString *)action {

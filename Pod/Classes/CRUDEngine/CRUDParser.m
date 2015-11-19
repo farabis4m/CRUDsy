@@ -27,11 +27,12 @@
     id context = [[[CRUDEngine sharedInstance] contextManager] contextForModelClass:class action:action];
     NSDictionary *userInfo = @{APIActionKey : action,
                                APITypeKey : APIResponseKey};
-    if(model) {
+    APIImportType definedImportType = [[APIRouter sharedInstance] importTypeWithClass:routeClass action:action];
+    if(model && definedImportType != APIImportTypeNone) {
         [model updateWithValue:responseObject context:context userInfo:userInfo error:error];
         return model;
     }
-    APIImportType definedImportType = [[APIRouter sharedInstance] importTypeWithClass:routeClass action:action];
+    
     APIImportType importType = APIImportTypeForAction(action);
     if(definedImportType != APIImportTypeUndefined) {
         importType = definedImportType;

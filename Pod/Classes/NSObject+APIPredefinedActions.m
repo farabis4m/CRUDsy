@@ -11,8 +11,11 @@
 #import "APIRouteKeys.h"
 
 #import "NSObject+API.h"
+#import "NSObject+Model.h"
 
 #import "APIRouteModelCriteria.h"
+
+#import <InflectorKit/NSString+InflectorKit.h>
 
 @interface NSObject () <ModelIDProtocol>
 
@@ -70,7 +73,7 @@
 
 - (NSOperation *)showWithCompletionBlock:(APIResponseCompletionBlock)completionBlock start:(BOOL)start {
     // TODO: add route template engine parse
-    APIModelCriteria *criteria = [APIModelCriteria criteriaWithModel:self];
+    APIModelCriteria *criteria = [APIRouteModelCriteria criteriaWithModel:self action:APIUpdateKey];
     return [self showWithCriterias:@[criteria] completionBlock:completionBlock start:start];
 }
 
