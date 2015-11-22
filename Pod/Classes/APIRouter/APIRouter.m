@@ -127,14 +127,13 @@ APIImportType APIImportTypeForAction(NSString *action) {
 }
 
 - (NSString *)routeForClassString:(NSString *)classString action:(NSString *)action {
-    NSString *modelIdentifier = [[self class] modelIdentifier];
+    NSString *modelIdentifier = classString;
     NSRange range = [modelIdentifier rangeOfCharacterFromSet:[NSCharacterSet lowercaseLetterCharacterSet] options:NSLiteralSearch];
-    NSString *modelName = [modelIdentifier substringWithRange:NSMakeRange(range.location - 1, modelIdentifier.length - range.location)];
-    NSString *route = [modelName pluralizedString];
+    NSString *modelName = [modelIdentifier substringWithRange:NSMakeRange(range.location - 1, modelIdentifier.length - range.location + 1)];
+    NSString *route = [[modelName lowercaseString] pluralizedString];
     if(action == APIUpdateKey || action == APIPatchKey || action == APIDeleteKey) {
         route = [route stringByAppendingString:@"self.identifier"];
     }
-    
     return self.predefinedRoutes[classString][action][APIRouteKey] ?: route;
 }
 
