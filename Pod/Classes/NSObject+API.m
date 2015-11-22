@@ -67,16 +67,19 @@ NSString *const APIStartKey = @"start";
 }
 
 - (NSOperation *)action:(NSString *)action criterias:(NSArray *)criterias completionBlock:(APIResponseCompletionBlock)completionBlock {
-    return [self action:action criterias:criterias completionBlock:completionBlock start:FALSE];
+    return [self action:action criterias:criterias completionBlock:completionBlock start:YES];
 }
 
 + (NSOperation *)action:(NSString *)action attributes:(NSDictionary *)attributes criterias:(NSArray *)criterias completionBlock:(APIResponseCompletionBlock)completionBlock start:(BOOL)start {
+    if(!criterias.count) {
+        criterias = @[];
+    }
     APICriteria *criteria = [[APICriteria alloc] initWithUserInfo:attributes];
     return [self requestWithAction:action routeSource:self criterias:[criterias arrayByAddingObject:criteria] start:start model:nil completionBlock:completionBlock];
 }
 
 + (NSOperation *)action:(NSString *)action attributes:(NSDictionary *)attributes criterias:(NSArray *)criterias completionBlock:(APIResponseCompletionBlock)completionBlock {
-    return [self action:action attributes:attributes criterias:criterias completionBlock:completionBlock start:FALSE];
+    return [self action:action attributes:attributes criterias:criterias completionBlock:completionBlock start:YES];
 }
 
 + (NSOperation *)action:(NSString *)action parameters:(id)parameters model:(id)model completionBlock:(APIResponseCompletionBlock)completionBlock {
