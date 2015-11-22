@@ -19,6 +19,11 @@
 @class AFHTTPRequestSerializer;
 @class AFHTTPResponseSerializer;
 
+extern NSString *const CRUDOperationFailureOperationNotification;
+extern NSString *const CRUDResponseDataKey;
+extern NSString *const CRUDOperationDataKey;
+extern NSString *const CRUDErrorDataKey;
+
 @interface CRUDEngine : NSObject
 
 @property (nonatomic, strong) id<APIContextProtocol> contextManager;

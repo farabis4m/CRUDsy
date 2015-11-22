@@ -14,6 +14,11 @@
 
 #import "CRUDParser.h"
 
+NSString *const CRUDOperationFailureOperationNotification = @"CRUDOperationFailureOperationNotification";
+NSString *const CRUDResponseDataKey = @"CRUDResponseDataKey";
+NSString *const CRUDOperationDataKey = @"CRUDOperationDataKey";
+NSString *const CRUDErrorDataKey = @"CRUDErrorDataKey";
+
 @interface CRUDEngine ()
 
 @property (nonatomic, strong) AFHTTPRequestOperationManager *operationManager;
@@ -133,24 +138,13 @@
         response.data = responseResult;
         completionBlock(response);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        // TODO: fix notification
-        // TODO: support for repeat operation
-        NSString *responseString = nil;
-        if(operation.responseData.bytes > 0) {
-            responseString = [NSString stringWithUTF8String:[operation.responseData bytes]];
-        }
-        NSLog(@"ERROR :%@ %@", [error localizedDescription], responseString);
-        NSLog(@"ERROR DESCR: %@", [NSHTTPURLResponse localizedStringForStatusCode:operation.response.statusCode]);
+        NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithDictionary:[error userInfo]];
+        userInfo[CRUDResponseDataKey] = operation.responseObject;
         APIResponse *response = [[APIResponse alloc] init];
         response.error = error;
-        if(operation.response.statusCode == 401) {
-            NSError *error = [NSError errorWithDomain:@"com.API" code:0 userInfo:@{NSLocalizedDescriptionKey : operation.responseObject[@"ErrorMessage"]}];
-            response.error = error;
-            completionBlock(response);
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"Unauthorized" object:nil];
-        } else {
-            completionBlock(response);
-        }
+        NSDictionary *notificationUserInfo = @{CRUDErrorDataKey : error, CRUDOperationDataKey : operation};
+        [[NSNotificationCenter defaultCenter] postNotificationName:CRUDOperationFailureOperationNotification object:notificationUserInfo];
+        completionBlock(response);
     }];
     return operation;
 }
