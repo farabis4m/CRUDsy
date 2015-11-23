@@ -37,24 +37,22 @@
     if(definedImportType != APIImportTypeUndefined) {
         importType = definedImportType;
     }
-    BOOL shouldParse = [[APIRouter sharedInstance] shouldParseWithClassString:[class modelIdentifier] action:action];
     id result = nil;
-    if(shouldParse) {
-        switch (importType) {
-            case APIImportTypeArray: {
-                BOOL isDictionary = [responseObject isKindOfClass:[NSDictionary class]];
-                if(isDictionary) {
-                    NSArray *keys = [responseObject allKeys];
-                    responseObject = responseObject[keys.lastObject];
-                }
-                result = [class importValue:responseObject context:context userInfo:userInfo error:error];
-            } break;
-            case APIImportTypeDictionary: result = [class importValue:responseObject context:context userInfo:userInfo error:error]; break;
-            case APIImportTypeNone: result = responseObject; break;
-            case APIImportTypeUndefined: result = nil;
-        }
+    switch (importType) {
+        case APIImportTypeArray: {
+            BOOL isDictionary = [responseObject isKindOfClass:[NSDictionary class]];
+            if(isDictionary) {
+                NSArray *keys = [responseObject allKeys];
+                responseObject = responseObject[keys.lastObject];
+            }
+            result = [class importValue:responseObject context:context userInfo:userInfo error:error];
+        } break;
+        case APIImportTypeDictionary: result = [class importValue:responseObject context:context userInfo:userInfo error:error]; break;
+        case APIImportTypeNone: result = responseObject; break;
+        case APIImportTypeUndefined: result = nil;
     }
-    return result;
+    BOOL shouldParse = [[APIRouter sharedInstance] shouldParseWithClassString:[class modelIdentifier] action:action];
+    return shouldParse ? result : responseObject;
 }
 
 @end
