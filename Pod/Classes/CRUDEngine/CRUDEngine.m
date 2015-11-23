@@ -141,7 +141,7 @@ NSString *const CRUDErrorDataKey = @"CRUDErrorDataKey";
         NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithDictionary:[error userInfo]];
         userInfo[CRUDResponseDataKey] = operation.responseObject;
         APIResponse *response = [[APIResponse alloc] init];
-        response.error = error;
+        response.error = [NSError errorWithDomain:@"com.CRUDsy.response" code:operation.response.statusCode userInfo:userInfo];
         NSDictionary *notificationUserInfo = @{CRUDErrorDataKey : error, CRUDOperationDataKey : operation};
         [[NSNotificationCenter defaultCenter] postNotificationName:CRUDOperationFailureOperationNotification object:notificationUserInfo];
         completionBlock(response);
