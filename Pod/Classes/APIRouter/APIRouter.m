@@ -115,7 +115,7 @@ APIImportType APIImportTypeForAction(NSString *action) {
 #pragma mark - Accessors
 
 - (APIImportType)importTypeWithClass:(Class)class action:(NSString *)action {
-    id format = self.predefinedRoutes[[class modelIdentifier]][action][APIFormatKey];
+    id format = [self.predefinedRoutes[[class modelIdentifier]][action][APIFormatKey] lowercaseString];
     if([format isKindOfClass:[NSString class]]) {
         return [[APIRouter APIConfigurationImportTypes][[format lowercaseString]] integerValue];
     }
