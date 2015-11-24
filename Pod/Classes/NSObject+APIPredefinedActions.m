@@ -26,7 +26,6 @@
 #pragma mark - APICreateKey
 
 - (NSOperation *)createWithCompletionBlock:(APIResponseCompletionBlock)completionBlock start:(BOOL)start {
-    // TODO: add route template engine parse
     APIRouteModelCriteria *criteria = [APIRouteModelCriteria criteriaWithModel:self action:APICreateKey];
     return [self action:APICreateKey criterias:@[criteria] completionBlock:completionBlock start:start];
 }
@@ -72,8 +71,7 @@
 }
 
 - (NSOperation *)showWithCompletionBlock:(APIResponseCompletionBlock)completionBlock start:(BOOL)start {
-    // TODO: add route template engine parse
-    APIModelCriteria *criteria = [APIRouteModelCriteria criteriaWithModel:self action:APIUpdateKey];
+    APIModelCriteria *criteria = [APIModelCriteria criteriaWithModel:self template:@"self.identifier"];
     return [self showWithCriterias:@[criteria] completionBlock:completionBlock start:start];
 }
 
@@ -84,8 +82,7 @@
 #pragma mark - APIUpdateKey
 
 - (NSOperation *)updateWithCompletionBlock:(APIResponseCompletionBlock)completionBlock start:(BOOL)start {
-    // TODO: add route template engine parse
-    APIModelCriteria *criteria = [APIModelCriteria criteriaWithModel:self];
+    APIModelCriteria *criteria = [APIModelCriteria criteriaWithModel:self template:@"self.identifier"];
     return [self action:APIUpdateKey criterias:@[criteria] completionBlock:completionBlock start:start];
 }
 
@@ -96,8 +93,7 @@
 #pragma mark - APIPatchKey
 
 - (NSOperation *)patchWithCompletionBlock:(APIResponseCompletionBlock)completionBlock start:(BOOL)start {
-    // TODO: add route template engine parse
-    APIModelCriteria *criteria = [APIModelCriteria criteriaWithModel:self];
+    APIModelCriteria *criteria = [APIModelCriteria criteriaWithModel:self template:@"self.identifier"];
     return [self action:APIPatchKey criterias:@[criteria] completionBlock:completionBlock start:start];
 }
 
@@ -108,8 +104,7 @@
 #pragma mark - APIDeleteKey
 
 - (NSOperation *)deleteWithCompletionBlock:(APIResponseCompletionBlock)completionBlock start:(BOOL)start {
-    // TODO: add route template engine parse
-    APIModelCriteria *criteria = [APIModelCriteria criteriaWithModel:self];
+    APIModelCriteria *criteria = [APIModelCriteria criteriaWithModel:self template:@"self.identifier"];
     return [self action:APIDeleteKey criterias:@[criteria] completionBlock:completionBlock start:start];
 }
 

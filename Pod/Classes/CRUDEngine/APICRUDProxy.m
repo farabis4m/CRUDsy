@@ -47,7 +47,7 @@
             id model = criteria.model;
             id value = [model valueForKeyPath:criteria.templateKey];
             NSString *valueString = [NSString stringWithFormat:@"%@", value];
-            [route stringByReplacingOccurrencesOfString:criteria.templateKey withString:valueString];
+            route = [route stringByReplacingOccurrencesOfString:criteria.templateKey withString:valueString];
         }
     }
     return route;

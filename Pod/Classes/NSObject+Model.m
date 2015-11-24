@@ -11,7 +11,8 @@
 @implementation NSObject (Model)
 
 + (NSString *)modelIdentifier {
-    return NSStringFromClass([self class]);
+    NSString *className = NSStringFromClass([self class]);
+    return [[className componentsSeparatedByString:@"."] lastObject];
 }
 
 @end

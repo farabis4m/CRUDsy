@@ -116,7 +116,7 @@ NSString *const APIStartKey = @"start";
 
 + (NSOperation *)requestWithAction:(NSString *)action routeSource:(Class)routeSource criterias:(NSArray *)criterias start:(BOOL)start model:(id)model completionBlock:(APIResponseCompletionBlock)completionBlock {
     NSMutableDictionary *parametrs = [NSMutableDictionary dictionary];
-    NSPredicate *queryPredicate = [NSPredicate predicateWithFormat:@"class = %@", [APIModelCriteria modelIdentifier]];
+    NSPredicate *queryPredicate = [NSPredicate predicateWithFormat:@"class = %@", [APIModelCriteria class]];
     NSArray *queryCriterias = [criterias filteredArrayUsingPredicate:queryPredicate];
     for(APICriteria *criteria in criterias) {
         [parametrs addEntriesFromDictionary:[criteria exportWithUserInfo:nil error:nil]];

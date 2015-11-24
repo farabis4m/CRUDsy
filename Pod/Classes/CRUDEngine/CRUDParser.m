@@ -28,7 +28,7 @@
     NSDictionary *userInfo = @{APIActionKey : action,
                                APITypeKey : APIResponseKey};
     APIImportType definedImportType = [[APIRouter sharedInstance] importTypeWithClass:routeClass action:action];
-    if(model && definedImportType != APIImportTypeNone) {
+    if(model && definedImportType != APIImportTypeNone && ![responseObject isKindOfClass:[NSArray class]]) {
         [model updateWithValue:responseObject context:context userInfo:userInfo error:error];
         return model;
     }

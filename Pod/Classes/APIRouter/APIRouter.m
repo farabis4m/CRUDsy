@@ -131,8 +131,8 @@ APIImportType APIImportTypeForAction(NSString *action) {
     NSRange range = [modelIdentifier rangeOfCharacterFromSet:[NSCharacterSet lowercaseLetterCharacterSet] options:NSLiteralSearch];
     NSString *modelName = [modelIdentifier substringWithRange:NSMakeRange(range.location - 1, modelIdentifier.length - range.location + 1)];
     NSString *route = [[modelName lowercaseString] pluralizedString];
-    if(action == APIUpdateKey || action == APIPatchKey || action == APIDeleteKey) {
-        route = [route stringByAppendingString:@"self.identifier"];
+    if(action == APIUpdateKey || action == APIPatchKey || action == APIDeleteKey || action == APIShowKey) {
+        route = [route stringByAppendingString:@"/self.identifier"];
     }
     return self.predefinedRoutes[classString][action][APIRouteKey] ?: route;
 }
