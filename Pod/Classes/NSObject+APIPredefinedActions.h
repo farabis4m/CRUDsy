@@ -82,8 +82,8 @@
  @param start starts operation immediately. Default is TRUE
  @param completionBlock completion block when operations is done
  */
-- (NSOperation *)patchWithCompletionBlock:(APIResponseCompletionBlock)completionBlock start:(BOOL)start;
-- (NSOperation *)patchWithCompletionBlock:(APIResponseCompletionBlock)completionBlock;
+- (NSOperation *)patchWithAttributes:(NSDictionary *)attributes completionBlock:(APIResponseCompletionBlock)completionBlock start:(BOOL)start;
+- (NSOperation *)patchWithAttributes:(NSDictionary *)attributes completionBlock:(APIResponseCompletionBlock)completionBlock;
 
 /**
  Method to delete item.

@@ -92,13 +92,14 @@
 
 #pragma mark - APIPatchKey
 
-- (NSOperation *)patchWithCompletionBlock:(APIResponseCompletionBlock)completionBlock start:(BOOL)start {
-    APIModelCriteria *criteria = [APIModelCriteria criteriaWithModel:self template:@"self.identifier"];
-    return [self action:APIPatchKey criterias:@[criteria] completionBlock:completionBlock start:start];
+- (NSOperation *)patchWithAttributes:(NSDictionary *)attributes completionBlock:(APIResponseCompletionBlock)completionBlock start:(BOOL)start {
+    APIModelCriteria *modelCriteria = [APIModelCriteria criteriaWithModel:self template:@"self.identifier"];
+    APICriteria *criteria = [[APICriteria alloc] initWithUserInfo:attributes];
+    return [self action:APIPatchKey criterias:@[modelCriteria, criteria] completionBlock:completionBlock start:start];
 }
 
-- (NSOperation *)patchWithCompletionBlock:(APIResponseCompletionBlock)completionBlock {
-    return [self patchWithCompletionBlock:completionBlock start:YES];
+- (NSOperation *)patchWithAttributes:(NSDictionary *)attributes completionBlock:(APIResponseCompletionBlock)completionBlock {
+    return [self patchWithAttributes:attributes completionBlock:completionBlock start:YES];
 }
 
 #pragma mark - APIDeleteKey
