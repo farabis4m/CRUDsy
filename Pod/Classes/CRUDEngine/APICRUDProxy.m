@@ -18,7 +18,7 @@
 + (NSOperation *)operationForAction:(NSString *)action modelClass:(Class)modelClass routeSource:(Class)routeSource parameters:(id)parameters model:(id)model criterias:(NSArray *)criterias start:(BOOL)start completionBlock:(APIResponseCompletionBlock)completionBlock {
     CRUDEngine *engine = [CRUDEngine sharedInstance];
     APIRouter *router = [APIRouter sharedInstance];
-    modelClass = [[APIRouter sharedInstance] modelClassForClassString:[modelClass modelIdentifier] action:action];
+    modelClass = [[APIRouter sharedInstance] modelClassForClassString:modelClass action:action];
     [router registerClass:modelClass];
     [router registerClass:routeSource];
     NSString *modelString = [routeSource modelIdentifier];

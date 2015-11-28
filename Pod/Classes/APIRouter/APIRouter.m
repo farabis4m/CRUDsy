@@ -138,8 +138,8 @@ APIImportType APIImportTypeForAction(NSString *action) {
     return self.predefinedRoutes[classString][action][APIRouteKey] ?: route;
 }
 
-- (Class)modelClassForClassString:(NSString *)classString action:(NSString *)action {
-    return NSClassFromString(self.predefinedRoutes[classString][action][APIModelClass] ?: classString);
+- (Class)modelClassForClass:(Class)class action:(NSString *)action {
+    return NSClassFromString(self.predefinedRoutes[[class modelIdentifier]][action][APIModelClass]) ?: class;
 }
 
 - (NSString *)methodForClassString:(NSString *)classString action:(NSString *)action {
