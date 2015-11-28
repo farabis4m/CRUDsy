@@ -44,6 +44,7 @@ APIImportType APIImportTypeForAction(NSString *action);
 
 - (NSString *)urlForClassString:(NSString *)classString action:(NSString *)action;
 - (NSString *)routeForClassString:(NSString *)classString action:(NSString *)action;
+- (Class)modelClassForClassString:(NSString *)classString action:(NSString *)action;
 - (NSString *)methodForClassString:(NSString *)classString action:(NSString *)action;
 - (NSDictionary *)requestParametersJSONKeyPathsByPropertyKey:(Class)class action:(NSString *)action;
 - (NSDictionary *)responseParametersJSONKeyPathsByPropertyKey:(Class)class action:(NSString *)action;

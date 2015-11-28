@@ -14,6 +14,7 @@
 NSString *const APIFormatArray = @"array";
 NSString *const APIFormatDictionary = @"object";
 NSString *const APIFormatNone = @"none";
+NSString *const APIModelClass = @"model";
 
 static NSMutableDictionary *definedRoutes = nil;
 static NSMutableDictionary *definedURLs = nil;
@@ -135,6 +136,10 @@ APIImportType APIImportTypeForAction(NSString *action) {
         route = [route stringByAppendingString:@"/self.identifier"];
     }
     return self.predefinedRoutes[classString][action][APIRouteKey] ?: route;
+}
+
+- (Class)modelClassForClassString:(NSString *)classString action:(NSString *)action {
+    return NSClassFromString(self.predefinedRoutes[classString][action][APIModelClass] ?: classString);
 }
 
 - (NSString *)methodForClassString:(NSString *)classString action:(NSString *)action {
