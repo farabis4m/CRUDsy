@@ -16,15 +16,15 @@
 /**
  Offset.
  */
-@property (nonatomic, assign) NSInteger offset;
+@property (nonatomic, strong) id offset;
 
 /**
  Number of expected items.
  */
-@property (nonatomic, assign) NSInteger length;
+@property (nonatomic, strong) NSNumber *length;
 
-+ (instancetype)criteriaWithOffset:(NSInteger)offset length:(NSInteger)legnth;
++ (instancetype)criteriaWithOffset:(id)offset length:(NSNumber *)legnth;
 
-- (instancetype)initWithOffset:(NSInteger)offset length:(NSInteger)legnth;
+- (instancetype)initWithOffset:(id)offset length:(NSNumber *)legnth;
 
 @end

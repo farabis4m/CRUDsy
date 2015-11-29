@@ -12,13 +12,22 @@
 
 #pragma mark - APIPageCriteria lifecycle
 
-+ (instancetype)criteriaWithOffset:(NSInteger)offset length:(NSInteger)legnth {
++ (instancetype)criteriaWithOffset:(id)offset length:(NSNumber *)legnth {
     return [[self alloc] initWithOffset:offset length:legnth];
 }
 
-- (instancetype)initWithOffset:(NSInteger)offset length:(NSInteger)legnth {
+- (instancetype)init {
     self = [super init];
     if(self) {
+        self.type = APIQueryCriteriaType;
+    }
+    return self;
+}
+
+- (instancetype)initWithOffset:(id)offset length:(NSNumber *)legnth {
+    self = [super init];
+    if(self) {
+        self.type = APIQueryCriteriaType;
         self.offset = offset;
         self.length = legnth;
     }

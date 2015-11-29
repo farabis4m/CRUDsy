@@ -10,6 +10,10 @@
 
 #import <FluentJ/FluentJ.h>
 
+NSString *const APIQueryCriteriaType = @"APIQueryCriteriaType";
+NSString *const APIBodyCriteriaType = @"APIBodyCriteriaType";
+NSString *const APIPathCriteriaType = @"APIPathCriteriaType";
+
 @implementation APICriteria
 
 #pragma mark - MTL Serialization
@@ -24,6 +28,7 @@
     self = [super init];
     if(self) {
         self.userInfo = userInfo;
+        self.type = APIBodyCriteriaType;
     }
     return self;
 }
