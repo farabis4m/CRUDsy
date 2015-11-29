@@ -13,6 +13,9 @@
 
 #import "APIModelCriteria.h"
 
+#import <FluentJ/FluentJ.h>
+#import "APIRouteKeys.h"
+
 @implementation APICRUDProxy
 
 + (NSOperation *)operationForAction:(NSString *)action modelClass:(Class)modelClass routeSource:(Class)routeSource parameters:(id)parameters model:(id)model criterias:(NSArray *)criterias start:(BOOL)start completionBlock:(APIResponseCompletionBlock)completionBlock {
@@ -25,6 +28,21 @@
     NSString *URLString = [[APIRouter sharedInstance] buildURLForClass:[modelClass modelIdentifier] action:action];
     NSString *route = [self routeForModelClass:routeSource action:action criterias:criterias];
     NSString *method = [router methodForClassString:modelString action:action];
+
+    NSPredicate *queryFilter = [NSPredicate predicateWithFormat:@"self.type = %@", APIQueryCriteriaType];
+    NSArray *queryCriterias = [criterias filteredArrayUsingPredicate:queryFilter];
+    NSMutableDictionary *queryParamters = [NSMutableDictionary dictionary];
+    for(APICriteria *criteria in queryCriterias) {
+        [queryParamters addEntriesFromDictionary:[criteria exportWithUserInfo:@{APIActionKey : action} error:nil]];
+    }
+    NSMutableString *queryParametersString = [NSMutableString string];
+    NSArray *keys = queryParamters.allKeys;
+    for(id key in keys) {
+        [queryParametersString appendFormat:@"%@=%@", key, queryParamters[key]];
+        if(key != [keys lastObject]) {
+            [queryParametersString appendString:@"&"];
+        }
+    }
     
     NSURL *URL = [NSURL URLWithString:URLString];
     NSString *requestType = [[APIRouter sharedInstance] requestTypeForClassString:modelString action:action];
