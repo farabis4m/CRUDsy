@@ -40,6 +40,7 @@
     if(self) {
         self.model = model;
         self.templateKey = template;
+        self.type = APIPathCriteriaType;
     }
     return self;
 }
