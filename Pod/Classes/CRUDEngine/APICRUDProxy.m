@@ -21,6 +21,7 @@
 + (NSOperation *)operationForAction:(NSString *)action modelClass:(Class)modelClass routeSource:(Class)routeSource parameters:(id)parameters model:(id)model criterias:(NSArray *)criterias start:(BOOL)start completionBlock:(APIResponseCompletionBlock)completionBlock {
     CRUDEngine *engine = [CRUDEngine sharedInstance];
     APIRouter *router = [APIRouter sharedInstance];
+    [router registerClass:modelClass];
     modelClass = [[APIRouter sharedInstance] modelClassForClass:modelClass action:action];
     [router registerClass:modelClass];
     [router registerClass:routeSource];
