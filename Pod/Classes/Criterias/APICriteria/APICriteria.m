@@ -25,10 +25,14 @@ NSString *const APIPathCriteriaType = @"APIPathCriteriaType";
 #pragma mark - Lifecycle
 
 - (instancetype)initWithUserInfo:(NSDictionary *)userInfo {
+    return [self initWithUserInfo:userInfo type:APIBodyCriteriaType];
+}
+
+- (instancetype)initWithUserInfo:(NSDictionary *)userInfo type:(NSString *)type {
     self = [super init];
     if(self) {
         self.userInfo = userInfo;
-        self.type = APIBodyCriteriaType;
+        self.type = type;
     }
     return self;
 }

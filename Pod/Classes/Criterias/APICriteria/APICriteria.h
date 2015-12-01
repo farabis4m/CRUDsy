@@ -18,5 +18,6 @@ extern NSString *const APIPathCriteriaType;
 @property (nonatomic, strong) NSString *type;
 
 - (instancetype)initWithUserInfo:(NSDictionary *)userInfo;
+- (instancetype)initWithUserInfo:(NSDictionary *)userInfo type:(NSString *)type;
 
 @end
