@@ -138,8 +138,20 @@ APIImportType APIImportTypeForAction(NSString *action) {
     return self.predefinedRoutes[classString][action][APIRouteKey] ?: route;
 }
 
+// TODO: HARD lifehack. Extract this!
+Class ClassFromString(NSString *className) {
+    Class cls = NSClassFromString(className);
+    if (cls == nil) {
+        NSString *appName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleExecutable"];
+        className = [NSString stringWithFormat:@"%@.%@", appName, className];
+        cls = NSClassFromString(className);
+    }
+    return cls;
+}
+
 - (Class)modelClassForClass:(Class)class action:(NSString *)action {
-    return NSClassFromString(self.predefinedRoutes[[class modelIdentifier]][action][APIModelClass]) ?: class;
+    NSString *classString = self.predefinedRoutes[[class modelIdentifier]][action][APIModelClass];
+    return NSClassFromString(classString) ?: ClassFromString(classString) ?: class;
 }
 
 - (NSString *)methodForClassString:(NSString *)classString action:(NSString *)action {
