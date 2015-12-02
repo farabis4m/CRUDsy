@@ -73,13 +73,7 @@ APIImportType APIImportTypeForAction(NSString *action) {
     NSString *classString = NSStringFromClass(class);
     if(![self.registeredClasses containsObject:classString]) {
         [self.registeredClasses addObject:classString];
-        Class managedObject = NSClassFromString(@"NSManagedObject");
-        Class currentClass = class;
-        BOOL result = FALSE;
-        do {
-            result = [self flushRoutesForClass:[class modelIdentifier] modelClass:[currentClass modelIdentifier]];
-            currentClass = [currentClass superclass];
-        } while (!result && !(currentClass == NSObject.class || currentClass == managedObject));
+        [self flushRoutesForClass:[class modelIdentifier]];
     }
 }
 
@@ -200,7 +194,7 @@ Class ClassFromString(NSString *className) {
 
 #pragma mark - Utils
 
-- (BOOL)flushRoutesForClass:(NSString *)classString modelClass:(NSString *)modelClass {
+- (BOOL)flushRoutesForClass:(NSString *)classString {
     NSString *filePath = [[NSBundle mainBundle] pathForResource:classString ofType:@"plist"];
     if(!filePath) {
         return FALSE;
@@ -221,7 +215,7 @@ Class ClassFromString(NSString *className) {
             [[self class] setRoute:route forKey:APIKey model:classString];
         }
     }
-    [self.predefinedRoutes setObject:classRoutes forKey:modelClass];
+    [self.predefinedRoutes setObject:classRoutes forKey:classString];
     return TRUE;
 }
 
