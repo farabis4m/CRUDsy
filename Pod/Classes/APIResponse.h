@@ -43,4 +43,6 @@
  */
 @property (nonatomic, strong) NSDictionary *userInfo;
 
++ (instancetype)responseWithData:(id)data error:(NSError *)error;
+
 @end
