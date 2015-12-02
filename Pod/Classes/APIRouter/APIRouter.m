@@ -73,7 +73,13 @@ APIImportType APIImportTypeForAction(NSString *action) {
     NSString *classString = NSStringFromClass(class);
     if(![self.registeredClasses containsObject:classString]) {
         [self.registeredClasses addObject:classString];
-        [self flushRoutesForClass:[class modelIdentifier]];
+        Class managedObject = NSClassFromString(@"NSManagedObject");
+        Class currentClass = class;
+        BOOL result = FALSE;
+        do {
+            result = [self flushRoutesForClass:[class modelIdentifier] modelClass:[currentClass modelIdentifier]];
+            
+        } while (!result && !(class == NSObject.class || class == managedObject));
     }
 }
 
@@ -194,10 +200,10 @@ Class ClassFromString(NSString *className) {
 
 #pragma mark - Utils
 
-- (void)flushRoutesForClass:(NSString *)classString {
+- (BOOL)flushRoutesForClass:(NSString *)classString modelClass:(NSString *)modelClass {
     NSString *filePath = [[NSBundle mainBundle] pathForResource:classString ofType:@"plist"];
     if(!filePath) {
-        return;
+        return FALSE;
     }
     NSDictionary *classRoutes = [NSDictionary dictionaryWithContentsOfFile:filePath];
     for(NSString *APIKey in classRoutes.allKeys) {
@@ -215,7 +221,8 @@ Class ClassFromString(NSString *className) {
             [[self class] setRoute:route forKey:APIKey model:classString];
         }
     }
-    [self.predefinedRoutes setObject:classRoutes forKey:classString];
+    [self.predefinedRoutes setObject:classRoutes forKey:modelClass];
+    return TRUE;
 }
 
 + (NSMutableDictionary *)APIActionImportTypes {
