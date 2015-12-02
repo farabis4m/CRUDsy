@@ -78,8 +78,8 @@ APIImportType APIImportTypeForAction(NSString *action) {
         BOOL result = FALSE;
         do {
             result = [self flushRoutesForClass:[class modelIdentifier] modelClass:[currentClass modelIdentifier]];
-            
-        } while (!result && !(class == NSObject.class || class == managedObject));
+            currentClass = [currentClass superclass];
+        } while (!result && !(currentClass == NSObject.class || currentClass == managedObject));
     }
 }
 
