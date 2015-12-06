@@ -119,7 +119,11 @@ NSString *const APIStartKey = @"start";
     NSPredicate *queryPredicate = [NSPredicate predicateWithFormat:@"class = %@", [APIModelCriteria class]];
     NSArray *queryCriterias = [criterias filteredArrayUsingPredicate:queryPredicate];
     for(APICriteria *criteria in criterias) {
-        [parametrs addEntriesFromDictionary:[criteria exportWithUserInfo:nil error:nil]];
+        NSError *error = nil;
+        [parametrs addEntriesFromDictionary:[criteria exportWithUserInfo:nil error:&error]];
+        if(error) {
+            NSLog(@"WARNING! You have error in json parsing: %@", [error localizedDescription]);
+        }
     }
     return [APICRUDProxy operationForAction:action modelClass:self routeSource:routeSource parameters:parametrs model:model criterias:queryCriterias start:start completionBlock:completionBlock];
 }
