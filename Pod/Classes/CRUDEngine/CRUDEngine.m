@@ -14,6 +14,8 @@
 
 #import "CRUDParser.h"
 
+#import "CRUDAttachement.h"
+
 NSString *const CRUDOperationFailureOperationNotification = @"CRUDOperationFailureOperationNotification";
 NSString *const CRUDResponseDataKey = @"CRUDResponseDataKey";
 NSString *const CRUDOperationDataKey = @"CRUDOperationDataKey";
@@ -82,7 +84,7 @@ NSString *const CRUDErrorDataKey = @"CRUDErrorDataKey";
 - (id)HTTPMutipartRequestOperationURL:(NSURL *)URL HTTPMethod:(NSString *)method URLString:(NSString *)URLString parameters:(NSDictionary *)parameters completionBlock:(APIResponseCompletionBlock)completionBlock {
     
     NSArray *values = [parameters allValues];
-    NSArray *dataObjects = [values filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self isKindOfClass: %@", [NSData class]]];
+    NSArray *dataObjects = [values filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self isKindOfClass: %@", [CRUDAttachement class]]];
     NSMutableArray *dataKeys = [NSMutableArray array];
     for(id dataObject in dataObjects) {
         NSArray *keys = [parameters allKeysForObject:dataObject];
@@ -98,7 +100,8 @@ NSString *const CRUDErrorDataKey = @"CRUDErrorDataKey";
     NSString *relativeURLString = [fullURL absoluteString];
     NSURLRequest *request = [self.requestSerializer multipartFormRequestWithMethod:method URLString:relativeURLString parameters:allParameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         for(id key in dataKeys) {
-            [formData appendPartWithFormData:dataParameters[key] name:key];
+            CRUDAttachement *attachement = dataParameters[key];
+            [formData appendPartWithFileData:attachement.data name:key fileName:attachement.filename mimeType:attachement.mimeType];
         }
     } error:&serializationError];
     return [self operationWithReqiest:request completionBlock:completionBlock];

@@ -21,4 +21,6 @@
 #import "APIMethods.h"
 #import "APIRouteKeys.h"
 
+#import "CRUDAttachement.h"
+
 #endif /* CRUDsy_h */
