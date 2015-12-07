@@ -50,7 +50,10 @@
 - (id)exportWithUserInfo:(NSDictionary *)userInfo error:(NSError *__autoreleasing  _Nullable *)error {
     if([self.model conformsToProtocol:@protocol(ModelIDProtocol)] && self.templateKey.length == 0) {
         if(self.model.identifier) {
-            id keys = [[self.model class] keysForKeyPaths:self.userInfo][@"identifier"];
+            NSMutableDictionary *fullInfo = [NSMutableDictionary dictionary];
+            [fullInfo addEntriesFromDictionary:userInfo];
+            [fullInfo addEntriesFromDictionary:self.userInfo];
+            id keys = [[self.model class] keysForKeyPaths:userInfo][@"identifier"];
             NSString *key = [keys isKindOfClass:[NSArray class]] ? [keys firstObject] : keys;
             if(key.length) {
                 return @{key : self.model.identifier};
