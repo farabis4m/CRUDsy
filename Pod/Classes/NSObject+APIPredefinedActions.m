@@ -83,7 +83,8 @@
 
 - (NSOperation *)updateWithCompletionBlock:(APIResponseCompletionBlock)completionBlock start:(BOOL)start {
     APIModelCriteria *criteria = [APIModelCriteria criteriaWithModel:self template:@"self.identifier"];
-    return [self action:APIUpdateKey criterias:@[criteria] completionBlock:completionBlock start:start];
+    APIRouteModelCriteria *routeCriteria = [APIRouteModelCriteria criteriaWithModel:self action:APIUpdateKey];
+    return [self action:APIUpdateKey criterias:@[criteria, routeCriteria] completionBlock:completionBlock start:start];
 }
 
 - (NSOperation *)updateWithCompletionBlock:(APIResponseCompletionBlock)completionBlock {
