@@ -105,9 +105,22 @@
 
 #pragma mark - APIDeleteKey
 
-- (NSOperation *)deleteWithCompletionBlock:(APIResponseCompletionBlock)completionBlock start:(BOOL)start {
+#pragma mark - APIDeleteKey
+
+- (NSOperation *)deleteWithCriterias:(NSArray *)criterias completionBlock:(APIResponseCompletionBlock)completionBlock start:(BOOL)start {
     APIModelCriteria *criteria = [APIModelCriteria criteriaWithModel:self template:@"self.identifier"];
-    return [self action:APIDeleteKey criterias:@[criteria] completionBlock:completionBlock start:start];
+    NSMutableArray *allCriterias = [NSMutableArray array];
+    [allCriterias addObjectsFromArray:criterias];
+    [allCriterias addObject:criteria];
+    return [self action:APIDeleteKey criterias:allCriterias completionBlock:completionBlock start:start];
+}
+
+- (NSOperation *)deleteWithCriterias:(NSArray *)criterias completionBlock:(APIResponseCompletionBlock)completionBlock {
+    return [self deleteWithCriterias:criterias completionBlock:completionBlock start:YES];
+}
+
+- (NSOperation *)deleteWithCompletionBlock:(APIResponseCompletionBlock)completionBlock start:(BOOL)start {
+    return [self deleteWithCriterias:@[] completionBlock:completionBlock start:start];
 }
 
 - (NSOperation *)deleteWithCompletionBlock:(APIResponseCompletionBlock)completionBlock {

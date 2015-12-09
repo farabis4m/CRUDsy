@@ -91,7 +91,8 @@
  @param start starts operation immediately. Default is TRUE
  @param completionBlock completion block when operations is done
  */
+- (NSOperation *)deleteWithCriterias:(NSArray *)criterias completionBlock:(APIResponseCompletionBlock)completionBlock start:(BOOL)start;
+- (NSOperation *)deleteWithCriterias:(NSArray *)criterias completionBlock:(APIResponseCompletionBlock)completionBlock;
 - (NSOperation *)deleteWithCompletionBlock:(APIResponseCompletionBlock)completionBlock start:(BOOL)start;
 - (NSOperation *)deleteWithCompletionBlock:(APIResponseCompletionBlock)completionBlock;
-
 @end
