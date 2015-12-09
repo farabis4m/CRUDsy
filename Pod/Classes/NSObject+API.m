@@ -120,7 +120,9 @@ NSString *const APIStartKey = @"start";
     NSArray *queryCriterias = [criterias filteredArrayUsingPredicate:queryPredicate];
     for(APICriteria *criteria in criterias) {
         NSError *error = nil;
-        [parametrs addEntriesFromDictionary:[criteria exportWithUserInfo:nil error:&error]];
+        NSDictionary *userInfo = @{APIActionKey : action,
+                                   APITypeKey : APIRequestKey};
+        [parametrs addEntriesFromDictionary:[criteria exportWithUserInfo:userInfo error:&error]];
         if(error) {
             NSLog(@"WARNING! You have error in json parsing: %@", [error localizedDescription]);
         }
