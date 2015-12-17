@@ -55,4 +55,15 @@
     return shouldParse ? result : responseObject;
 }
 
+- (APIResponse *)parse:(id)responseObject response:(NSHTTPURLResponse *)response class:(Class)class routeClass:(Class)routeClass action:(NSString *)action model:(id)model {
+    APIResponse *apiResponse = [[APIResponse alloc] init];
+    NSError *error = nil;
+    id data = [self parse:responseObject class:class routeClass:routeClass action:action error:&error model:model];
+    apiResponse.data = data;
+    apiResponse.error = error;
+    apiResponse.offset = [response allHeaderFields][@"X-ITEM-OFFSET"];
+    apiResponse.totalItemsCount = [response allHeaderFields][@"X-TOTAL-ITEMS-COUNT"];
+    return apiResponse;
+}
+
 @end

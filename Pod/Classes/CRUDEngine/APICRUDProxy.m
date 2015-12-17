@@ -16,6 +16,8 @@
 #import <FluentJ/FluentJ.h>
 #import "APIRouteKeys.h"
 
+#import <AFNetworking/AFHTTPRequestOperation.h>
+
 @implementation APICRUDProxy
 
 + (NSOperation *)operationForAction:(NSString *)action modelClass:(Class)modelClass routeSource:(Class)routeSource parameters:(id)parameters model:(id)model criterias:(NSArray *)criterias start:(BOOL)start completionBlock:(APIResponseCompletionBlock)completionBlock {
@@ -47,17 +49,24 @@
     
     NSURL *URL = [NSURL URLWithString:URLString];
     NSString *requestType = [[APIRouter sharedInstance] requestTypeForClassString:modelString action:action];
-    id operaiton = [engine HTTPRequestOperationURL:URL HTTPMethod:method URLString:route type:requestType parameters:parameters completionBlock:^(APIResponse *response) {
-        if(!response.error) {
-            NSError *error = nil;
-            response.data = [engine.parser parse:response.data class:modelClass routeClass:routeSource action:action error:&error model:model];
-        }
+    id operation = [engine HTTPRequestOperationURL:URL HTTPMethod:method URLString:route type:requestType parameters:parameters success:^(NSOperation *operation, id responseObject) {
+        AFHTTPRequestOperation *requestOperation = (AFHTTPRequestOperation *)operation;
+        id response = [engine.parser parse:responseObject response:requestOperation.response class:modelClass routeClass:routeSource action:action model:model];
+        completionBlock(response);
+    } failure:^(NSOperation *operation, NSError *error) {
+        AFHTTPRequestOperation *requestOperation = (AFHTTPRequestOperation *)operation;
+        NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithDictionary:[error userInfo]];
+        userInfo[CRUDResponseDataKey] = requestOperation.responseObject;
+        NSDictionary *notificationUserInfo = @{CRUDErrorDataKey : error, CRUDOperationDataKey : operation};
+        [[NSNotificationCenter defaultCenter] postNotificationName:CRUDOperationFailureOperationNotification object:notificationUserInfo];
+        error = [NSError errorWithDomain:@"com.CRUDsy.response" code:requestOperation.response.statusCode userInfo:userInfo];
+        APIResponse *response = [APIResponse responseWithData:requestOperation.responseObject error:error];
         completionBlock(response);
     }];
     if(start) {
-        [[CRUDEngine sharedInstance] startOperation:operaiton];
+        [[CRUDEngine sharedInstance] startOperation:operation];
     }
-    return operaiton;
+    return operation;
 }
 
 + (NSString *)routeForModelClass:(Class)class action:(NSString *)action criterias:(NSArray *)criterias {

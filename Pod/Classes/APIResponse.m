@@ -25,4 +25,11 @@
     return self;
 }
 
+#pragma mark - Modifiers
+
+- (void)setOffset:(id)offset {
+    _offset = offset;
+    _hasNext = offset != nil;
+}
+
 @end

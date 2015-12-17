@@ -26,17 +26,17 @@
 /**
  Current offset.
  */
-@property (nonatomic, assign) NSInteger offset;
+@property (nonatomic, strong) id offset;
 
 /**
  Total number of items.
  */
-@property (nonatomic, assign) NSInteger totalItemsCount;
+@property (nonatomic, strong) NSNumber *totalItemsCount;
 
 /**
  Indicator does server has more items.
  */
-@property (nonatomic, assign) BOOL hasNext;
+@property (nonatomic, assign, readonly) BOOL hasNext;
 
 /**
  User info dictionary to store additional parameters.

@@ -81,7 +81,7 @@ NSString *const CRUDErrorDataKey = @"CRUDErrorDataKey";
     [self.operationManager.operationQueue addOperation:operation];
 }
 
-- (id)HTTPMutipartRequestOperationURL:(NSURL *)URL HTTPMethod:(NSString *)method URLString:(NSString *)URLString parameters:(NSDictionary *)parameters completionBlock:(APIResponseCompletionBlock)completionBlock {
+- (id)HTTPMutipartRequestOperationURL:(NSURL *)URL HTTPMethod:(NSString *)method URLString:(NSString *)URLString parameters:(NSDictionary *)parameters success:(void (^)(NSOperation *operation, id responseObject))success failure:(void (^)(NSOperation *operation, NSError *error))failure {
     
     NSArray *values = [parameters allValues];
     NSArray *dataObjects = [values filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self isKindOfClass: %@", [CRUDAttachement class]]];
@@ -104,51 +104,38 @@ NSString *const CRUDErrorDataKey = @"CRUDErrorDataKey";
             [formData appendPartWithFileData:attachement.data name:key fileName:attachement.filename mimeType:attachement.mimeType];
         }
     } error:&serializationError];
-    return [self operationWithReqiest:request completionBlock:completionBlock];
+    return [self operationWithReqiest:request success:success failure:failure];
 }
 
-- (id)HTTPSimpleRequestOperationURL:(NSURL *)URL HTTPMethod:(NSString *)method URLString:(NSString *)URLString parameters:(id)parameters completionBlock:(APIResponseCompletionBlock)completionBlock {
+- (id)HTTPSimpleRequestOperationURL:(NSURL *)URL HTTPMethod:(NSString *)method URLString:(NSString *)URLString parameters:(id)parameters success:(void (^)(NSOperation *operation, id responseObject))success failure:(void (^)(NSOperation *operation, NSError *error))failure {
     NSError *serializationError = nil;
     NSURL *fullURL = [URL URLByAppendingPathComponent:URLString];
     NSString *relativeURLString = [fullURL absoluteString];
     NSMutableURLRequest *request = [self.operationManager.requestSerializer requestWithMethod:method URLString:relativeURLString  parameters:parameters error:&serializationError];
     if (serializationError) {
-        if(completionBlock) {
-            APIResponse *response = [[APIResponse alloc] init];
-            response.error = serializationError;
+        if(failure) {
+//            APIResponse *response = [[APIResponse alloc] init];
+//            response.error = serializationError;
             dispatch_async(self.operationManager.completionQueue ?: dispatch_get_main_queue(), ^{
-                completionBlock(response);
+                failure(nil, serializationError);
             });
         }
         return nil;
     }
-    return [self operationWithReqiest:request completionBlock:completionBlock];
+    return [self operationWithReqiest:request success:success failure:failure];
 }
 
-- (id)HTTPRequestOperationURL:(NSURL *)URL HTTPMethod:(NSString *)method URLString:(NSString *)URLString type:(NSString *)type parameters:(id)parameters completionBlock:(APIResponseCompletionBlock)completionBlock {
+- (id)HTTPRequestOperationURL:(NSURL *)URL HTTPMethod:(NSString *)method URLString:(NSString *)URLString type:(NSString *)type parameters:(id)parameters success:(void (^)(NSOperation *operation, id responseObject))success failure:(void (^)(NSOperation *operation, NSError *error))failure {
     if(type == APIRequestTypeMultipartData) {
-        return [self HTTPMutipartRequestOperationURL:URL HTTPMethod:method URLString:URLString parameters:parameters completionBlock:completionBlock];
+        return [self HTTPMutipartRequestOperationURL:URL HTTPMethod:method URLString:URLString parameters:parameters success:success failure:failure];
     } else if(type == APIRequestTypeURLEncoded) {
-        return [self HTTPSimpleRequestOperationURL:URL HTTPMethod:method URLString:URLString parameters:parameters completionBlock:completionBlock];
+        return [self HTTPSimpleRequestOperationURL:URL HTTPMethod:method URLString:URLString parameters:parameters success:success failure:failure];
     }
     return nil;
 }
 
-- (AFHTTPRequestOperation *)operationWithReqiest:(NSURLRequest *)request completionBlock:(APIResponseCompletionBlock)completionBlock {
-    id operation = [self.operationManager HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        id responseResult = responseObject;//[self.APIAdapter prepareForParsingResponseObject:responseObject];
-        APIResponse *response = [[APIResponse alloc] init];
-        response.data = responseResult;
-        completionBlock(response);
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithDictionary:[error userInfo]];
-        userInfo[CRUDResponseDataKey] = operation.responseObject;
-        APIResponse *response = [[APIResponse alloc] init];
-        response.error = [NSError errorWithDomain:@"com.CRUDsy.response" code:operation.response.statusCode userInfo:userInfo];
-        NSDictionary *notificationUserInfo = @{CRUDErrorDataKey : error, CRUDOperationDataKey : operation};
-        [[NSNotificationCenter defaultCenter] postNotificationName:CRUDOperationFailureOperationNotification object:notificationUserInfo];
-        completionBlock(response);
-    }];
+- (AFHTTPRequestOperation *)operationWithReqiest:(NSURLRequest *)request success:(void (^)(NSOperation *operation, id responseObject))success failure:(void (^)(NSOperation *operation, NSError *error))failure {
+    id operation = [self.operationManager HTTPRequestOperationWithRequest:request success:success failure:failure];
     return operation;
 }
 
