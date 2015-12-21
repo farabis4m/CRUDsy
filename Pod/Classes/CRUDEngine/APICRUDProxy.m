@@ -36,7 +36,11 @@
     NSArray *queryCriterias = [criterias filteredArrayUsingPredicate:queryFilter];
     NSMutableDictionary *queryParamters = [NSMutableDictionary dictionary];
     for(APICriteria *criteria in queryCriterias) {
-        [queryParamters addEntriesFromDictionary:[criteria exportWithUserInfo:@{APIActionKey : action} error:nil]];
+        NSError *error = nil;
+        [queryParamters addEntriesFromDictionary:[criteria exportWithUserInfo:@{APIActionKey : action} error:&error]];
+        if(error) {
+            NSLog(@"%s %@", __PRETTY_FUNCTION__, error);
+        }
     }
     NSMutableString *queryParametersString = [NSMutableString string];
     NSArray *keys = queryParamters.allKeys;
