@@ -72,12 +72,14 @@
 + (NSString *)routeForModelClass:(Class)class action:(NSString *)action criterias:(NSArray *)criterias {
     NSString *route = [[APIRouter sharedInstance] routeForClassString:[class modelIdentifier] action:action];
     for(APIModelCriteria *criteria in criterias) {
-        NSRange range = [route rangeOfString:criteria.templateKey];
-        if(criteria.templateKey && range.location != NSNotFound) {
-            id model = criteria.model;
-            id value = [model valueForKeyPath:criteria.templateKey];
-            NSString *valueString = [NSString stringWithFormat:@"%@", value];
-            route = [route stringByReplacingCharactersInRange:range withString:valueString];
+        if([criteria respondsToSelector:@selector(templateKey)]) {
+            NSRange range = [route rangeOfString:criteria.templateKey];
+            if(criteria.templateKey && range.location != NSNotFound) {
+                id model = criteria.model;
+                id value = [model valueForKeyPath:criteria.templateKey];
+                NSString *valueString = [NSString stringWithFormat:@"%@", value];
+                route = [route stringByReplacingCharactersInRange:range withString:valueString];
+            }
         }
     }
     return route;
