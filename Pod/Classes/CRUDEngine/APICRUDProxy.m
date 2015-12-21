@@ -76,7 +76,7 @@
 + (NSString *)routeForModelClass:(Class)class action:(NSString *)action criterias:(NSArray *)criterias {
     NSString *route = [[APIRouter sharedInstance] routeForClassString:[class modelIdentifier] action:action];
     for(APIModelCriteria *criteria in criterias) {
-        if([criteria respondsToSelector:@selector(templateKey)]) {
+        if([criteria respondsToSelector:@selector(templateKey)] && criteria.templateKey) {
             NSRange range = [route rangeOfString:criteria.templateKey];
             if(criteria.templateKey && range.location != NSNotFound) {
                 id model = criteria.model;
