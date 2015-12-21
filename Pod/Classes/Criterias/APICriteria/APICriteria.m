@@ -40,7 +40,10 @@ NSString *const APIPathCriteriaType = @"APIPathCriteriaType";
 #pragma mark - Export
 
 - (id)exportWithUserInfo:(NSDictionary *)userInfo error:(NSError *__autoreleasing  _Nullable *)error {
-    return self.userInfo;
+    if(self.userInfo.count) {
+        return self.userInfo;
+    }
+    return [super exportWithUserInfo:userInfo error:error];
 }
 
 @end

@@ -8,6 +8,8 @@
 
 #import "APIPageCriteria.h"
 
+#import <FluentJ/FluentJ.h>
+
 @implementation APIPageCriteria
 
 #pragma mark - APIPageCriteria lifecycle
@@ -34,9 +36,9 @@
     return self;
 }
 
-#pragma mark - MTL Serialization
+#pragma mark - Serialization
 
-+ (NSDictionary *)JSONKeyPathsByPropertyKey {
++ (NSDictionary *)keysForKeyPaths:(NSDictionary *)userInfo {
     return @{@"offset" : @"offset",
              @"length" : @"length"};
 }
