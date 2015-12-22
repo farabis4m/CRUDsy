@@ -16,9 +16,9 @@ NSString *const APIPathCriteriaType = @"APIPathCriteriaType";
 
 @implementation APICriteria
 
-#pragma mark - MTL Serialization
+#pragma mark - Serialization
 
-+ (NSDictionary *)JSONKeyPathsByPropertyKey {
++ (NSDictionary *)keysForKeyPaths:(NSDictionary *)userInfo {
     return @{};
 }
 
