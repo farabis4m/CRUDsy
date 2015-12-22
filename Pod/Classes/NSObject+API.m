@@ -74,8 +74,11 @@ NSString *const APIStartKey = @"start";
     if(!criterias.count) {
         criterias = @[];
     }
-    APICriteria *criteria = [[APICriteria alloc] initWithUserInfo:attributes];
-    return [self requestWithAction:action routeSource:self criterias:[criterias arrayByAddingObject:criteria] start:start model:nil completionBlock:completionBlock];
+    if(attributes.count) {
+        APICriteria *criteria = [[APICriteria alloc] initWithUserInfo:attributes];
+        criterias = [criterias arrayByAddingObject:criteria];
+    }
+    return [self requestWithAction:action routeSource:self criterias:criterias start:start model:nil completionBlock:completionBlock];
 }
 
 + (NSOperation *)action:(NSString *)action attributes:(NSDictionary *)attributes criterias:(NSArray *)criterias completionBlock:(APIResponseCompletionBlock)completionBlock {
