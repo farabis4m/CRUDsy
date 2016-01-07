@@ -63,7 +63,7 @@
         userInfo[CRUDResponseDataKey] = requestOperation.responseObject;
         NSDictionary *notificationUserInfo = @{CRUDErrorDataKey : error, CRUDOperationDataKey : operation};
         [[NSNotificationCenter defaultCenter] postNotificationName:CRUDOperationFailureOperationNotification object:notificationUserInfo];
-        error = [NSError errorWithDomain:@"com.CRUDsy.response" code:requestOperation.response.statusCode userInfo:userInfo];
+        error = [NSError errorWithDomain:@"com.CRUDsy.response" code:requestOperation.response.statusCode ?: error.code userInfo:userInfo];
         APIResponse *response = [APIResponse responseWithData:requestOperation.responseObject error:error];
         completionBlock(response);
     }];
