@@ -83,8 +83,10 @@ NSString *const CRUDErrorDataKey = @"CRUDErrorDataKey";
 
 - (id)HTTPMutipartRequestOperationURL:(NSURL *)URL HTTPMethod:(NSString *)method URLString:(NSString *)URLString parameters:(NSDictionary *)parameters success:(void (^)(NSOperation *operation, id responseObject))success failure:(void (^)(NSOperation *operation, NSError *error))failure {
     
-    NSArray *values = [parameters allValues];
-    NSArray *dataObjects = [values filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self isKindOfClass: %@", [CRUDAttachement class]]];
+    NSMutableArray *values = [NSMutableArray arrayWithArray:[parameters allValues]];
+    [values removeObjectIdenticalTo:[NSNull null]];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"self isKindOfClass: %@", [CRUDAttachement class]];
+    NSArray *dataObjects = [values filteredArrayUsingPredicate:predicate];
     NSMutableArray *dataKeys = [NSMutableArray array];
     for(id dataObject in dataObjects) {
         NSArray *keys = [parameters allKeysForObject:dataObject];
