@@ -16,9 +16,18 @@
 #import <FluentJ/FluentJ.h>
 #import "APIRouteKeys.h"
 
+#import "NSObject+Model.h"
+
 #import <AFNetworking/AFHTTPRequestOperation.h>
 
+NSMutableDictionary *hooks = nil;
+
 @implementation APICRUDProxy
+
++ (void)load {
+    [super load];
+    hooks = [NSMutableDictionary dictionary];
+}
 
 + (NSOperation *)operationForAction:(NSString *)action modelClass:(Class)modelClass routeSource:(Class)routeSource parameters:(id)parameters model:(id)model criterias:(NSArray *)criterias start:(BOOL)start completionBlock:(APIResponseCompletionBlock)completionBlock {
     CRUDEngine *engine = [CRUDEngine sharedInstance];
@@ -31,7 +40,7 @@
     NSString *URLString = [[APIRouter sharedInstance] buildURLForClass:[modelClass modelIdentifier] action:action];
     NSString *route = [self routeForModelClass:routeSource action:action criterias:criterias];
     NSString *method = [router methodForClassString:modelString action:action];
-
+    
     NSPredicate *queryFilter = [NSPredicate predicateWithFormat:@"self.type = %@", APIQueryCriteriaType];
     NSArray *queryCriterias = [criterias filteredArrayUsingPredicate:queryFilter];
     NSMutableDictionary *queryParamters = [NSMutableDictionary dictionary];
@@ -55,6 +64,10 @@
     NSString *requestType = [[APIRouter sharedInstance] requestTypeForClassString:modelString action:action];
     id operation = [engine HTTPRequestOperationURL:URL HTTPMethod:method URLString:route type:requestType parameters:parameters success:^(NSOperation *operation, id responseObject) {
         AFHTTPRequestOperation *requestOperation = (AFHTTPRequestOperation *)operation;
+        if (hooks[[modelClass identifier]][action]) {
+            NSDictionary * (^hook)(NSDictionary *dictionary) = hooks[[modelClass identifier]][action];
+            responseObject = hook(responseObject);
+        }
         id response = [engine.parser parse:responseObject response:requestOperation.response class:modelClass routeClass:routeSource action:action model:model];
         completionBlock(response);
     } failure:^(NSOperation *operation, NSError *error) {
@@ -87,6 +100,21 @@
         }
     }
     return route;
+}
+
+#pragma mark - Hooks management
+
++ (void)addHookWithAction:(NSString *)action modelClass:(Class)modelClass hook:(id)hook {
+    NSMutableDictionary *modelHooks = hooks[[modelClass identifier]];
+    if(!modelHooks) {
+        modelHooks = [NSMutableDictionary dictionary];
+        [hooks setObject:modelHooks forKey:[modelClass identifier]];
+    }
+    [modelHooks setObject:hook forKey:action];
+}
+
++ (void)removeHookWithAction:(NSString *)action modelClass:(Class)modelClass {
+    [hooks[[modelClass identifier]] removeObjectForKey:action];
 }
 
 @end
