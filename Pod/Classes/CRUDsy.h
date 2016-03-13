@@ -9,6 +9,7 @@
 #ifndef CRUDsy_h
 #define CRUDsy_h
 
+#import "NSObject+Model.h"
 #import "NSObject+API.h"
 #import "NSObject+APIPredefinedActions.h"
 
