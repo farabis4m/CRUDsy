@@ -141,4 +141,12 @@ NSString *const CRUDErrorDataKey = @"CRUDErrorDataKey";
     return operation;
 }
 
+- (NSArray *)batch:(NSArray *)operations progress:(void (^)(NSUInteger numberOfFinishedOperations, NSUInteger totalNumberOfOperations))progress
+        completion:(void (^)(NSArray *operations))completion {
+    NSArray *batchedOperations = [AFURLConnectionOperation batchOfRequestOperations:operations progressBlock:progress completionBlock:completion];
+    [[NSOperationQueue mainQueue] addOperations:batchedOperations waitUntilFinished:NO];
+    return batchedOperations;
+}
+
+
 @end
