@@ -69,7 +69,9 @@ NSMutableDictionary *hooks = nil;
             responseObject = hook(responseObject);
         }
         id response = [engine.parser parse:responseObject response:requestOperation.response class:modelClass routeClass:routeSource action:action model:model];
-        completionBlock(response);
+        if(completionBlock) {
+            completionBlock(response);
+        }
     } failure:^(NSOperation *operation, NSError *error) {
         AFHTTPRequestOperation *requestOperation = (AFHTTPRequestOperation *)operation;
         NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithDictionary:[error userInfo]];
