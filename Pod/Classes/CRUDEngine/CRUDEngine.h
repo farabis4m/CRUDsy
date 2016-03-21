@@ -45,6 +45,6 @@ extern NSString *const CRUDErrorDataKey;
 
 - (id)HTTPMutipartRequestOperationURL:(NSURL *)URL HTTPMethod:(NSString *)method URLString:(NSString *)URLString parameters:(NSDictionary *)parameters success:(void (^)(NSOperation *operation, id responseObject))success failure:(void (^)(NSOperation *operation, NSError *error))failure;
 
-- (NSArray *)batch:(NSArray *)operations progress:(void (^)(NSUInteger numberOfFinishedOperations, NSUInteger totalNumberOfOperations))progress completion:(void (^)(NSArray *operations))completion;
+- (nonnull NSArray<NSOperation *> *)batch:(nonnull NSArray *)operations progress:(void (^ __nullable)(NSUInteger numberOfFinishedOperations, NSUInteger totalNumberOfOperations))progress completion:(void (^ __nullable)(NSArray * __nonnull operations))completion;
 
 @end

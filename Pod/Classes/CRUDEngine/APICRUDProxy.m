@@ -88,6 +88,33 @@ NSMutableDictionary *hooks = nil;
     return operation;
 }
 
++ (NSOperation *)operationWithURL:(nonnull NSURL *)url outputStream:(nullable NSOutputStream *)stream start:(BOOL)start completionBlock:(nullable APIResponseCompletionBlock)completionBlock {
+    CRUDEngine *engine = [CRUDEngine sharedInstance];
+    NSString *requestType = APIRequestTypeURLEncoded;
+    id operation = [engine HTTPRequestOperationURL:url HTTPMethod:APIMethodGET URLString:nil type:requestType parameters:@{} success:^(NSOperation *operation, id responseObject) {
+        AFHTTPRequestOperation *requestOperation = (AFHTTPRequestOperation *)operation;
+        id response = [APIResponse responseWithData:responseObject error:nil];
+        if(completionBlock) {
+            completionBlock(response);
+        }
+    } failure:^(NSOperation *operation, NSError *error) {
+        AFHTTPRequestOperation *requestOperation = (AFHTTPRequestOperation *)operation;
+        NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithDictionary:[error userInfo]];
+        userInfo[CRUDResponseDataKey] = requestOperation.responseObject;
+        error = [NSError errorWithDomain:@"com.CRUDsy.response" code:requestOperation.response.statusCode ?: error.code userInfo:userInfo];
+        NSDictionary *notificationUserInfo = @{CRUDErrorDataKey : error, CRUDOperationDataKey : operation};
+        [[NSNotificationCenter defaultCenter] postNotificationName:CRUDOperationFailureOperationNotification object:notificationUserInfo];
+        APIResponse *response = [APIResponse responseWithData:requestOperation.responseObject error:error];
+        if(completionBlock) {
+            completionBlock(response);
+        }
+    }];
+    if(start) {
+        [[CRUDEngine sharedInstance] startOperation:operation];
+    }
+    return operation;
+}
+
 + (NSString *)routeForModelClass:(Class)class action:(NSString *)action criterias:(NSArray *)criterias {
     NSString *route = [[APIRouter sharedInstance] routeForClassString:[class modelIdentifier] action:action];
     for(APIModelCriteria *criteria in criterias) {

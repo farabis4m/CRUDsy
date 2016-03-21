@@ -23,7 +23,19 @@ APIImportType APIImportTypeForAction(NSString *action);
  */
 @interface APIRouter : NSObject
 
+/**
+ Storage of predefined routes.
+ */
+@property (nonatomic, strong, readonly) NSMutableDictionary *predefinedRoutes;
+
 @property (nonatomic, strong) NSString *baseURL;
+
+/**
+ Default prefix to each URL.
+ www.example.com/<defaultPrefix>/items
+ Can be override by 'prefix' key in plist of actions.
+ */
+@property (nonatomic, strong) NSString *defaultPrefix;
 
 @property (nonatomic, strong) id<APIURLBuilder> urlBuilder;
 
@@ -42,7 +54,7 @@ APIImportType APIImportTypeForAction(NSString *action);
 
 - (void)registerClass:(Class)class;
 
-- (NSString *)urlForClassString:(NSString *)classString action:(NSString *)action;
+//- (NSString *)urlForClassString:(NSString *)classString action:(NSString *)action;
 - (NSString *)routeForClassString:(NSString *)classString action:(NSString *)action;
 - (Class)modelClassForClass:(Class)class action:(NSString *)action;
 - (NSString *)methodForClassString:(NSString *)classString action:(NSString *)action;

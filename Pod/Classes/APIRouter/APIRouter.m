@@ -22,6 +22,8 @@ static NSMutableDictionary *definedMethods = nil;
 
 #import "NSObject+Model.h"
 
+#import "APIDefaultURLBuilder.h"
+
 #import <FluentJ/FluentJ.h>
 #import <InflectorKit/NSString+InflectorKit.h>
 
@@ -32,8 +34,6 @@ APIImportType APIImportTypeForAction(NSString *action) {
 @interface APIRouter ()
 
 @property (nonatomic, strong) NSMutableArray *registeredClasses;
-
-@property (nonatomic, strong) NSMutableDictionary *predefinedRoutes;
 
 @end
 
@@ -63,8 +63,9 @@ APIImportType APIImportTypeForAction(NSString *action) {
 #pragma mark - Setup
 
 - (void)setup {
-    self.registeredClasses = [NSMutableArray array];
-    self.predefinedRoutes = [NSMutableDictionary dictionary];
+    _urlBuilder = [[APIDefaultURLBuilder alloc] init];
+    _registeredClasses = [NSMutableArray array];
+    _predefinedRoutes = [NSMutableDictionary dictionary];
 }
 
 #pragma mark -
@@ -121,10 +122,6 @@ APIImportType APIImportTypeForAction(NSString *action) {
         return [[APIRouter APIConfigurationImportTypes][[format lowercaseString]] integerValue];
     }
     return [format integerValue];
-}
-
-- (NSString *)urlForClassString:(NSString *)classString action:(NSString *)action {
-    return self.predefinedRoutes[classString][action][APIURLKey] ?: self.baseURL;
 }
 
 - (NSString *)routeForClassString:(NSString *)classString action:(NSString *)action {
@@ -184,12 +181,7 @@ Class CRUDClassFromString(NSString *className) {
 }
 
 - (NSString *)buildURLForClass:(NSString *)class action:(NSString *)action {
-    NSString *defaultURL = [self urlForClassString:class action:action];
-    NSString *finalURL = defaultURL;
-    if(self.urlBuilder) {
-        finalURL = [self.urlBuilder buildURLWithString:defaultURL];
-    }
-    return finalURL;
+    return [self.urlBuilder buildURLWithModel:class action:action];
 }
 
 #pragma mark - Utils

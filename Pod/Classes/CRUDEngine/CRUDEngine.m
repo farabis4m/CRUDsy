@@ -111,7 +111,10 @@ NSString *const CRUDErrorDataKey = @"CRUDErrorDataKey";
 
 - (id)HTTPSimpleRequestOperationURL:(NSURL *)URL HTTPMethod:(NSString *)method URLString:(NSString *)URLString parameters:(id)parameters success:(void (^)(NSOperation *operation, id responseObject))success failure:(void (^)(NSOperation *operation, NSError *error))failure {
     NSError *serializationError = nil;
-    NSURL *fullURL = [URL URLByAppendingPathComponent:URLString];
+    NSURL *fullURL = URL;
+    if(URLString.length) {
+        fullURL = [URL URLByAppendingPathComponent:URLString];
+    }
     NSString *relativeURLString = [fullURL absoluteString];
     NSMutableURLRequest *request = [self.operationManager.requestSerializer requestWithMethod:method URLString:relativeURLString  parameters:parameters error:&serializationError];
     if (serializationError) {
@@ -141,8 +144,7 @@ NSString *const CRUDErrorDataKey = @"CRUDErrorDataKey";
     return operation;
 }
 
-- (NSArray *)batch:(NSArray *)operations progress:(void (^)(NSUInteger numberOfFinishedOperations, NSUInteger totalNumberOfOperations))progress
-        completion:(void (^)(NSArray *operations))completion {
+- (nonnull NSArray<NSOperation *> *)batch:(nonnull NSArray *)operations progress:(void (^ __nullable)(NSUInteger numberOfFinishedOperations, NSUInteger totalNumberOfOperations))progress completion:(void (^ __nullable)(NSArray * __nonnull operations))completion {
     NSArray *batchedOperations = [AFURLConnectionOperation batchOfRequestOperations:operations progressBlock:progress completionBlock:completion];
     [[NSOperationQueue mainQueue] addOperations:batchedOperations waitUntilFinished:NO];
     return batchedOperations;
