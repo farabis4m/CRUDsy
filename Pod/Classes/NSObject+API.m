@@ -144,7 +144,6 @@ NSString *const APIStartKey = @"start";
 #pragma mark - Utils
 
 //TODO: extract as global
-
 + (id)findSpecificClassItemInArray:(NSArray *)array subitemClass:(Class)subitemClass {
     id classItem = nil;
     for(id item in array) {
@@ -156,6 +155,7 @@ NSString *const APIStartKey = @"start";
     return classItem;
 }
 
+//TODO: may be put it to CRUDProxy
 + (void)completeWithAction:(nonnull NSString *)action class:(Class)class model:(nullable NSString *)model parameters:(nonnull id)paramteres {
 }
 
