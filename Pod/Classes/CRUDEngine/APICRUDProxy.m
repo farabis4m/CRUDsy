@@ -80,7 +80,9 @@ NSMutableDictionary *hooks = nil;
         NSDictionary *notificationUserInfo = @{CRUDErrorDataKey : error, CRUDOperationDataKey : operation};
         [[NSNotificationCenter defaultCenter] postNotificationName:CRUDOperationFailureOperationNotification object:notificationUserInfo];
         APIResponse *response = [APIResponse responseWithData:requestOperation.responseObject error:error];
-        completionBlock(response);
+        if(completionBlock) {
+            completionBlock(response);
+        }
     }];
     if(start) {
         [[CRUDEngine sharedInstance] startOperation:operation];

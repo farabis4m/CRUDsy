@@ -130,8 +130,20 @@ NSString *const APIStartKey = @"start";
             NSLog(@"WARNING! You have error in json parsing: %@", [error localizedDescription]);
         }
     }
-    return [APICRUDProxy operationForAction:action modelClass:self routeSource:routeSource parameters:parametrs model:model criterias:queryCriterias start:start completionBlock:completionBlock];
+    APIResponseCompletionBlock completion = ^(APIResponse *response) {
+        if (!response.error) {
+            [self completeWithAction:action class:self model:model parameters:parametrs];
+        }
+        if(completionBlock) {
+            completionBlock(response);
+        }
+    };
+    return [APICRUDProxy operationForAction:action modelClass:self routeSource:routeSource parameters:parametrs model:model criterias:queryCriterias start:start completionBlock:completion];
 }
+
+#pragma mark - Utils
+
+//TODO: extract as global
 
 + (id)findSpecificClassItemInArray:(NSArray *)array subitemClass:(Class)subitemClass {
     id classItem = nil;
@@ -144,5 +156,7 @@ NSString *const APIStartKey = @"start";
     return classItem;
 }
 
++ (void)completeWithAction:(nonnull NSString *)action class:(Class)class model:(nullable NSString *)model parameters:(nonnull id)paramteres {
+}
 
 @end
