@@ -60,13 +60,21 @@ NSString *const CRUDErrorDataKey = @"CRUDErrorDataKey";
 }
 
 - (void)setRequestSerializer:(AFHTTPRequestSerializer *)requestSerializer {
-    _requestSerializer = requestSerializer;
     self.operationManager.requestSerializer = requestSerializer;
 }
 
 - (void)setResponseSerializer:(AFHTTPResponseSerializer *)responseSerializer {
-    _responseSerializer = responseSerializer;
     self.operationManager.responseSerializer = responseSerializer;
+}
+
+#pragma mark - Accessors
+
+- (AFHTTPRequestSerializer *)requestSerializer {
+    return self.operationManager.requestSerializer;
+}
+
+- (AFHTTPResponseSerializer *)responseSerializer {
+    return self.operationManager.responseSerializer;
 }
 
 #pragma mark - Management
