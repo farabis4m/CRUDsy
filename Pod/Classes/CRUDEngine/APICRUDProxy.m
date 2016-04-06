@@ -68,7 +68,7 @@ NSMutableDictionary *hooks = nil;
             NSDictionary * (^hook)(NSDictionary *dictionary) = hooks[[modelClass identifier]][action];
             responseObject = hook(responseObject);
         }
-        id response = [engine.parser parse:responseObject response:requestOperation.response class:modelClass routeClass:routeSource action:action model:model];
+        id response = [engine.parser parse:responseObject ?: requestOperation.responseData response:requestOperation.response class:modelClass routeClass:routeSource action:action model:model];
         if(completionBlock) {
             completionBlock(response);
         }
