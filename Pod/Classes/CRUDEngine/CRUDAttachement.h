@@ -15,5 +15,8 @@
 @property (nonatomic, strong) NSString *filename;
 
 + (instancetype)attachementWithData:(NSData *)data mimeType:(NSString *)mimeType filename:(NSString *)filename;
++ (instancetype)attachementWithURL:(NSURL *)url;
+
+- (instancetype)initWithData:(NSData *)data mimeType:(NSString *)mimeType filename:(NSString *)filename;
 
 @end
