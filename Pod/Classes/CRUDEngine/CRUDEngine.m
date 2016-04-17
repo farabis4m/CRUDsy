@@ -77,6 +77,10 @@ NSString *const CRUDErrorDataKey = @"CRUDErrorDataKey";
     return self.operationManager.responseSerializer;
 }
 
+- (NSOperationQueue *)operationQueue {
+    return self.operationManager.operationQueue;
+}
+
 #pragma mark - Management
 
 - (void)cancelAllRequests {

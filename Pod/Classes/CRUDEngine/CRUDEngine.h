@@ -34,6 +34,8 @@ extern NSString *const CRUDErrorDataKey;
 @property (nonatomic, strong) AFHTTPRequestSerializer *requestSerializer;
 @property (nonatomic, strong) AFHTTPResponseSerializer *responseSerializer;
 
+@property (nonatomic, readonly) NSOperationQueue *operationQueue;
+
 @property (nonatomic, strong) NSURL *baseURL;
 
 + (instancetype)sharedInstance;
