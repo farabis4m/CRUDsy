@@ -125,8 +125,12 @@ NSMutableDictionary *hooks = nil;
             if(criteria.templateKey && range.location != NSNotFound) {
                 id model = criteria.model;
                 id value = [model valueForKeyPath:criteria.templateKey];
-                NSString *valueString = [NSString stringWithFormat:@"%@", value];
-                route = [route stringByReplacingCharactersInRange:range withString:valueString];
+                if(value) {
+                    NSString *valueString = [NSString stringWithFormat:@"%@", value];
+                    route = [route stringByReplacingCharactersInRange:range withString:valueString];
+                } else {
+                    route = [route stringByReplacingCharactersInRange:range withString:@""];
+                }
             }
         }
     }
