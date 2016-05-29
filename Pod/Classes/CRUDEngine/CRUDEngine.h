@@ -18,6 +18,7 @@
 
 @class AFHTTPRequestSerializer;
 @class AFHTTPResponseSerializer;
+@class AFHTTPRequestOperationManager;
 
 extern NSString *const CRUDOperationFailureOperationNotification;
 extern NSString *const CRUDResponseDataKey;
@@ -31,6 +32,7 @@ extern NSString *const CRUDErrorDataKey;
 
 @property (nonatomic, strong) APIRouter *APIRouter;
 
+@property (nonatomic, strong) AFHTTPRequestOperationManager *operationManager;
 @property (nonatomic, strong) AFHTTPRequestSerializer *requestSerializer;
 @property (nonatomic, strong) AFHTTPResponseSerializer *responseSerializer;
 

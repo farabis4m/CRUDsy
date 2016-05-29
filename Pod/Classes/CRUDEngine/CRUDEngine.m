@@ -23,8 +23,6 @@ NSString *const CRUDErrorDataKey = @"CRUDErrorDataKey";
 
 @interface CRUDEngine ()
 
-@property (nonatomic, strong) AFHTTPRequestOperationManager *operationManager;
-
 @end
 
 @implementation CRUDEngine
@@ -131,8 +129,8 @@ NSString *const CRUDErrorDataKey = @"CRUDErrorDataKey";
     NSMutableURLRequest *request = [self.operationManager.requestSerializer requestWithMethod:method URLString:relativeURLString  parameters:parameters error:&serializationError];
     if (serializationError) {
         if(failure) {
-//            APIResponse *response = [[APIResponse alloc] init];
-//            response.error = serializationError;
+            //            APIResponse *response = [[APIResponse alloc] init];
+            //            response.error = serializationError;
             dispatch_async(self.operationManager.completionQueue ?: dispatch_get_main_queue(), ^{
                 failure(nil, serializationError);
             });
