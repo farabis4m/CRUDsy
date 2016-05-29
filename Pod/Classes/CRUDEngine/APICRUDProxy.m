@@ -37,7 +37,7 @@ NSMutableDictionary *hooks = nil;
     [router registerClass:modelClass];
     [router registerClass:routeSource];
     NSString *modelString = [routeSource modelIdentifier];
-    NSString *URLString = [[APIRouter sharedInstance] buildURLForClass:[modelClass modelIdentifier] action:action];
+    NSString *URLString = [[APIRouter sharedInstance] buildURLForClass:[routeSource modelIdentifier] action:action];
     NSString *route = [self routeForModelClass:routeSource action:action criterias:criterias];
     NSString *method = [router methodForClassString:modelString action:action];
     
