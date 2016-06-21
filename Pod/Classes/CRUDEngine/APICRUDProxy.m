@@ -93,7 +93,7 @@ NSMutableDictionary *hooks = nil;
 + (NSOperation *)operationWithURL:(nonnull NSURL *)url outputStream:(nullable NSOutputStream *)stream start:(BOOL)start completionBlock:(nullable APIResponseCompletionBlock)completionBlock {
     CRUDEngine *engine = [CRUDEngine sharedInstance];
     NSString *requestType = APIRequestTypeURLEncoded;
-    id operation = [engine HTTPRequestOperationURL:url HTTPMethod:APIMethodGET URLString:nil type:requestType parameters:@{} success:^(NSOperation *operation, id responseObject) {
+    AFHTTPRequestOperation *operation = [engine HTTPRequestOperationURL:url HTTPMethod:APIMethodGET URLString:nil type:requestType parameters:@{} success:^(NSOperation *operation, id responseObject) {
         AFHTTPRequestOperation *requestOperation = (AFHTTPRequestOperation *)operation;
         id response = [APIResponse responseWithData:responseObject error:nil];
         if(completionBlock) {
@@ -112,6 +112,7 @@ NSMutableDictionary *hooks = nil;
         }
     }];
     if(start) {
+        operation.outputStream = stream;
         [[CRUDEngine sharedInstance] startOperation:operation];
     }
     return operation;
