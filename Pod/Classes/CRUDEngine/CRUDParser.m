@@ -29,7 +29,9 @@
                                APITypeKey : APIResponseKey};
     APIImportType definedImportType = [[APIRouter sharedInstance] importTypeWithClass:routeClass action:action];
     if(model && definedImportType != APIImportTypeNone && ![responseObject isKindOfClass:[NSArray class]]) {
+        [model willImportWithUserInfo:userInfo];
         [model updateWithValue:responseObject context:context userInfo:userInfo error:error];
+        [model didImportWithUserInfo:userInfo];
         return model;
     }
     
