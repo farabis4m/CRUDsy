@@ -16,6 +16,7 @@
 #import "NSObject+Model.h"
 
 #import <FluentJ/FluentJ.h>
+#import <InflectorKit/NSString+InflectorKit.h>
 
 #import "CRUDEngine.h"
 
@@ -28,7 +29,7 @@
     NSDictionary *userInfo = @{APIActionKey : action,
                                APITypeKey : APIResponseKey};
     APIImportType definedImportType = [[APIRouter sharedInstance] importTypeWithClass:routeClass action:action];
-    if(model && definedImportType != APIImportTypeNone && ![responseObject isKindOfClass:[NSArray class]]) {
+    if(model && definedImportType == APIImportTypeDictionary && ![responseObject isKindOfClass:[NSArray class]]) {
         [model willImportWithUserInfo:userInfo];
         [model updateWithValue:responseObject context:context userInfo:userInfo error:error];
         [model didImportWithUserInfo:userInfo];
@@ -42,14 +43,22 @@
     id result = nil;
     switch (importType) {
         case APIImportTypeArray: {
+            NSString *dataKey = [[[class modelIdentifier] lowercaseString] pluralizedString];
             BOOL isDictionary = [responseObject isKindOfClass:[NSDictionary class]];
+            id data = isDictionary && responseObject[dataKey] ? responseObject[dataKey] : responseObject;
+            isDictionary = [data isKindOfClass:[NSDictionary class]];
             if(isDictionary) {
-                NSArray *keys = [responseObject allKeys];
-                responseObject = responseObject[keys.lastObject];
+                NSArray *keys = [data allKeys];
+                data = data[keys.lastObject];
             }
-            result = [class importValue:responseObject context:context userInfo:userInfo error:error];
+            result = [class importValue:data context:context userInfo:userInfo error:error];
         } break;
-        case APIImportTypeDictionary: result = [class importValue:responseObject context:context userInfo:userInfo error:error]; break;
+        case APIImportTypeDictionary: {
+            NSString *dataKey = [[class modelIdentifier] lowercaseString];
+            NSDictionary *data = (NSDictionary *)responseObject;
+            NSDictionary *modelData = data[dataKey] ?: responseObject;
+            result = [class importValue:modelData context:context userInfo:userInfo error:error];
+        } break;
         case APIImportTypeNone: result = responseObject; break;
         case APIImportTypeUndefined: result = nil;
     }
