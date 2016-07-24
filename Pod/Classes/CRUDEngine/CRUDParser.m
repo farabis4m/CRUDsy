@@ -26,20 +26,18 @@
 
 - (id)parse:(id)responseObject class:(Class)class routeClass:(Class)routeClass action:(NSString *)action error:(NSError **)error model:(id)model {
     id context = [[[CRUDEngine sharedInstance] contextManager] contextForModelClass:class action:action];
-    NSDictionary *userInfo = @{APIActionKey : action,
-                               APITypeKey : APIResponseKey};
-    APIImportType definedImportType = [[APIRouter sharedInstance] importTypeWithClass:routeClass action:action];
-    if(model && definedImportType == APIImportTypeDictionary && ![responseObject isKindOfClass:[NSArray class]]) {
+    NSDictionary *userInfo = @{APIActionKey : action, APITypeKey : APIResponseKey};
+    APIImportType importType = [[APIRouter sharedInstance] importTypeWithClass:routeClass action:action];
+    if(model && importType == APIImportTypeDictionary && ![responseObject isKindOfClass:[NSArray class]]) {
+        NSString *dataKey = [[class modelIdentifier] lowercaseString];
+        NSDictionary *data = (NSDictionary *)responseObject;
+        NSDictionary *modelData = data[dataKey] ?: responseObject;
         [model willImportWithUserInfo:userInfo];
-        [model updateWithValue:responseObject context:context userInfo:userInfo error:error];
+        [model updateWithValue:modelData context:context userInfo:userInfo error:error];
         [model didImportWithUserInfo:userInfo];
         return model;
     }
     
-    APIImportType importType = APIImportTypeForAction(action);
-    if(definedImportType != APIImportTypeUndefined) {
-        importType = definedImportType;
-    }
     id result = nil;
     switch (importType) {
         case APIImportTypeArray: {

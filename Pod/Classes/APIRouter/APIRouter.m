@@ -121,7 +121,7 @@ APIImportType APIImportTypeForAction(NSString *action) {
     if([format isKindOfClass:[NSString class]]) {
         return [[APIRouter APIConfigurationImportTypes][[format lowercaseString]] integerValue];
     }
-    return [format integerValue];
+    return APIImportTypeForAction(action);
 }
 
 - (NSString *)routeForClassString:(NSString *)classString action:(NSString *)action {
