@@ -104,7 +104,22 @@ NSString *const CRUDErrorDataKey = @"CRUDErrorDataKey";
     }
     
     NSMutableDictionary *allParameters = [NSMutableDictionary dictionaryWithDictionary:parameters];
-    NSDictionary *dataParameters = [allParameters dictionaryWithValuesForKeys:dataKeys];
+    NSMutableDictionary *dataParameters = [[allParameters dictionaryWithValuesForKeys:dataKeys] mutableCopy];
+    predicate = [NSPredicate predicateWithFormat:@"self isKindOfClass: %@", [NSArray class]];
+    dataObjects = [values filteredArrayUsingPredicate:predicate];
+    for(id dataObject in dataObjects) {
+        NSArray *keys = [parameters allKeysForObject:dataObject];
+        
+        [allParameters removeObjectForKey:keys.firstObject];
+        for(int i = 0; i < [dataObject count]; i++) {
+            id obj = dataObject[i];
+            if([obj isKindOfClass: [CRUDAttachement class]]) {
+                NSString *key = [NSString stringWithFormat:@"%@[%d]", keys.firstObject, i];
+                [dataKeys addObject:key];
+                [dataParameters setValue:obj forKey:key];
+            }
+        }
+    }
     [allParameters removeObjectsForKeys:dataKeys];
     
     NSError *serializationError = nil;
