@@ -64,8 +64,8 @@ NSMutableDictionary *hooks = nil;
     NSString *requestType = [[APIRouter sharedInstance] requestTypeForClassString:modelString action:action];
     id operation = [engine HTTPRequestOperationURL:URL HTTPMethod:method URLString:route type:requestType parameters:parameters success:^(NSOperation *operation, id responseObject) {
         AFHTTPRequestOperation *requestOperation = (AFHTTPRequestOperation *)operation;
-        if (hooks[[modelClass identifier]][action]) {
-            NSDictionary * (^hook)(NSDictionary *dictionary) = hooks[[modelClass identifier]][action];
+        if (hooks[[modelClass modelIdentifier]][action]) {
+            NSDictionary * (^hook)(NSDictionary *dictionary) = hooks[[modelClass modelIdentifier]][action];
             responseObject = hook(responseObject);
         }
         id response = [engine.parser parse:responseObject ?: requestOperation.responseData response:requestOperation.response class:modelClass routeClass:routeSource action:action model:model];
@@ -141,16 +141,17 @@ NSMutableDictionary *hooks = nil;
 #pragma mark - Hooks management
 
 + (void)addHookWithAction:(NSString *)action modelClass:(Class)modelClass hook:(id)hook {
-    NSMutableDictionary *modelHooks = hooks[[modelClass identifier]];
+    NSMutableDictionary *modelHooks = hooks[[modelClass modelIdentifier]];
     if(!modelHooks) {
         modelHooks = [NSMutableDictionary dictionary];
-        [hooks setObject:modelHooks forKey:[modelClass identifier]];
+        [hooks setObject:modelHooks forKey:[modelClass modelIdentifier]];
     }
     [modelHooks setObject:hook forKey:action];
 }
 
 + (void)removeHookWithAction:(NSString *)action modelClass:(Class)modelClass {
-    [hooks[[modelClass identifier]] removeObjectForKey:action];
+    [hooks[[modelClass modelIdentifier]] removeObjectForKey:action];
 }
 
 @end
+
